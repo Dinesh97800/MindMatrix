@@ -1,0 +1,54 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+
+# production / misc build output
+/build
+/dist
+*.tsbuildinfo
+
+# testing
+/coverage
+
+# environment (keep .env.example in repo)
+.env
+.env.*
+!.env.example
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE / editor
+.cursor/
+.idea/
+*.swp
+*.swo
+
+# deployment
+.vercel
+
+# Stitch MCP raw HTML exports (site uses src/content/pages; re-fetch with npm run stitch:download)
+/stitch-html/
+
+# secrets
+*.pem

@@ -1,0 +1,247 @@
+<div class="flex max-w-container-max mx-auto pt-20">
+<!-- Sidebar Navigation -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-80px)] w-80 sticky top-20 bg-surface border-r border-outline-variant/10 py-base overflow-y-auto">
+<div class="px-gutter mb-stack-md">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+</div>
+<div>
+<p class="font-headline-md text-[18px] text-primary leading-tight">Technical Index</p>
+<p class="font-label-sm text-label-sm text-on-primary-container">v4.2.0 Stable</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col">
+<a class="flex items-center gap-3 px-gutter py-3 text-primary font-semibold border-r-4 border-primary bg-primary-fixed/20 hover:translate-x-1 transition-transform duration-200" href="/application-notes-and-design-guides">
+<span class="material-symbols-outlined">article</span> Articles
+                </a>
+<a class="flex items-center gap-3 px-gutter py-3 text-on-surface-variant hover:bg-surface-variant/30 hover:translate-x-1 transition-transform duration-200" href="/application-notes-and-design-guides">
+<span class="material-symbols-outlined">settings_input_component</span> Engineering Specs
+                </a>
+<a class="flex items-center gap-3 px-gutter py-3 text-on-surface-variant hover:bg-surface-variant/30 hover:translate-x-1 transition-transform duration-200" href="/engineering-whitepapers">
+<span class="material-symbols-outlined">description</span> Whitepapers
+                </a>
+<a class="flex items-center gap-3 px-gutter py-3 text-on-surface-variant hover:bg-surface-variant/30 hover:translate-x-1 transition-transform duration-200" href="/technical-knowledge-base">
+<span class="material-symbols-outlined">code</span> API Reference
+                </a>
+<a class="flex items-center gap-3 px-gutter py-3 text-on-surface-variant hover:bg-surface-variant/30 hover:translate-x-1 transition-transform duration-200" href="/engineering-whitepapers">
+<span class="material-symbols-outlined">history</span> Archives
+                </a>
+</nav>
+<div class="mt-auto px-gutter py-stack-md border-t border-outline-variant/10">
+<button class="w-full bg-surface-container-high py-3 rounded-lg font-body-md text-primary hover:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">mail</span> Join Newsletter
+                </button>
+<div class="mt-6 flex flex-col gap-2">
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors" href="/faq">
+<span class="material-symbols-outlined">help</span> Support
+                    </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors" href="/contact-us">
+<span class="material-symbols-outlined">feedback</span> Feedback
+                    </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 min-w-0 bg-background technical-grid-pattern min-h-screen">
+<div class="p-margin-desktop">
+<!-- Hero Section -->
+<header class="mb-stack-lg">
+<p class="font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-widest">Mind Matrix Workspace</p>
+<h1 class="font-display-lg text-[48px] md:text-display-lg text-primary leading-none mb-4">Technical Assets</h1>
+<p class="text-body-lg text-on-surface-variant max-w-2xl">Access the definitive library of engineering schematics, firmware SDKs, and CAD models for the Mind Matrix ecosystem. All files are versioned and SHA-256 verified.</p>
+</header>
+<!-- Filter & Search Bar -->
+<section class="flex flex-col lg:flex-row gap-gutter items-end mb-stack-md">
+<div class="w-full lg:flex-1">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">FILTER BY ASSET CATEGORY</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 rounded-full border border-primary bg-primary text-on-primary font-label-sm text-label-sm transition-all">All Assets</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm hover:border-primary transition-all">Datasheets</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm hover:border-primary transition-all">User Manuals</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm hover:border-primary transition-all">Firmware SDKs</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm hover:border-primary transition-all">CAD Models</button>
+</div>
+</div>
+<div class="w-full lg:w-72">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">SORT ORDER</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-body-md text-on-surface-variant outline-none focus:ring-2 focus:ring-primary/10">
+<option>Latest Updates</option>
+<option>Alphabetical (A-Z)</option>
+<option>File Size (Largest)</option>
+</select>
+</div>
+</section>
+<!-- Assets Table -->
+<div class="bg-white rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/20">
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase">Asset Identity</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase">Type</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase">Version</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase">Size</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Asset Row 1 -->
+<tr class="hover:bg-surface-container-lowest/50 transition-colors group">
+<td class="px-6 py-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 glass-card rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]">description</span>
+</div>
+<div>
+<p class="font-headline-md text-[18px] text-primary group-hover:text-secondary-fixed-dim transition-colors">MM-Core Processor Datasheet</p>
+<p class="text-label-sm text-on-primary-container">Technical electrical characteristics for MM-v4 chipsets.</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-6">
+<span class="px-2 py-1 bg-surface-container rounded text-label-sm text-on-surface-variant">PDF</span>
+</td>
+<td class="px-6 py-6 font-mono text-sm text-on-surface-variant">v2.4.1</td>
+<td class="px-6 py-6 text-on-surface-variant">4.8 MB</td>
+<td class="px-6 py-6 text-right">
+<a href="/technical-downloads-and-sdks" class="bg-primary text-white p-2 rounded hover:bg-secondary-fixed-dim transition-all active:scale-90">
+<span class="material-symbols-outlined">download</span>
+</a>
+</td>
+</tr>
+<!-- Asset Row 2 -->
+<tr class="hover:bg-surface-container-lowest/50 transition-colors group">
+<td class="px-6 py-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 glass-card rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]">terminal</span>
+</div>
+<div>
+<p class="font-headline-md text-[18px] text-primary group-hover:text-secondary-fixed-dim transition-colors">NeuralBridge Firmware SDK</p>
+<p class="text-label-sm text-on-primary-container">C++ libraries for low-latency interfacing.</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-6">
+<span class="px-2 py-1 bg-secondary-container rounded text-label-sm text-on-secondary-container">TAR.GZ</span>
+</td>
+<td class="px-6 py-6 font-mono text-sm text-on-surface-variant">v8.0.0-rc</td>
+<td class="px-6 py-6 text-on-surface-variant">124.2 MB</td>
+<td class="px-6 py-6 text-right">
+<a href="/technical-downloads-and-sdks" class="bg-primary text-white p-2 rounded hover:bg-secondary-fixed-dim transition-all active:scale-90">
+<span class="material-symbols-outlined">download</span>
+</a>
+</td>
+</tr>
+<!-- Asset Row 3 -->
+<tr class="hover:bg-surface-container-lowest/50 transition-colors group">
+<td class="px-6 py-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 glass-card rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]">layers</span>
+</div>
+<div>
+<p class="font-headline-md text-[18px] text-primary group-hover:text-secondary-fixed-dim transition-colors">Workspace Chassis STEP File</p>
+<p class="text-label-sm text-on-primary-container">3D mechanical assembly for enclosure integration.</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-6">
+<span class="px-2 py-1 bg-tertiary-fixed rounded text-label-sm text-on-tertiary-fixed-variant">STEP</span>
+</td>
+<td class="px-6 py-6 font-mono text-sm text-on-surface-variant">Rev. B</td>
+<td class="px-6 py-6 text-on-surface-variant">42.1 MB</td>
+<td class="px-6 py-6 text-right">
+<a href="/technical-downloads-and-sdks" class="bg-primary text-white p-2 rounded hover:bg-secondary-fixed-dim transition-all active:scale-90">
+<span class="material-symbols-outlined">download</span>
+</a>
+</td>
+</tr>
+<!-- Asset Row 4 -->
+<tr class="hover:bg-surface-container-lowest/50 transition-colors group">
+<td class="px-6 py-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 glass-card rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]">menu_book</span>
+</div>
+<div>
+<p class="font-headline-md text-[18px] text-primary group-hover:text-secondary-fixed-dim transition-colors">Safety &amp; Compliance Manual</p>
+<p class="text-label-sm text-on-primary-container">ISO 27001 and CE certification documentation.</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-6">
+<span class="px-2 py-1 bg-surface-container rounded text-label-sm text-on-surface-variant">PDF</span>
+</td>
+<td class="px-6 py-6 font-mono text-sm text-on-surface-variant">2024.Q3</td>
+<td class="px-6 py-6 text-on-surface-variant">1.2 MB</td>
+<td class="px-6 py-6 text-right">
+<a href="/technical-downloads-and-sdks" class="bg-primary text-white p-2 rounded hover:bg-secondary-fixed-dim transition-all active:scale-90">
+<span class="material-symbols-outlined">download</span>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Featured Assets (Bento) -->
+<section class="mt-stack-lg">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-md">Critical Updates</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="md:col-span-2 relative h-64 rounded-xl overflow-hidden glass-card group cursor-pointer border border-outline-variant/30 flex flex-col justify-end p-8">
+<div class="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A clean, cinematic laboratory setting with high-precision engineering tools and holographic interfaces floating above a machined metal workbench. Lighting is soft and industrial with cold blue and crisp white tones, reflecting off polished glass and steel surfaces. The atmosphere is professional, quiet, and highly technological." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCXctGlCVF4cp3IwKmZPSTxZo3FVJgg9g6YAVksq32i646D_bLhy83zKzhNhNPVFbbYAYKg2ccoJxUVmRDWG8QFudP__EoVWaVVU_tn3YUeO9WXmS7LBSy7Z_wnF5q5VBnEqIjFaRFnKgRSsOEiK_NVEF0tgWCb_ju9OsJq17mxbwd6J_cPSRv3HUTq-Ig1q1tWtM9AKp-86QCKeD2_bJi2uFTHs7MZ4gnzuiiJLC4yqRAlA5iLsMDAiOF5ovszxCaCH3Oc_W5cHTI')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
+<div class="relative z-20">
+<span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded text-label-sm uppercase font-bold mb-4 inline-block">Featured Release</span>
+<h3 class="font-headline-lg text-white mb-2">Matrix OS v5.0 Developer Preview</h3>
+<p class="text-white/70 max-w-xl">Explore the next generation of spatial computing with the latest kernel update and improved telemetry visualization tools.</p>
+</div>
+</div>
+<div class="bg-primary text-white rounded-xl p-8 flex flex-col justify-between border border-outline-variant/10 shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-[40px] mb-4">terminal</span>
+<h3 class="font-headline-md text-white mb-2">CLI Utility v1.4</h3>
+<p class="text-white/60 text-sm">Automate your workspace deployment with our revised command line tools.</p>
+</div>
+<button class="relative z-10 flex items-center gap-2 font-semibold hover:gap-4 transition-all">
+                                Get Started <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<!-- Decorative Circle -->
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="w-full mt-stack-lg bg-on-secondary-fixed border-t border-outline-variant/10">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter px-margin-desktop py-stack-lg max-w-container-max mx-auto">
+<div>
+<span class="font-headline-md text-headline-md text-on-primary block mb-6">KnowledgeCenter</span>
+<p class="text-on-primary-container/80 text-sm leading-relaxed">Defining industrial standards through technical transparency and rigorous documentation for the global engineering community.</p>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-widest mb-2">Legal &amp; Privacy</span>
+<a class="text-on-primary-container/80 hover:text-on-primary transition-opacity font-label-sm text-label-sm underline" href="/privacy-policy">Privacy Policy</a>
+<a class="text-on-primary-container/80 hover:text-on-primary transition-opacity font-label-sm text-label-sm" href="/terms-and-conditions">Terms of Service</a>
+<a class="text-on-primary-container/80 hover:text-on-primary transition-opacity font-label-sm text-label-sm" href="/terms-and-conditions">Compliance</a>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-widest mb-2">Engineering</span>
+<a class="text-on-primary-container/80 hover:text-on-primary transition-opacity font-label-sm text-label-sm" href="/engineering-whitepapers">Security Whitepaper</a>
+<a class="text-on-primary-container/80 hover:text-on-primary transition-opacity font-label-sm text-label-sm" href="/contact-us">Contact Engineering</a>
+<a class="text-on-primary-container/80 hover:text-on-primary transition-opacity font-label-sm text-label-sm" href="/technical-knowledge-base">API Health</a>
+</div>
+<div class="flex flex-col justify-end">
+<p class="font-label-sm text-label-sm text-on-primary-container/60">
+                            © 2024 Industrial Precision Engineering Group. <br>All technical rights reserved.
+                        </p>
+</div>
+</div>
+</footer>
+</main>
+</div>
+<button class="fixed bottom-8 right-8 bg-primary text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:scale-110 active:scale-95" id="scrollToTop">
+<span class="material-symbols-outlined">arrow_upward</span>
+</button>

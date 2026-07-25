@@ -1,0 +1,36 @@
+{
+  "name": "mind-matrix-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:clean": "node scripts/clean-cache.mjs && next dev",
+    "build": "next build",
+    "build:clean": "node scripts/clean-cache.mjs && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "clean": "node scripts/clean-cache.mjs",
+    "stitch:download": "node scripts/download-stitch-pages.mjs",
+    "stitch:generate": "node scripts/generate-pages.mjs",
+    "urls:local": "node scripts/generate-local-urls.mjs",
+    "audit:nav": "node scripts/audit-navigation.mjs"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "html-react-parser": "^5.2.2",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "^15.1.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
+    "typescript": "^5.7.2"
+  }
+}

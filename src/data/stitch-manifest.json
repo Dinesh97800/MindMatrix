@@ -1,0 +1,506 @@
+[
+  {
+    "slug": "faq",
+    "title": "FAQ | Mind Matrix Workspace",
+    "filename": "faq.html",
+    "deviceType": "DESKTOP",
+    "screenId": "ffc71d379b2b48f69ec5208fc385fc71"
+  },
+  {
+    "slug": "technologies",
+    "title": "Technologies | Mind Matrix Workspace",
+    "filename": "technologies.html",
+    "deviceType": "DESKTOP",
+    "screenId": "5362ccfb6e0545d79b43dd9b2926bf42"
+  },
+  {
+    "slug": "terms-and-conditions",
+    "title": "Terms & Conditions | Mind Matrix Workspace",
+    "filename": "terms-and-conditions.html",
+    "deviceType": "DESKTOP",
+    "screenId": "dbb499105f2741a5a812ec2ba28a7b65"
+  },
+  {
+    "slug": "battery-energy-storage",
+    "title": "Battery Energy Storage | Mind Matrix Workspace",
+    "filename": "battery-energy-storage.html",
+    "deviceType": "DESKTOP",
+    "screenId": "f13c69e6877f442b9545787820ad164d"
+  },
+  {
+    "slug": "home",
+    "title": "Home | Mind Matrix Workspace",
+    "filename": "home.html",
+    "deviceType": "DESKTOP",
+    "screenId": "929b59868d7048d3b575a71f55b20986"
+  },
+  {
+    "slug": "contact-us-and-engineering-consultation",
+    "title": "Contact Us & Engineering Consultation | Mind Matrix Workspace",
+    "filename": "contact-us-and-engineering-consultation.html",
+    "deviceType": "DESKTOP",
+    "screenId": "51a96b25980644339eadb572f9c4ceff"
+  },
+  {
+    "slug": "energy-monitoring",
+    "title": "Energy Monitoring | Mind Matrix Workspace",
+    "filename": "energy-monitoring.html",
+    "deviceType": "DESKTOP",
+    "screenId": "2e1665d2d32440bba0404c469f51ed34"
+  },
+  {
+    "slug": "nxp",
+    "title": "NXP | Mind Matrix Workspace",
+    "filename": "nxp.html",
+    "deviceType": "DESKTOP",
+    "screenId": "b3f66c738e634fdfa48dbc30fcb7ade1"
+  },
+  {
+    "slug": "contact-us",
+    "title": "Contact Us | Mind Matrix Workspace",
+    "filename": "contact-us.html",
+    "deviceType": "DESKTOP",
+    "screenId": "970d3d64c62f4984ac32a689f5c44b18"
+  },
+  {
+    "slug": "smart-infrastructure",
+    "title": "Smart Infrastructure | Mind Matrix Workspace",
+    "filename": "smart-infrastructure.html",
+    "deviceType": "DESKTOP",
+    "screenId": "c5456ccac91b451ea6cdb30e5afcab61"
+  },
+  {
+    "slug": "pipeline-monitoring",
+    "title": "Pipeline Monitoring | Mind Matrix Workspace",
+    "filename": "pipeline-monitoring.html",
+    "deviceType": "DESKTOP",
+    "screenId": "2a6937b64fff4a088c45cb139d93514b"
+  },
+  {
+    "slug": "remote-monitoring",
+    "title": "Remote Monitoring | Mind Matrix Workspace",
+    "filename": "remote-monitoring.html",
+    "deviceType": "DESKTOP",
+    "screenId": "92d0ad6ee7be4ab7999a6435dafe15da"
+  },
+  {
+    "slug": "ev-infrastructure",
+    "title": "EV Infrastructure | Mind Matrix Workspace",
+    "filename": "ev-infrastructure.html",
+    "deviceType": "DESKTOP",
+    "screenId": "16dab10c2e2a4e83be123bab6fde0eca"
+  },
+  {
+    "slug": "metropolis-ev-transit",
+    "title": "Metropolis EV-Transit | Mind Matrix Workspace",
+    "filename": "metropolis-ev-transit.html",
+    "deviceType": "DESKTOP",
+    "screenId": "b3e344f4226a4d29bcb991078c54e541"
+  },
+  {
+    "slug": "renesas",
+    "title": "Renesas | Mind Matrix Workspace",
+    "filename": "renesas.html",
+    "deviceType": "DESKTOP",
+    "screenId": "189981c01d38441f8d98285262abfdec"
+  },
+  {
+    "slug": "industries",
+    "title": "Industries | Mind Matrix Workspace",
+    "filename": "industries.html",
+    "deviceType": "DESKTOP",
+    "screenId": "2e56326a50fc486b81771a67cc8af109"
+  },
+  {
+    "slug": "case-studies",
+    "title": "Case Studies | Mind Matrix Workspace",
+    "filename": "case-studies.html",
+    "deviceType": "DESKTOP",
+    "screenId": "cb35f9a3b67642519415ba372f24e683"
+  },
+  {
+    "slug": "connectivity",
+    "title": "Connectivity | Mind Matrix Workspace",
+    "filename": "connectivity.html",
+    "deviceType": "DESKTOP",
+    "screenId": "090a978de08b46d1b7e88f8c1ff18b6f"
+  },
+  {
+    "slug": "hardware-development",
+    "title": "Hardware Development | Mind Matrix Workspace",
+    "filename": "hardware-development.html",
+    "deviceType": "DESKTOP",
+    "screenId": "fdbfeb8780c64a418521aa79a0226df0"
+  },
+  {
+    "slug": "application-notes-and-design-guides",
+    "title": "Application Notes & Design Guides | Mind Matrix Workspace",
+    "filename": "application-notes-and-design-guides.html",
+    "deviceType": "DESKTOP",
+    "screenId": "1fd59c46dc6643819f68e9e96f39f324"
+  },
+  {
+    "slug": "microchip",
+    "title": "Microchip | Mind Matrix Workspace",
+    "filename": "microchip.html",
+    "deviceType": "DESKTOP",
+    "screenId": "eee534c5c37d4f4794981d81c7965903"
+  },
+  {
+    "slug": "technical-downloads-and-sdks",
+    "title": "Technical Downloads & SDKs | Mind Matrix Workspace",
+    "filename": "technical-downloads-and-sdks.html",
+    "deviceType": "DESKTOP",
+    "screenId": "dab67f94e3734de1bca5c8dd1d6b0d43"
+  },
+  {
+    "slug": "careers",
+    "title": "Careers | Mind Matrix Workspace",
+    "filename": "careers.html",
+    "deviceType": "DESKTOP",
+    "screenId": "93efa56490b4421186c4c421eef615d5"
+  },
+  {
+    "slug": "battery-management-system",
+    "title": "Battery Management System | Mind Matrix Workspace",
+    "filename": "battery-management-system.html",
+    "deviceType": "DESKTOP",
+    "screenId": "2476b74370c34d548499d6ccff8f4999"
+  },
+  {
+    "slug": "hyperloop-beta",
+    "title": "Hyperloop Beta (Telemetry) | Mind Matrix Workspace",
+    "filename": "hyperloop-beta.html",
+    "deviceType": "DESKTOP",
+    "screenId": "551e598f52e2468cb3df219ef5b86bd6"
+  },
+  {
+    "slug": "oil-and-gas",
+    "title": "Oil & Gas | Mind Matrix Workspace",
+    "filename": "oil-and-gas.html",
+    "deviceType": "DESKTOP",
+    "screenId": "091060a0b5ef4d90b2af5b99caf4ab8d"
+  },
+  {
+    "slug": "quantum-ready-data-architecture",
+    "title": "Quantum-Ready Data Architecture | Mind Matrix Workspace",
+    "filename": "quantum-ready-data-architecture.html",
+    "deviceType": "DESKTOP",
+    "screenId": "ecd5eaff74064b96b00aa472831ad7fa"
+  },
+  {
+    "slug": "nanolithography-cluster-control",
+    "title": "Nanolithography Cluster Control | Mind Matrix Workspace",
+    "filename": "nanolithography-cluster-control.html",
+    "deviceType": "DESKTOP",
+    "screenId": "6ee17bea6ddf423e88871b9d0aeb2984"
+  },
+  {
+    "slug": "industrial-iot-gateway",
+    "title": "Industrial IoT Gateway | Mind Matrix Workspace",
+    "filename": "industrial-iot-gateway.html",
+    "deviceType": "DESKTOP",
+    "screenId": "ec9cdd2383ae4503a07d7747c95bbb14"
+  },
+  {
+    "slug": "azure-iot",
+    "title": "Azure IoT | Mind Matrix Workspace",
+    "filename": "azure-iot.html",
+    "deviceType": "DESKTOP",
+    "screenId": "f2ffaa98b96942fbae503f9f2aa095a4"
+  },
+  {
+    "slug": "ev-charger-electronics",
+    "title": "EV Charger Electronics | Mind Matrix Workspace",
+    "filename": "ev-charger-electronics.html",
+    "deviceType": "DESKTOP",
+    "screenId": "c3358bbfc2c64b3980b3bb480c585313"
+  },
+  {
+    "slug": "atacama-solar-reserve",
+    "title": "Atacama Solar Reserve | Mind Matrix Workspace",
+    "filename": "atacama-solar-reserve.html",
+    "deviceType": "DESKTOP",
+    "screenId": "72bc70d2f710432eb2452a48ed62d9b0"
+  },
+  {
+    "slug": "industrial-communication",
+    "title": "Industrial Communication | Mind Matrix Workspace",
+    "filename": "industrial-communication.html",
+    "deviceType": "DESKTOP",
+    "screenId": "07ed050c4c224e2a9febe99595b03586"
+  },
+  {
+    "slug": "industrial-controller",
+    "title": "Industrial Controller | Mind Matrix Workspace",
+    "filename": "industrial-controller.html",
+    "deviceType": "DESKTOP",
+    "screenId": "e6c63a0186ba41ceb0f8e77402e70efa"
+  },
+  {
+    "slug": "telecom",
+    "title": "Telecom | Mind Matrix Workspace",
+    "filename": "telecom.html",
+    "deviceType": "DESKTOP",
+    "screenId": "4424790b6ee241bfa228a74302d1911e"
+  },
+  {
+    "slug": "ai-enabled-engineering",
+    "title": "AI-enabled Engineering | Mind Matrix Workspace",
+    "filename": "ai-enabled-engineering.html",
+    "deviceType": "DESKTOP",
+    "screenId": "a1d5e85853194960a2ed0ef329917aed"
+  },
+  {
+    "slug": "technical-knowledge-base",
+    "title": "Technical Knowledge Base | Mind Matrix Workspace",
+    "filename": "technical-knowledge-base.html",
+    "deviceType": "DESKTOP",
+    "screenId": "8b86420e4b3b4e6e9f8f514e8f6de768"
+  },
+  {
+    "slug": "embedded-linux",
+    "title": "Embedded Linux | Mind Matrix Workspace",
+    "filename": "embedded-linux.html",
+    "deviceType": "DESKTOP",
+    "screenId": "587bc4dd8f944512a0a2b1654a223c2c"
+  },
+  {
+    "slug": "industrial-automation",
+    "title": "Industrial Automation | Mind Matrix Workspace",
+    "filename": "industrial-automation.html",
+    "deviceType": "DESKTOP",
+    "screenId": "cf6e7cf1fbb243ed90c908fbe81f0c5d"
+  },
+  {
+    "slug": "about-us",
+    "title": "About Us | Mind Matrix Workspace",
+    "filename": "about-us.html",
+    "deviceType": "DESKTOP",
+    "screenId": "4aa8528e36a149528e06fd5555e29aaa"
+  },
+  {
+    "slug": "texas-instruments",
+    "title": "Texas Instruments | Mind Matrix Workspace",
+    "filename": "texas-instruments.html",
+    "deviceType": "DESKTOP",
+    "screenId": "cd606efe11474defa9cbd7c40de7f6f5"
+  },
+  {
+    "slug": "aws-iot",
+    "title": "AWS IoT | Mind Matrix Workspace",
+    "filename": "aws-iot.html",
+    "deviceType": "DESKTOP",
+    "screenId": "7dd690aa5f1b4ea5b0eb36d6b208636f"
+  },
+  {
+    "slug": "energy-management",
+    "title": "Energy Management | Mind Matrix Workspace",
+    "filename": "energy-management.html",
+    "deviceType": "DESKTOP",
+    "screenId": "ae36b8d37f344428af23fb4533a3d6a8"
+  },
+  {
+    "slug": "earth-resistance-monitoring",
+    "title": "Earth Resistance Monitoring | Mind Matrix Workspace",
+    "filename": "earth-resistance-monitoring.html",
+    "deviceType": "DESKTOP",
+    "screenId": "1a321875e3ec4c7badde1f1ad190a97f"
+  },
+  {
+    "slug": "smart-grid",
+    "title": "Smart Grid | Mind Matrix Workspace",
+    "filename": "smart-grid.html",
+    "deviceType": "DESKTOP",
+    "screenId": "ec000979ce8446e586077add82bd29d7"
+  },
+  {
+    "slug": "environmental-monitoring",
+    "title": "Environmental Monitoring | Mind Matrix Workspace",
+    "filename": "environmental-monitoring.html",
+    "deviceType": "DESKTOP",
+    "screenId": "3d89c7f9673145438f8a04c8b2247855"
+  },
+  {
+    "slug": "building-automation",
+    "title": "Building Automation | Mind Matrix Workspace",
+    "filename": "building-automation.html",
+    "deviceType": "DESKTOP",
+    "screenId": "a18d2ff61fe94bdfa7e05537baf394bd"
+  },
+  {
+    "slug": "wireless-sensor-network",
+    "title": "Wireless Sensor Network | Mind Matrix Workspace",
+    "filename": "wireless-sensor-network.html",
+    "deviceType": "DESKTOP",
+    "screenId": "d0339685827a45e18d3b93ad553f0c80"
+  },
+  {
+    "slug": "industrial-protocols",
+    "title": "Industrial Protocols | Mind Matrix Workspace",
+    "filename": "industrial-protocols.html",
+    "deviceType": "DESKTOP",
+    "screenId": "c63b66c39d634a2da70585ee9deaccdc"
+  },
+  {
+    "slug": "resources-and-blog",
+    "title": "Resources & Blog | Mind Matrix Workspace",
+    "filename": "resources-and-blog.html",
+    "deviceType": "DESKTOP",
+    "screenId": "e47fe6f05ae64451a992805495ccba34"
+  },
+  {
+    "slug": "engineering-whitepapers",
+    "title": "Engineering Whitepapers | Mind Matrix Workspace",
+    "filename": "engineering-whitepapers.html",
+    "deviceType": "DESKTOP",
+    "screenId": "867c389fa8344b70b70de8b52191a8ae"
+  },
+  {
+    "slug": "solutions",
+    "title": "Solutions | Mind Matrix Workspace",
+    "filename": "solutions.html",
+    "deviceType": "DESKTOP",
+    "screenId": "1849c5cfe079425989bd65ebb0fa6952"
+  },
+  {
+    "slug": "freertos",
+    "title": "FreeRTOS | Mind Matrix Workspace",
+    "filename": "freertos.html",
+    "deviceType": "DESKTOP",
+    "screenId": "398d8cddc4374ef48beec9213fc6592c"
+  },
+  {
+    "slug": "the-future-of-deterministic-edge-computing",
+    "title": "The Future of Deterministic Edge Computing | Mind Matrix Workspace",
+    "filename": "the-future-of-deterministic-edge-computing.html",
+    "deviceType": "DESKTOP",
+    "screenId": "3f0ff49eed6a4845a881ce68202c5f55"
+  },
+  {
+    "slug": "mqtt",
+    "title": "MQTT | Mind Matrix Workspace",
+    "filename": "mqtt.html",
+    "deviceType": "DESKTOP",
+    "screenId": "0272765e73f04020891a2bc2181e9b85"
+  },
+  {
+    "slug": "embedded-measurement-system",
+    "title": "Embedded Measurement System | Mind Matrix Workspace",
+    "filename": "embedded-measurement-system.html",
+    "deviceType": "DESKTOP",
+    "screenId": "2490e8c24bdc4e95b534a52a77c1e35b"
+  },
+  {
+    "slug": "esp32",
+    "title": "ESP32 | Mind Matrix Workspace",
+    "filename": "esp32.html",
+    "deviceType": "DESKTOP",
+    "screenId": "974af49b5d45404cbc7738e0bac99f20"
+  },
+  {
+    "slug": "cognitive-core-os",
+    "title": "Cognitive Core OS | Mind Matrix Workspace",
+    "filename": "cognitive-core-os.html",
+    "deviceType": "DESKTOP",
+    "screenId": "ed8b8e560c5e4f1eb1c230264ad2d270"
+  },
+  {
+    "slug": "nordic",
+    "title": "Nordic | Mind Matrix Workspace",
+    "filename": "nordic.html",
+    "deviceType": "DESKTOP",
+    "screenId": "69fb3a2e34d148c4803f428fa83f4ca2"
+  },
+  {
+    "slug": "manufacturing",
+    "title": "Manufacturing | Mind Matrix Workspace",
+    "filename": "manufacturing.html",
+    "deviceType": "DESKTOP",
+    "screenId": "57d9f2d519ce48d4aa07185c0b863f64"
+  },
+  {
+    "slug": "industrial-iot-solutions",
+    "title": "Industrial IoT Solutions | Mind Matrix Workspace",
+    "filename": "industrial-iot-solutions.html",
+    "deviceType": "DESKTOP",
+    "screenId": "63482cb2ebb6439fa1739c864e1edf5b"
+  },
+  {
+    "slug": "stm32",
+    "title": "STM32 | Mind Matrix Workspace",
+    "filename": "stm32.html",
+    "deviceType": "DESKTOP",
+    "screenId": "61e39d5219854ee4a301cdd605540a42"
+  },
+  {
+    "slug": "privacy-policy",
+    "title": "Privacy Policy | Mind Matrix Workspace",
+    "filename": "privacy-policy.html",
+    "deviceType": "DESKTOP",
+    "screenId": "c53d0ec4a6cd460eb80f1490aa523278"
+  },
+  {
+    "slug": "renewable-energy",
+    "title": "Renewable Energy | Mind Matrix Workspace",
+    "filename": "renewable-energy.html",
+    "deviceType": "DESKTOP",
+    "screenId": "df54d164d08b4864842ab8277c49b9af"
+  },
+  {
+    "slug": "embedded-firmware-development",
+    "title": "Embedded Firmware Development | Mind Matrix Workspace",
+    "filename": "embedded-firmware-development.html",
+    "deviceType": "DESKTOP",
+    "screenId": "4c7e194198fd4fbfa869384649c02c0d"
+  },
+  {
+    "slug": "insights-and-engineering-blog",
+    "title": "Insights & Engineering Blog | Mind Matrix Workspace",
+    "filename": "insights-and-engineering-blog.html",
+    "deviceType": "DESKTOP",
+    "screenId": "58160f5733004dcfb7620fcf59a15c65"
+  },
+  {
+    "slug": "snmp-alarm-gateway",
+    "title": "SNMP Alarm Gateway | Mind Matrix Workspace",
+    "filename": "snmp-alarm-gateway.html",
+    "deviceType": "DESKTOP",
+    "screenId": "cb0d79d8dc334e8ea06497b4812c0d8e"
+  },
+  {
+    "slug": "product-development",
+    "title": "Product Development | Mind Matrix Workspace",
+    "filename": "product-development.html",
+    "deviceType": "DESKTOP",
+    "screenId": "2acc01364a6a49848c5144b920f4bb27"
+  },
+  {
+    "slug": "engineering-process",
+    "title": "Engineering Process | Mind Matrix Workspace",
+    "filename": "engineering-process.html",
+    "deviceType": "DESKTOP",
+    "screenId": "52083381a98641f292546ad72c3868eb"
+  },
+  {
+    "slug": "engineering-consulting",
+    "title": "Engineering Consulting | Mind Matrix Workspace",
+    "filename": "engineering-consulting.html",
+    "deviceType": "DESKTOP",
+    "screenId": "fb73399f95314241bd56cdbcfc910f97"
+  },
+  {
+    "slug": "request-consultation",
+    "title": "Request Consultation | Mind Matrix Workspace",
+    "filename": "request-consultation.html",
+    "deviceType": "DESKTOP",
+    "screenId": "a3726e63c26d4faa9be6440392848bf2"
+  },
+  {
+    "slug": "services",
+    "title": "Services | Mind Matrix Workspace",
+    "filename": "services.html",
+    "deviceType": "DESKTOP",
+    "screenId": "b65e01a8d267419bb7679afdbad15c2e"
+  }
+]

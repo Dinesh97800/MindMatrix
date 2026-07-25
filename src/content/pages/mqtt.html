@@ -1,0 +1,250 @@
+<main class="relative">
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center overflow-hidden grid-bg">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background"></div>
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-12 gap-gutter relative z-10">
+<div class="col-span-12 lg:col-span-7 flex flex-col justify-center gap-stack-md">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary text-on-primary w-fit font-label-sm text-label-sm tracking-widest uppercase">
+                        Protocol Engineering
+                    </div>
+<h1 class="font-display-lg text-display-lg text-primary leading-none">MQTT: Precision Data Orchestration</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                        A lightweight messaging protocol engineered for the digital frontier. Designed for mission-critical industrial IoT where bandwidth is scarce and reliability is non-negotiable.
+                    </p>
+<div class="flex gap-stack-sm mt-4">
+<a href="/industrial-automation" class="bg-primary text-on-primary px-8 py-4 font-label-sm text-label-sm uppercase tracking-widest flex items-center gap-2 group transition-all">
+                            Explore Specs
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<a href="/industrial-automation" class="border border-outline-variant px-8 py-4 font-label-sm text-label-sm uppercase tracking-widest hover:bg-surface-container transition-all">
+                            Technical Docs
+                        </a>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-5 relative hidden lg:block">
+<div class="aspect-square glass-panel p-gutter relative">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-64 h-64 border-2 border-primary/20 rounded-full animate-pulse"></div>
+<div class="absolute w-48 h-48 border border-primary/40 rounded-full animate-ping"></div>
+</div>
+<div class="h-full w-full border border-outline-variant/30 flex flex-col items-center justify-center gap-stack-md relative z-10">
+<span class="material-symbols-outlined text-[80px] text-primary" data-icon="hub">hub</span>
+<div class="text-center">
+<p class="font-label-sm text-label-sm text-primary tracking-widest uppercase">Central Broker</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Low Latency Pulse</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Overview Bento Grid -->
+<section class="py-stack-lg bg-surface">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="mb-stack-md">
+<h2 class="font-headline-lg text-headline-lg text-primary">Core Architecture</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">The anatomy of efficient communication.</p>
+</div>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Feature 1: Pub/Sub -->
+<div class="col-span-12 md:col-span-8 bg-white border border-outline-variant p-stack-md technical-glow transition-all">
+<div class="flex flex-col h-full justify-between">
+<div>
+<span class="material-symbols-outlined text-primary mb-4" data-icon="dynamic_feed">dynamic_feed</span>
+<h3 class="font-headline-md text-headline-md mb-2">Asynchronous Pub/Sub</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg">
+                                    Decouple your data producers from consumers. Our implementation ensures seamless multi-cast delivery across millions of nodes without direct peer-to-peer overhead.
+                                </p>
+</div>
+<div class="mt-stack-lg grid grid-cols-2 gap-stack-md border-t border-outline-variant/10 pt-stack-md">
+<div>
+<p class="font-label-sm text-label-sm text-primary uppercase mb-1">Fan-out</p>
+<p class="font-body-md text-body-md font-bold text-on-surface">1:N Distribution</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-primary uppercase mb-1">State</p>
+<p class="font-body-md text-body-md font-bold text-on-surface">Retained Messages</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Feature 2: Overhead -->
+<div class="col-span-12 md:col-span-4 bg-primary text-on-primary p-stack-md">
+<span class="material-symbols-outlined text-on-primary-fixed mb-4" data-icon="compress">compress</span>
+<h3 class="font-headline-md text-headline-md mb-2">Minimum Overhead</h3>
+<p class="font-body-md text-body-md text-on-primary-container">
+                            2-byte fixed header. Optimized for ultra-low power devices operating on cellular or satellite links.
+                        </p>
+<div class="mt-8">
+<div class="h-2 w-full bg-on-primary-container/20 rounded-full overflow-hidden">
+<div class="h-full bg-on-primary-fixed w-[15%]" title="MQTT Header"></div>
+</div>
+<p class="font-label-sm text-label-sm mt-2">Payload Efficiency: 85%+</p>
+</div>
+</div>
+<!-- Feature 3: Reliability -->
+<div class="col-span-12 md:col-span-6 bg-surface-container p-stack-md border border-outline-variant">
+<span class="material-symbols-outlined text-primary mb-4" data-icon="verified_user">verified_user</span>
+<h3 class="font-headline-md text-headline-md mb-2">QoS Reliability Layers</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                            Three levels of Quality of Service to guarantee message delivery even in unreliable network conditions.
+                        </p>
+<ul class="space-y-3 font-body-md">
+<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary"></div> QoS 0: At most once</li>
+<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary"></div> QoS 1: At least once</li>
+<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary"></div> QoS 2: Exactly once</li>
+</ul>
+</div>
+<!-- Feature 4: Security -->
+<div class="col-span-12 md:col-span-6 bg-white border border-outline-variant p-stack-md technical-glow transition-all">
+<span class="material-symbols-outlined text-primary mb-4" data-icon="lock">lock</span>
+<h3 class="font-headline-md text-headline-md mb-2">Hardened Transport</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">
+                            TLS/SSL encryption by default. Authentication via X.509 certificates and granular ACLs for every topic.
+                        </p>
+<div class="p-4 bg-surface-container-low rounded font-label-sm text-on-surface-variant border border-outline-variant/30 italic">
+                            &gt; AES-256 standard encryption mandated for all mission-critical industrial channels.
+                        </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Visualization (Broker Model) -->
+<section class="py-stack-lg bg-primary-container text-on-primary-container overflow-hidden">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-12 gap-gutter items-center">
+<div class="col-span-12 lg:col-span-6">
+<h2 class="font-headline-lg text-headline-lg mb-stack-sm text-white">Centralized Broker Logic</h2>
+<p class="font-body-lg text-body-lg mb-stack-md text-on-primary-container">
+                        The Broker acts as the intelligent post office of your IoT infrastructure. It manages sessions, stores retained data, and handles millions of simultaneous connections with sub-millisecond latency.
+                    </p>
+<div class="space-y-4">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="bolt">bolt</span>
+<div>
+<h4 class="font-headline-md text-headline-md text-white">Scale Effortlessly</h4>
+<p class="font-body-md text-body-md">Our cloud-native brokers scale horizontally to support massive fleet deployments.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="cloud_sync">cloud_sync</span>
+<div>
+<h4 class="font-headline-md text-headline-md text-white">Last Will &amp; Testament</h4>
+<p class="font-body-md text-body-md">Automated notification system when nodes go offline unexpectedly.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-6 relative">
+<div class="p-8 bg-black/40 border border-white/10 rounded-xl">
+<div class="grid grid-cols-3 gap-4 mb-8">
+<div class="p-4 border border-primary-fixed/20 text-center rounded">
+<span class="material-symbols-outlined text-primary-fixed block mb-2" data-icon="sensors">sensors</span>
+<span class="text-[10px] uppercase tracking-tighter">Publisher</span>
+</div>
+<div class="col-span-1 flex items-center justify-center">
+<span class="material-symbols-outlined animate-pulse text-white" data-icon="double_arrow">double_arrow</span>
+</div>
+<div class="p-4 border border-white/20 text-center rounded bg-white/5">
+<span class="material-symbols-outlined text-white block mb-2" data-icon="dns">dns</span>
+<span class="text-[10px] uppercase tracking-tighter">Broker</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="p-4 border border-white/20 text-center rounded bg-white/5">
+<span class="material-symbols-outlined text-white block mb-2" data-icon="dns">dns</span>
+<span class="text-[10px] uppercase tracking-tighter">Broker</span>
+</div>
+<div class="col-span-1 flex items-center justify-center">
+<span class="material-symbols-outlined animate-pulse text-white rotate-180" data-icon="double_arrow">double_arrow</span>
+</div>
+<div class="p-4 border border-primary-fixed/20 text-center rounded">
+<span class="material-symbols-outlined text-primary-fixed block mb-2" data-icon="desktop_windows">desktop_windows</span>
+<span class="text-[10px] uppercase tracking-tighter">Subscriber</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Industrial Applications -->
+<section class="py-stack-lg bg-surface">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="text-center mb-stack-lg">
+<h2 class="font-headline-lg text-headline-lg text-primary">Mission Critical Applications</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mx-auto">
+                        Where standard protocols fail, MQTT excels. Precision engineered for industries requiring absolute reliability.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- App 1 -->
+<div class="group relative overflow-hidden h-96">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="A detailed, wide-angle shot of a high-tech modern power substation at dusk. The lighting is cold and technical with neon blue highlights across complex transformer machinery. Industrial minimalism defines the aesthetic, with sharp metallic lines and a grid-based composition. The mood is powerful and secure, emphasizing high-voltage electrical engineering." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBlfrC08L3X5F37pBFoWo1Z87jPOd8ct2AkQ6APARyid0ctsoy89XnwnveqNgZynlJHfoLjBFn-bPw-Yl2WjnWlfVM_409_sJAy68ut0seV4kh5E-EPFomYZSO10nUa-y3XFmwSxK4W7diqdmjMlbU2DCqMeb9LF7aqv008yXI5srzyb3Epd-bhv2EbKO_pel6DV-Ubr5JIpuIq2l-27fbMhJm7XzSg-Uo5grw82NKHKDhQDtX7Ujwsuy6NahG-0SYy2omD3nMIPb8')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-transparent"></div>
+<div class="absolute bottom-0 p-stack-md text-white">
+<h4 class="font-headline-md text-headline-md mb-2">Energy Management</h4>
+<p class="font-body-md text-body-md text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                Real-time telemetry from smart grids and micro-generation plants.
+                            </p>
+</div>
+</div>
+<!-- App 2 -->
+<div class="group relative overflow-hidden h-96">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="An interior shot of a sterile, high-tech semiconductor manufacturing plant. Robotic arms are visible against a backdrop of clean white walls and blue accent lighting. The environment is sparse, ultra-functional, and precisely ordered on a technical grid. High-end glass surfaces reflect the automated workflow, creating a sense of technical authority and clean-room precision." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC0uQ3tfE7LH-Gt5ybVUOKEl89jf_ujaXLqO1UO2WoFlrcRwlWM0G2LI6tm7OyabUKf56-03pSYjT6Xsqs0_EqKqw2AUDQDMuLsDW_EmliwimENJFAaSVl9eat49Zq6o9RTrPtAQle443ynQfxt2Uws7pFu3nFJ1HzQr-uH-SngApGFGdvrkYt8xxTgJAQFIgku9Xhuolpxc43RZ7Wqpv1VLd0TfZCyuW-MXK_bMDrThf8Lo2FdBU0LO5PqOLiLC4ps9KiP__0bVkk')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-transparent"></div>
+<div class="absolute bottom-0 p-stack-md text-white">
+<h4 class="font-headline-md text-headline-md mb-2">Industrial Automation</h4>
+<p class="font-body-md text-body-md text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                Synchronized control loops for robotic assembly and manufacturing.
+                            </p>
+</div>
+</div>
+<!-- App 3 -->
+<div class="group relative overflow-hidden h-96">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="A sprawling offshore wind farm in the North Sea during a misty dawn. The turbines are minimalist white structures against a desaturated grey and blue ocean. The composition is clean and geometric, emphasizing the isolation and remote nature of the site. Soft, diffused technical lighting highlights the scale of the renewable energy installation." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDEuZfsINaAM_mb_5j-z9OnoHphAtP_0vlPDtgYEThVoB96jS5a1L3TbqiCgoWjkHXlV0hSizmXpY_P7wJq767uusVDr203qAv2ZFkBc0PenPqsNDNRdA9RiFCGVJfVwY-DLVyC2fUTtvTDpr7VfmgTFL0-3OXAK15IRz9y9hV30zsS3iRA30P6lREvJkdM_H_56UsHISQRCydxhwLlSBNQ_BQb8DvLZsHFsQSTi4l6-Cq9YR2q9ofOL8mksJ-T_Q3np1eTv7ZrHr8')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-transparent"></div>
+<div class="absolute bottom-0 p-stack-md text-white">
+<h4 class="font-headline-md text-headline-md mb-2">Remote Monitoring</h4>
+<p class="font-body-md text-body-md text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                Global asset tracking via low-bandwidth satellite links.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Engineering Stats -->
+<section class="py-stack-lg border-y border-outline-variant/20 bg-white">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<div class="text-center">
+<p class="font-display-lg text-[48px] text-primary leading-none">2<span class="text-headline-md">B</span></p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-2">Active Sessions</p>
+</div>
+<div class="text-center">
+<p class="font-display-lg text-[48px] text-primary leading-none">&lt;15<span class="text-headline-md">ms</span></p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-2">Avg. Latency</p>
+</div>
+<div class="text-center">
+<p class="font-display-lg text-[48px] text-primary leading-none">99.99</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-2">Uptime (%)</p>
+</div>
+<div class="text-center">
+<p class="font-display-lg text-[48px] text-primary leading-none">100<span class="text-headline-md">X</span></p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-2">Efficiency vs HTTP</p>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-24 bg-surface grid-bg relative">
+<div class="max-w-container-max mx-auto px-margin-desktop text-center relative z-10">
+<h2 class="font-display-lg text-headline-lg text-primary mb-stack-md">Engineered for the Digital Frontier</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-stack-lg">
+                    Ready to deploy mission-critical messaging? Our engineering team is standing by to assist with architectural audits and large-scale protocol migrations.
+                </p>
+<div class="flex justify-center gap-stack-sm">
+<a href="/industrial-automation" class="bg-primary text-on-primary px-12 py-5 font-label-sm text-label-sm uppercase tracking-widest hover:bg-secondary-container hover:text-on-secondary-container transition-all">
+                        Schedule Audit
+                    </a>
+</div>
+</div>
+</section>
+</main>
