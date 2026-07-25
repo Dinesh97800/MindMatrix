@@ -12,10 +12,12 @@ export function buildPageMetadata({
   title,
   description,
   path,
+  keywords,
 }: {
   title: string;
   description: string;
   path: string;
+  keywords?: string[];
 }): Metadata {
   const url = `${SITE_URL}${path === "/" ? "" : path}`;
   const fullTitle =
@@ -26,6 +28,7 @@ export function buildPageMetadata({
   return {
     title: fullTitle,
     description,
+    ...(keywords?.length ? { keywords } : {}),
     alternates: { canonical: url },
     openGraph: {
       type: "website",

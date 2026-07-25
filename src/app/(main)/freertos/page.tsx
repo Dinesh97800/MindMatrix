@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
-import fs from "fs";
-import path from "path";
-import { StitchHtmlContent } from "@/components/layout/StitchHtmlContent";
 import { buildPageMetadata } from "@/lib/seo";
+import { FreertosPageContent } from "@/components/pages/freertos/FreertosPageContent";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "FreeRTOS",
   description: "Mind Matrix FreeRTOS — industrial-grade embedded engineering, hardware design, and firmware development for mission-critical systems.",
   path: "/freertos",
+  keywords: ["mind matrix","embedded systems","freertos"],
 });
 
-function getPageHtml() {
-  return fs.readFileSync(
-    path.join(process.cwd(), "src/content/pages/freertos.html"),
-    "utf8"
-  );
-}
-
 export default function FreertosPage() {
-  const html = getPageHtml();
-  return <StitchHtmlContent html={html} />;
+  return <FreertosPageContent />;
 }

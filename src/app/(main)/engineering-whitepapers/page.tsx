@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
-import fs from "fs";
-import path from "path";
-import { StitchHtmlContent } from "@/components/layout/StitchHtmlContent";
 import { buildPageMetadata } from "@/lib/seo";
+import { EngineeringWhitepapersPageContent } from "@/components/pages/engineering-whitepapers/EngineeringWhitepapersPageContent";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Engineering Whitepapers",
   description: "Mind Matrix Engineering Whitepapers — industrial-grade embedded engineering, hardware design, and firmware development for mission-critical systems.",
   path: "/engineering-whitepapers",
+  keywords: ["mind matrix","embedded systems","engineering","whitepapers"],
 });
 
-function getPageHtml() {
-  return fs.readFileSync(
-    path.join(process.cwd(), "src/content/pages/engineering-whitepapers.html"),
-    "utf8"
-  );
-}
-
 export default function EngineeringWhitepapersPage() {
-  const html = getPageHtml();
-  return <StitchHtmlContent html={html} />;
+  return <EngineeringWhitepapersPageContent />;
 }

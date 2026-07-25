@@ -1,0 +1,9 @@
+import Link from "next/link";
+
+export function HeroSection() {
+  return (
+    <>
+      <section className={"relative min-h-[819px] flex items-center pt-20 grid-bg"}><div className={"absolute inset-0 z-0 opacity-40"}></div><div className={"relative z-10 max-w-container-max mx-auto px-margin-desktop w-full"}><div className={"max-w-3xl"}><div className={"inline-flex items-center gap-2 px-3 py-1 bg-innovation-cyan/10 border border-innovation-cyan/20 rounded-full mb-stack-md"}><span className={"w-2 h-2 rounded-full bg-innovation-cyan animate-pulse"}></span><span className={"text-label-sm font-label-sm text-innovation-cyan tracking-widest uppercase"}>{"Nordic Semiconductor Ecosystem"}</span></div><h1 className={"font-display-lg text-display-lg mb-stack-md text-primary leading-[1.05]"}>{"Ultra-Low Power Wireless Engineering"}</h1><p className={"font-body-lg text-body-lg text-on-surface-variant mb-stack-lg max-w-2xl"}>{"\n                        Pioneering the future of BLE and proprietary 2.4GHz wireless communication. We provide the technical authority required for complex mesh networks and high-stakes IoT deployment.\n                    "}</p><div className={"flex flex-wrap gap-stack-md"}><Link href={"/technical-downloads-and-sdks"} className={"bg-primary text-on-primary px-8 py-4 rounded-lg font-label-sm text-label-sm flex items-center gap-2 group transition-all"}>{"\n                            Explore nRF53 Series \n                            "}<span className={"material-symbols-outlined transition-transform group-hover:translate-x-1"}>{"arrow_forward"}</span></Link><button className={"bg-surface border border-outline-variant px-8 py-4 rounded-lg font-label-sm text-label-sm hover:bg-surface-container transition-all"}>{"\n                            Technical Specifications\n                        "}</button></div></div></div></section>
+    </>
+  );
+}

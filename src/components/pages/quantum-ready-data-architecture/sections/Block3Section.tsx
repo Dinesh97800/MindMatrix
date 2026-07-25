@@ -1,0 +1,9 @@
+import Link from "next/link";
+
+export function Block3Section() {
+  return (
+    <>
+      <section className={"py-stack-lg bg-surface"}><div className={"px-margin-desktop max-w-container-max mx-auto"}><div className={"flex flex-col md:flex-row justify-between items-end mb-stack-lg gap-gutter"}><div className={"max-w-xl"}><h2 className={"font-headline-lg text-headline-lg mb-4"}>{"Customer Outcomes"}</h2><p className={"font-body-md text-on-surface-variant"}>{"Moving beyond implementation into long-term strategic value and future-proofed operations."}</p></div><div className={"flex gap-2"}><Link href={"/industrial-iot-solutions"} className={"w-12 h-12 flex items-center justify-center border border-outline rounded-full hover:bg-surface-container-high transition-colors"}><span className={"material-symbols-outlined"}>{"chevron_left"}</span></Link><Link href={"/industrial-iot-solutions"} className={"w-12 h-12 flex items-center justify-center border border-outline rounded-full hover:bg-surface-container-high transition-colors"}><span className={"material-symbols-outlined"}>{"chevron_right"}</span></Link></div></div><div className={"grid grid-cols-1 md:grid-cols-2 gap-gutter"}><div className={"p-stack-lg bg-white border-l-4 border-secondary shadow-sm"}><h4 className={"font-headline-md text-headline-md mb-2"}>{"Future-Proofed Security"}</h4><p className={"font-body-md text-on-surface-variant"}>{"Architecture designed for tomorrow's quantum threats, eliminating the need for expensive hardware retrofitting in the next decade."}</p></div><div className={"p-stack-lg bg-white border-l-4 border-secondary shadow-sm"}><h4 className={"font-headline-md text-headline-md mb-2"}>{"Regulatory Compliance"}</h4><p className={"font-body-md text-on-surface-variant"}>{"Exceeds current NIST and IEC 62443 standards for industrial control systems, simplifying audits and insurance requirements."}</p></div></div></div></section>
+    </>
+  );
+}

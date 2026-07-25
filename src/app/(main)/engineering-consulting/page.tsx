@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
-import fs from "fs";
-import path from "path";
-import { StitchHtmlContent } from "@/components/layout/StitchHtmlContent";
 import { buildPageMetadata } from "@/lib/seo";
+import { EngineeringConsultingPageContent } from "@/components/pages/engineering-consulting/EngineeringConsultingPageContent";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Engineering Consulting",
   description: "Mind Matrix Engineering Consulting — industrial-grade embedded engineering, hardware design, and firmware development for mission-critical systems.",
   path: "/engineering-consulting",
+  keywords: ["mind matrix","embedded systems","engineering","consulting"],
 });
 
-function getPageHtml() {
-  return fs.readFileSync(
-    path.join(process.cwd(), "src/content/pages/engineering-consulting.html"),
-    "utf8"
-  );
-}
-
 export default function EngineeringConsultingPage() {
-  const html = getPageHtml();
-  return <StitchHtmlContent html={html} />;
+  return <EngineeringConsultingPageContent />;
 }

@@ -77,4 +77,12 @@
     background: #0b1220;
     border-radius: 10px;
   }
+
+  .accordion-content {
+    display: none;
+  }
+
+  .accordion-item.is-open .accordion-content {
+    display: block;
+  }
 }

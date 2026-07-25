@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
-import fs from "fs";
-import path from "path";
-import { StitchHtmlContent } from "@/components/layout/StitchHtmlContent";
 import { buildPageMetadata } from "@/lib/seo";
+import { PipelineMonitoringPageContent } from "@/components/pages/pipeline-monitoring/PipelineMonitoringPageContent";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Pipeline Monitoring",
   description: "Mind Matrix Pipeline Monitoring — industrial-grade embedded engineering, hardware design, and firmware development for mission-critical systems.",
   path: "/pipeline-monitoring",
+  keywords: ["mind matrix","embedded systems","pipeline","monitoring"],
 });
 
-function getPageHtml() {
-  return fs.readFileSync(
-    path.join(process.cwd(), "src/content/pages/pipeline-monitoring.html"),
-    "utf8"
-  );
-}
-
 export default function PipelineMonitoringPage() {
-  const html = getPageHtml();
-  return <StitchHtmlContent html={html} />;
+  return <PipelineMonitoringPageContent />;
 }

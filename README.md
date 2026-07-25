@@ -4,7 +4,7 @@ Production Next.js implementation of the **Mind Matrix Workspace** Stitch design
 
 ## Design Source
 
-All pages are generated from Google Stitch HTML exports to preserve pixel-perfect fidelity with the original design:
+Pages are authored as **TypeScript React components** (section-based), originally converted from Google Stitch HTML exports to preserve pixel-perfect fidelity:
 
 - **Typography:** Space Grotesk (headings), Inter (body), Geist (labels)
 - **Colors:** Material-style tokens from Stitch DESIGN.md
@@ -22,28 +22,37 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Stitch Sync
 
-Re-download and regenerate all pages from Stitch:
+Re-download from Stitch and regenerate TSX page components:
 
 ```bash
 npm run stitch:download
 npm run stitch:generate
 ```
 
-Requires `stitch-screens.json` from the Stitch MCP API (stored in Cursor agent-tools by default).
+`stitch:generate` extracts main content, fixes internal links, runs `migrate:tsx`, and removes transient HTML. Requires Stitch MCP / `stitch-html/` exports locally.
+
+To re-run TSX conversion only (when `src/content/pages/*.html` exists):
+
+```bash
+npm run migrate:tsx
+```
 
 ## Project Structure
 
 ```
 src/
-  app/              # Next.js routes (77 pages)
-  components/       # Shared layout (Header, Footer, HTML renderer)
-  content/pages/    # Extracted Stitch main content (HTML)
-  data/             # stitch-manifest.json
-scripts/            # Download & page generation from Stitch
-stitch-html/        # Raw Stitch HTML exports
+  app/                    # Next.js App Router (page.tsx + metadata per route)
+  components/
+    layout/               # Header, footers, layouts
+    pages/{slug}/         # PageContent + sections/*.tsx per route
+    ui/                   # Shared UI (e.g. StitchImage)
+  data/                   # stitch-manifest.json
+scripts/
+  generate-pages.mjs      # Stitch → TSX pipeline
+  migrate-html-to-tsx.mjs # HTML slice → section components
+stitch-html/              # Raw Stitch exports (gitignored; local only)
 ```
 
 ## Pages
 
-77 screens including Home, Services, Industries, Technologies, Solutions, Case Studies, Contact, Careers, FAQ, and 60+ solution/technology detail pages.
-# MindMatrix
+72 published routes including Home, Services, Industries, Technologies, Solutions, Case Studies, Contact, Careers, FAQ, and solution/technology detail pages.

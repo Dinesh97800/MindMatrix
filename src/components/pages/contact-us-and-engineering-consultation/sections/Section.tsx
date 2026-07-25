@@ -1,0 +1,7 @@
+export function Section() {
+  return (
+    <>
+      <section className={"py-stack-lg px-margin-desktop bg-primary text-on-primary"}><div className={"max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-stack-lg"}><div className={"p-stack-lg border border-on-primary/10 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group"}><span className={"material-symbols-outlined text-3xl mb-stack-sm text-primary-fixed"}>{"support_agent"}</span><h3 className={"font-headline-md text-headline-md mb-2"}>{"Technical Support"}</h3><p className={"font-body-md text-on-primary/70 mb-stack-md"}>{"Already a client? Access the Level 3 Support portal or initiate a critical system ticket."}</p><span className={"font-label-sm uppercase tracking-widest text-primary-fixed group-hover:underline"}>{"Access Portal →"}</span></div><div className={"p-stack-lg border border-on-primary/10 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group"}><span className={"material-symbols-outlined text-3xl mb-stack-sm text-primary-fixed"}>{"engineering"}</span><h3 className={"font-headline-md text-headline-md mb-2"}>{"Join Our Team"}</h3><p className={"font-body-md text-on-primary/70 mb-stack-md"}>{"Seeking a career in high-precision engineering? Explore open technical roles at our global clusters."}</p><span className={"font-label-sm uppercase tracking-widest text-primary-fixed group-hover:underline"}>{"View Openings →"}</span></div></div></section>
+    </>
+  );
+}

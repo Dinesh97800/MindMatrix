@@ -12,12 +12,12 @@
     "clean": "node scripts/clean-cache.mjs",
     "stitch:download": "node scripts/download-stitch-pages.mjs",
     "stitch:generate": "node scripts/generate-pages.mjs",
+    "migrate:tsx": "node scripts/migrate-html-to-tsx.mjs",
     "urls:local": "node scripts/generate-local-urls.mjs",
     "audit:nav": "node scripts/audit-navigation.mjs"
   },
   "dependencies": {
     "cheerio": "^1.0.0",
-    "html-react-parser": "^5.2.2",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

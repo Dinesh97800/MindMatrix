@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { execSync } from "child_process";
 import * as cheerio from "cheerio";
 import {
   getContextText,
@@ -133,44 +134,6 @@ function slugToDescription(title) {
   return `Mind Matrix ${name} — industrial-grade embedded engineering, hardware design, and firmware development for mission-critical systems.`;
 }
 
-function toComponentName(slug) {
-  return slug
-    .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join("");
-}
-
-function pageTemplate(slug, title) {
-  const componentName = toComponentName(slug);
-  const description = slugToDescription(title);
-  const path = slug === "home" ? "/" : `/${slug}`;
-
-  return `import type { Metadata } from "next";
-import fs from "fs";
-import path from "path";
-import { StitchHtmlContent } from "@/components/layout/StitchHtmlContent";
-import { buildPageMetadata } from "@/lib/seo";
-
-export const metadata: Metadata = buildPageMetadata({
-  title: ${JSON.stringify(title.split("|")[0].trim())},
-  description: ${JSON.stringify(description)},
-  path: ${JSON.stringify(path)},
-});
-
-function getPageHtml() {
-  return fs.readFileSync(
-    path.join(process.cwd(), "src/content/pages/${slug}.html"),
-    "utf8"
-  );
-}
-
-export default function ${componentName}Page() {
-  const html = getPageHtml();
-  return <StitchHtmlContent html={html} />;
-}
-`;
-}
-
 const KEEP_APP_ENTRIES = new Set([
   "(home)",
   "(main)",
@@ -248,23 +211,23 @@ function main() {
       "utf8"
     );
 
-    const routeDir =
-      entry.slug === "home"
-        ? path.join(pagesDir, "(home)")
-        : path.join(pagesDir, "(main)", entry.slug);
-
-    fs.mkdirSync(routeDir, { recursive: true });
-    fs.writeFileSync(
-      path.join(routeDir, "page.tsx"),
-      pageTemplate(entry.slug, entry.title),
-      "utf8"
-    );
-
-    console.log(`Generated /${entry.slug === "home" ? "" : entry.slug}`);
+    console.log(`Prepared content /${entry.slug === "home" ? "" : entry.slug}`);
     generated++;
   }
 
-  console.log(`\nGenerated ${generated} pages (excluded ${EXCLUDED_SLUGS.size} mobile routes).`);
+  console.log(`\nConverting ${generated} pages to TSX components...`);
+  execSync("node scripts/migrate-html-to-tsx.mjs", {
+    cwd: root,
+    stdio: "inherit",
+  });
+
+  for (const file of fs.readdirSync(contentDir)) {
+    if (file.endsWith(".html")) {
+      fs.unlinkSync(path.join(contentDir, file));
+    }
+  }
+
+  console.log(`\nGenerated ${generated} Next.js pages (excluded ${EXCLUDED_SLUGS.size} mobile routes).`);
 }
 
 main();

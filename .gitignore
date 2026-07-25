@@ -50,5 +50,8 @@ Desktop.ini
 # Stitch MCP raw HTML exports (site uses src/content/pages; re-fetch with npm run stitch:download)
 /stitch-html/
 
+# Transient HTML slice used only during stitch:generate (TSX is source of truth)
+/src/content/pages/*.html
+
 # secrets
 *.pem

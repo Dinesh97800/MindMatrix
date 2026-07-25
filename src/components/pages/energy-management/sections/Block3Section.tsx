@@ -1,0 +1,10 @@
+import Link from "next/link";
+import { StitchImage } from "@/components/ui/StitchImage";
+
+export function Block3Section() {
+  return (
+    <>
+      <section className={"py-stack-lg"}><div className={"max-w-container-max mx-auto px-margin-desktop"}><div className={"relative group cursor-pointer overflow-hidden bg-primary text-on-primary"}><div className={"absolute inset-0 opacity-40 group-hover:scale-105 transition-transform duration-1000"}><StitchImage src={"https://lh3.googleusercontent.com/aida-public/AB6AXuAnyClkpRCriLjD0RyC4upyKjqZFpP6NulmMn9OF0vM_jJP_yaTOUlMnd7eD9co4spYhCJMeu0H68VDUi7aNjCTIOiDnH4bgxGg-QmVhj2asRomEGilWWEp9LrxAIaMROVOZOTd1mv7BI5erpaBehLCqX0b4ZP9Vrw6ER9W_SfceXph0aHUgriNI4aG4_06ldcHfJ9f0LfZbozgfV41328jiFojDMD_371CAObInmGC42vtTJKg5UmtrKJG0cQCw4DxQXTEDLSo6lQ"} alt={"Futuristic engineering shot of a high-speed transportation tunnel with blue glowing lines and metallic structures. The scene is vast and technologically advanced, evoking the Hyperloop aesthetic. Atmospheric lighting with deep cyan highlights and industrial dark tones. Minimalist and powerful composition."} className={"w-full h-full object-cover"} /></div><div className={"relative z-10 p-margin-desktop grid grid-cols-12 gap-gutter"}><div className={"col-span-12 lg:col-span-6 space-y-stack-md"}><span className={"inline-block px-3 py-1 bg-secondary text-on-secondary font-label-sm text-label-sm"}>{"Case Study: Hyperloop Beta"}</span><h2 className={"font-display-lg text-headline-lg leading-none"}>{"Power Systems Orchestration for Next-Gen Transit."}</h2><p className={"font-body-lg text-body-lg opacity-80"}>{"\n                                Implementing sub-millisecond power distribution for high-velocity magnetic levitation environments. A masterclass in high-speed sampling and demand response.\n                            "}</p><Link href={"/embedded-firmware-development"} className={"flex items-center gap-2 font-label-sm text-label-sm group-hover:gap-4 transition-all"}>{"\n                                Read Full Report "}<span className={"material-symbols-outlined"}>{"north_east"}</span></Link></div></div></div></div></section>
+    </>
+  );
+}
