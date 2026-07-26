@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BrandLogo } from "@/components/layout/BrandLogo";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -370,12 +371,7 @@ export function Header() {
         aria-label="Main navigation"
         className="flex justify-between items-center w-full px-margin-mobile lg:px-margin-desktop max-w-container-max mx-auto h-20"
       >
-        <Link
-          href="/"
-          className="text-headline-md font-display-lg tracking-tighter text-primary shrink-0"
-        >
-          Mind Matrix
-        </Link>
+        <BrandLogo />
 
         <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center min-w-0">
           {headerNavItems.map((item) => (

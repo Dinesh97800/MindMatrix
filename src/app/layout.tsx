@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ScrollEffects } from "@/components/layout/ScrollEffects";
 import { buildPageMetadata, SITE_URL } from "@/lib/seo";
 
-const inter = Inter({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-montserrat",
   display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
 });
 
 export const metadata: Metadata = buildPageMetadata({
@@ -40,16 +34,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`scroll-smooth ${inter.variable} ${spaceGrotesk.variable}`}
-      style={{ ["--font-geist" as string]: "Geist, Inter, sans-serif" }}
-    >
+    <html lang="en" className={`scroll-smooth ${montserrat.variable}`}>
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=swap"
           rel="stylesheet"
@@ -61,7 +47,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-primary overflow-x-hidden">
+      <body className="bg-background text-on-surface font-body-md font-montserrat selection:bg-brand-teal/20 selection:text-brand-navy overflow-x-hidden">
         {children}
         <ScrollEffects />
       </body>

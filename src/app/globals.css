@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --brand-navy: #021a3e;
+  --brand-teal: #0095a4;
+  --brand-gold: #fdb912;
+}
+
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   vertical-align: middle;
@@ -16,19 +22,19 @@
   }
 
   .glass-card:hover {
-    border-color: rgba(37, 99, 235, 0.3);
-    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.05);
+    border-color: rgba(0, 149, 164, 0.35);
+    box-shadow: 0 20px 40px rgba(0, 149, 164, 0.08);
     transform: translateY(-4px);
   }
 
   .technical-glow:hover,
   .tech-glow:hover {
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.08);
+    box-shadow: 0 0 20px rgba(0, 149, 164, 0.12);
     transform: translateY(-2px) scale(1.01);
   }
 
   .glow-hover:hover {
-    box-shadow: 0 0 15px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 0 15px rgba(0, 149, 164, 0.18);
   }
 }
 
@@ -74,7 +80,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #0b1220;
+    background: var(--brand-navy);
     border-radius: 10px;
   }
 
