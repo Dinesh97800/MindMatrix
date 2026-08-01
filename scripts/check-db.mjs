@@ -25,6 +25,12 @@ async function main() {
   });
 
   console.log("Checking database connection...\n");
+  console.log(`   User:     ${username}`);
+  console.log(`   Host:     ${host}:${port}`);
+  console.log(`   Database: ${database}`);
+  console.log(
+    `   Password: ${password ? "(set, length " + password.length + ")" : "(empty)"}\n`
+  );
 
   try {
     await sequelize.authenticate();
@@ -66,6 +72,21 @@ async function main() {
   } catch (error) {
     console.error("❌ Connection failed");
     console.error(`   ${error instanceof Error ? error.message : error}`);
+    console.error("\n   Fix on the server (as MySQL root):");
+    console.error("   1. sudo mysql");
+    console.error(
+      `   2. CREATE DATABASE IF NOT EXISTS \`${database}\` CHARACTER SET utf8mb4;`
+    );
+    console.error(
+      `   3. CREATE USER IF NOT EXISTS '${username}'@'localhost' IDENTIFIED BY 'your_password';`
+    );
+    console.error(
+      `   4. GRANT ALL PRIVILEGES ON \`${database}\`.* TO '${username}'@'localhost';`
+    );
+    console.error("   5. FLUSH PRIVILEGES;");
+    console.error(
+      "   6. Ensure MYSQL_PASSWORD in .env matches exactly (quote if it contains # or spaces)."
+    );
     process.exit(1);
   } finally {
     await sequelize.close();
