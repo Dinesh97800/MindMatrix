@@ -58,7 +58,7 @@ export const headerNavItems: NavItem[] = [
       link("Embedded Firmware Development", "/embedded-firmware-development"),
       link("Embedded Linux", "/embedded-linux"),
       link("Engineering Consulting", "/engineering-consulting"),
-      link("AI-enabled Engineering", "/ai-enabled-engineering"),
+      link("AI Solutions", "/ai-enabled-engineering"),
       link("Connectivity", "/connectivity"),
     ],
   },
@@ -149,7 +149,7 @@ export const headerNavItems: NavItem[] = [
       {
         label: "AI & Software",
         links: [
-          link("AI-enabled Engineering", "/ai-enabled-engineering"),
+          link("AI Solutions", "/ai-enabled-engineering"),
           link("Cognitive Core OS", "/cognitive-core-os"),
           link("Quantum-Ready Data Architecture", "/quantum-ready-data-architecture"),
         ],

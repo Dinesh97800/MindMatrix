@@ -34,6 +34,7 @@ export const LABEL_ROUTE_MAP = {
   "Product Development": "/product-development",
   "Industrial IoT": "/industrial-iot-solutions",
   "Industrial IoT Solutions": "/industrial-iot-solutions",
+  "AI Solutions": "/ai-enabled-engineering",
   "AI-enabled Engineering": "/ai-enabled-engineering",
   "Industrial Communication": "/industrial-communication",
   Connectivity: "/connectivity",

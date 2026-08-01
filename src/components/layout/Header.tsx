@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { BrandLogo } from "@/components/layout/BrandLogo";
-import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { MobileNavDrawer } from "@/components/layout/mobile-nav";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import {
-  buildMobileNavTree,
   headerNavItems,
   isLinkActive,
   isNavItemActive,
-  type MobileNavNode,
   type NavItem,
 } from "@/config/navigation";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const HOVER_CLOSE_DELAY_MS = 180;
 
@@ -228,195 +228,82 @@ function DesktopNavItem({ item, pathname }: { item: NavItem; pathname: string })
   );
 }
 
-function MobileAccordionNode({
-  node,
-  depth,
-  pathname,
-  openIds,
-  toggleId,
-  onNavigate,
-}: {
-  node: MobileNavNode;
-  depth: number;
-  pathname: string;
-  openIds: Set<string>;
-  toggleId: (id: string) => void;
-  onNavigate: () => void;
-}) {
-  const hasChildren = node.children && node.children.length > 0;
-  const isOpen = openIds.has(node.id);
-  const paddingLeft = 12 + depth * 16;
-
-  if (!hasChildren) {
-    if (!node.href) return null;
-    return (
-      <Link
-        href={node.href}
-        onClick={onNavigate}
-        style={{ paddingLeft }}
-        className={`flex min-h-[44px] items-center rounded-lg pr-4 font-label-sm text-label-sm transition-colors ${
-          isLinkActive(pathname, node.href)
-            ? "bg-primary/10 text-primary font-bold"
-            : "text-on-surface-variant hover:bg-primary/5 hover:text-primary"
-        }`}
-      >
-        {node.label}
-      </Link>
-    );
-  }
-
-  return (
-    <div>
-      <div className="flex min-h-[44px] items-stretch gap-1">
-        {node.href ? (
-          <Link
-            href={node.href}
-            onClick={onNavigate}
-            style={{ paddingLeft }}
-            className={`flex flex-1 items-center rounded-lg pr-2 font-label-sm text-label-sm ${
-              isLinkActive(pathname, node.href)
-                ? "bg-primary/10 text-primary font-bold"
-                : "text-on-surface hover:bg-primary/5"
-            }`}
-          >
-            {node.label}
-          </Link>
-        ) : (
-          <span
-            style={{ paddingLeft }}
-            className="flex flex-1 items-center font-label-sm text-label-sm font-bold text-on-surface"
-          >
-            {node.label}
-          </span>
-        )}
-        <button
-          type="button"
-          onClick={() => toggleId(node.id)}
-          className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-on-surface-variant hover:bg-primary/5"
-          aria-expanded={isOpen}
-          aria-label={`${isOpen ? "Collapse" : "Expand"} ${node.label}`}
-        >
-          <span
-            className={`material-symbols-outlined transition-transform duration-200 ${
-              isOpen ? "rotate-180" : ""
-            }`}
-          >
-            expand_more
-          </span>
-        </button>
-      </div>
-      <div
-        className={`grid transition-all duration-200 ease-out ${
-          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
-      >
-        <div className="overflow-hidden">
-          <div className="space-y-0.5 pb-2">
-            {node.children!.map((child) => (
-              <MobileAccordionNode
-                key={child.id}
-                node={child}
-                depth={depth + 1}
-                pathname={pathname}
-                openIds={openIds}
-                toggleId={toggleId}
-                onNavigate={onNavigate}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileOpenIds, setMobileOpenIds] = useState<Set<string>>(new Set());
-  const mobileTree = buildMobileNavTree();
 
   const closeMobile = useCallback(() => {
     setMobileOpen(false);
-    setMobileOpenIds(new Set());
   }, []);
 
-  const toggleMobileId = useCallback((id: string) => {
-    setMobileOpenIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
+  useLockBodyScroll(mobileOpen);
 
   useEffect(() => {
     closeMobile();
   }, [pathname, closeMobile]);
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeMobile();
     };
-  }, [mobileOpen]);
+
+    if (mobileOpen) {
+      window.addEventListener("keydown", onKeyDown);
+    }
+
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [mobileOpen, closeMobile]);
 
   return (
-    <header className="bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-sm sticky top-0 z-50">
-      <nav
-        aria-label="Main navigation"
-        className="flex justify-between items-center w-full px-margin-mobile lg:px-margin-desktop max-w-container-max mx-auto h-20"
+    <>
+      <header
+        className={`top-0 z-[100] border-b border-outline-variant/10 shadow-sm transition-colors duration-200 ${
+          mobileOpen
+            ? "fixed inset-x-0 bg-white"
+            : "sticky bg-surface/80 backdrop-blur-xl"
+        }`}
       >
-        <BrandLogo />
+        <nav
+          aria-label="Main navigation"
+          className="mx-auto flex h-20 w-full max-w-container-max items-center justify-between px-margin-mobile lg:px-margin-desktop"
+        >
+          <BrandLogo />
 
-        <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center min-w-0">
-          {headerNavItems.map((item) => (
-            <DesktopNavItem key={item.label} item={item} pathname={pathname} />
-          ))}
-        </div>
-
-        <div className="flex items-center gap-3 shrink-0">
-          <button
-            type="button"
-            className="lg:hidden flex min-h-[44px] min-w-[44px] items-center justify-center text-on-surface-variant"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
-          >
-            <span className="material-symbols-outlined text-2xl">
-              {mobileOpen ? "close" : "menu"}
-            </span>
-          </button>
-          <Link
-            href="/request-consultation"
-            className="bg-primary text-on-primary px-4 lg:px-6 py-2.5 rounded-full font-label-sm text-label-sm hover:bg-primary/90 transition-all active:scale-[0.98] whitespace-nowrap"
-          >
-            Request Consultation
-          </Link>
-        </div>
-      </nav>
-
-      {mobileOpen && (
-        <div className="lg:hidden border-t border-outline-variant/10 bg-surface/98 backdrop-blur-xl max-h-[calc(100dvh-5rem)] overflow-y-auto">
-          <div className="px-margin-mobile py-4 space-y-1">
-            {mobileTree.map((node) => (
-              <MobileAccordionNode
-                key={node.id}
-                node={node}
-                depth={0}
-                pathname={pathname}
-                openIds={mobileOpenIds}
-                toggleId={toggleMobileId}
-                onNavigate={closeMobile}
-              />
+          <div className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex">
+            {headerNavItems.map((item) => (
+              <DesktopNavItem key={item.label} item={item} pathname={pathname} />
             ))}
           </div>
-        </div>
-      )}
-    </header>
+
+          <div className="flex shrink-0 items-center gap-3">
+            <button
+              type="button"
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-on-surface-variant transition-colors hover:bg-primary/5 lg:hidden"
+              onClick={() => setMobileOpen((open) => !open)}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-navigation-drawer"
+            >
+              <span className="material-symbols-outlined text-2xl">
+                {mobileOpen ? "close" : "menu"}
+              </span>
+            </button>
+            <Link
+              href="/request-consultation"
+              onClick={closeMobile}
+              className="whitespace-nowrap rounded-full bg-primary px-4 py-2.5 font-label-sm text-label-sm text-on-primary transition-all hover:bg-primary/90 active:scale-[0.98] lg:px-6"
+            >
+              Request Consultation
+            </Link>
+          </div>
+        </nav>
+      </header>
+
+      <MobileNavDrawer
+        open={mobileOpen}
+        pathname={pathname}
+        onClose={closeMobile}
+      />
+    </>
   );
 }

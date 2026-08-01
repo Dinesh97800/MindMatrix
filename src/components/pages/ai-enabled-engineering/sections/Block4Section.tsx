@@ -1,10 +1,87 @@
-import Link from "next/link";
-import { StitchImage } from "@/components/ui/StitchImage";
+const whyChooseItems = [
+  {
+    title: "Edge-to-cloud engineering",
+    description:
+      "Ability to connect AI with embedded devices, sensors, gateways, dashboards, and cloud platforms.",
+    icon: "cloud_sync",
+  },
+  {
+    title: "Customer-specific integration",
+    description:
+      "Solutions built around the customer's documents, databases, APIs, products, and workflows.",
+    icon: "integration_instructions",
+  },
+  {
+    title: "Controlled automation",
+    description:
+      "Human approvals, validation, permissions, and audit logging for important actions.",
+    icon: "verified_user",
+  },
+  {
+    title: "Domain-driven AI",
+    description:
+      "Engineering and industrial context is incorporated into the application design.",
+    icon: "architecture",
+  },
+  {
+    title: "Flexible deployment",
+    description:
+      "Cloud, hybrid, edge, or private deployment according to security and operational needs.",
+    icon: "deployed_code",
+  },
+  {
+    title: "End-to-end ownership",
+    description:
+      "Support from architecture and proof of concept through integration, testing, deployment, and improvement.",
+    icon: "timeline",
+  },
+];
 
 export function Block4Section() {
   return (
-    <>
-      <section className={"py-stack-lg px-margin-desktop max-w-container-max mx-auto"}><div className={"grid grid-cols-12 gap-gutter"}><div className={"col-span-12 lg:col-span-5 pr-0 lg:pr-12"}><h2 className={"font-headline-lg text-headline-lg mb-8"}>{"Engineering with Authority"}</h2><div className={"space-y-8"}><div className={"flex gap-6"}><span className={"material-symbols-outlined text-3xl text-primary shrink-0"} style={{"fontVariationSettings":"'FILL' 1"}}>{"security"}</span><div><h5 className={"font-bold mb-2"}>{"Hardened Security"}</h5><p className={"text-on-surface-variant text-sm font-body-md"}>{"On-device processing ensures that sensitive IP and operational data never traverse the public internet."}</p></div></div><div className={"flex gap-6"}><span className={"material-symbols-outlined text-3xl text-primary shrink-0"} style={{"fontVariationSettings":"'FILL' 1"}}>{"bolt"}</span><div><h5 className={"font-bold mb-2"}>{"Deterministic Performance"}</h5><p className={"text-on-surface-variant text-sm font-body-md"}>{"Real-time kernels and optimized inference engines guarantee millisecond-level determinism."}</p></div></div><div className={"flex gap-6"}><span className={"material-symbols-outlined text-3xl text-primary shrink-0"} style={{"fontVariationSettings":"'FILL' 1"}}>{"architecture"}</span><div><h5 className={"font-bold mb-2"}>{"Custom Architectures"}</h5><p className={"text-on-surface-variant text-sm font-body-md"}>{"We don't use off-the-shelf solutions. Every neural network is machined for your specific hardware constraints."}</p></div></div></div></div><div className={"col-span-12 lg:col-span-7 bg-surface-container p-8 lg:p-12 rounded-xl border border-outline-variant/10"}><div className={"flex items-center justify-between mb-8"}><h3 className={"font-headline-md text-headline-md"}>{"Impact Reports"}</h3><Link href={"/ai-enabled-engineering"} className={"text-primary font-bold text-label-sm border-b-2 border-primary"}>{"View Case Library"}</Link></div><div className={"space-y-6"}><div className={"bg-white p-6 rounded-lg border border-outline-variant/10 flex flex-col md:flex-row gap-6 items-center"}><div className={"w-full md:w-32 h-24 bg-surface-container rounded shrink-0 overflow-hidden"}><StitchImage src={"https://lh3.googleusercontent.com/aida-public/AB6AXuCsjmXVSnmb_8PZ1VptPFlSlIn1pPkg_q9b7BHJ0yX_IdNifOJztrgjG9GeyQTvVSkeJarVkQefrfcm5Ll9xVUMihvClshEJa-6ERK8GtJ6MWWrc2_qAN5QcKAEl8ytselaETDHfngRAXsTFLt_dT2_a9Mrj-eWpMofZgcT1fgtbYzwtN3gZDo1qdUgY8QfknAJETCbxQDd-dql6fgHYeZH2fwHO3AJWZXpzDYk3YIPgOTTpNF5MqAdfr010wd1ho_9QsVUI74Bgd0"} alt={"A specialized camera setup mounted above a high-speed pharmaceutical conveyor belt, capturing blurred images of pill bottles with high-intensity strobing lights. Professional engineering photography style."} className={"w-full h-full object-cover"} /></div><div className={"flex-1"}><div className={"text-xs text-primary font-bold uppercase tracking-wider mb-1"}>{"Manufacturing"}</div><h4 className={"font-bold mb-2"}>{"Zero-Defect Quality Control for Pharma"}</h4><p className={"text-on-surface-variant text-xs font-body-md"}>{"Implemented real-time visual inspection at 1200 units/min with 99.99% accuracy."}</p></div><span className={"material-symbols-outlined text-on-surface-variant"}>{"arrow_outward"}</span></div><div className={"bg-white p-6 rounded-lg border border-outline-variant/10 flex flex-col md:flex-row gap-6 items-center"}><div className={"w-full md:w-32 h-24 bg-surface-container rounded shrink-0 overflow-hidden"}><StitchImage src={"https://lh3.googleusercontent.com/aida-public/AB6AXuDPRAz443hPKDiw-FCABUQgS5ue6NkPc6XiYAYvPwsryGOdZq3GlDDx65-HMeTqEgcENVBqmW2YuEn5aZhdJs59Q5LAlrCFo5QszVFvAK3cmwfZsBsRTT11ZiZOD_vQxE1D4JQ5Le7VKRua07yBv90EeTOFGIHOg-Q1LCv-jUlaVTPZUswAjM6yXNPjqan_JP04-dGxHW2TTlYoYpy0XZKB0fJHhoxd73hjX67DXWynqq-b9AxVzQMwlPtJtECxhRuliB1OTZvFJhE"} alt={"An offshore wind turbine at dusk with a drone flying nearby. The lighting is cinematic, with orange and purple hues in the sky reflecting on the white metal of the turbine."} className={"w-full h-full object-cover"} /></div><div className={"flex-1"}><div className={"text-xs text-primary font-bold uppercase tracking-wider mb-1"}>{"Energy"}</div><h4 className={"font-bold mb-2"}>{"Predictive Maintenance for Wind Turbines"}</h4><p className={"text-on-surface-variant text-xs font-body-md"}>{"Reduced maintenance costs by 32% using vibration-based anomaly detection at the edge."}</p></div><span className={"material-symbols-outlined text-on-surface-variant"}>{"arrow_outward"}</span></div></div></div></div></section>
-    </>
+    <section className="py-stack-lg px-margin-desktop max-w-container-max mx-auto">
+      <div className="grid grid-cols-12 gap-gutter">
+        <div className="col-span-12 lg:col-span-5">
+          <h2 className="font-headline-lg text-headline-lg mb-6">
+            Our Differentiation
+          </h2>
+          <h3 className="font-headline-md text-headline-md text-primary mb-4">
+            AI + Real-World Product Engineering
+          </h3>
+          <p className="text-on-surface-variant font-body-md mb-8">
+            Our strength is the ability to combine AI with embedded hardware,
+            firmware, sensors, IoT connectivity, customer knowledge, cloud
+            platforms, and industrial systems. This enables us to build complete
+            solutions rather than simple prompt-based assistants.
+          </p>
+          <h3 className="font-headline-md text-headline-md text-primary mb-4">
+            Why Choose Mind Matrix Workspace
+          </h3>
+        </div>
+        <div className="col-span-12 lg:col-span-7">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-gutter">
+            {whyChooseItems.map((item) => (
+              <div
+                key={item.title}
+                className="bg-surface-container p-6 rounded-xl border border-outline-variant/10 flex gap-4"
+              >
+                <span
+                  className="material-symbols-outlined text-3xl text-primary shrink-0"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  {item.icon}
+                </span>
+                <div>
+                  <h5 className="font-bold mb-2">{item.title}</h5>
+                  <p className="text-on-surface-variant text-sm font-body-md">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

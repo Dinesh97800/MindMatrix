@@ -1,7 +1,82 @@
+const technologyRows = [
+  {
+    area: "Edge AI",
+    capabilities:
+      "TinyML, on-device inference, signal processing, local analytics, intelligent gateways",
+  },
+  {
+    area: "AI Models & Platforms",
+    capabilities:
+      "OpenAI GPT models, Anthropic Claude, Google Gemini, local and private LLMs",
+  },
+  {
+    area: "AI Development",
+    capabilities:
+      "Python, AI SDKs, structured prompting, tool calling, controlled agentic workflows",
+  },
+  {
+    area: "Knowledge & Search",
+    capabilities:
+      "RAG architecture, vector databases, embeddings, semantic search",
+  },
+  {
+    area: "Integration",
+    capabilities:
+      "REST APIs, webhooks, Model Context Protocol (MCP), cloud services",
+  },
+  {
+    area: "Product Integration",
+    capabilities:
+      "Embedded devices, IoT gateways, cloud dashboards, desktop applications, industrial systems",
+  },
+];
+
 export function Block2Section() {
   return (
-    <>
-      <section className={"py-stack-lg px-margin-desktop max-w-container-max mx-auto"}><div className={"grid grid-cols-12 gap-gutter items-center"}><div className={"col-span-12 lg:col-span-6"}><h2 className={"font-headline-lg text-headline-lg mb-6"}>{"Technical Ecosystem"}</h2><p className={"text-on-surface-variant font-body-md mb-10"}>{"We utilize the industry's most robust frameworks and hardware accelerators to build engineering solutions that scale."}</p><div className={"space-y-6"}><div><div className={"text-label-sm font-label-sm uppercase tracking-widest text-primary mb-4"}>{"Software Frameworks"}</div><div className={"flex flex-wrap gap-4"}><div className={"px-6 py-3 bg-white border border-outline-variant/20 rounded flex items-center gap-2"}><span className={"w-2 h-2 rounded-full bg-[#EE4C2C]"}></span>{" PyTorch\n                                "}</div><div className={"px-6 py-3 bg-white border border-outline-variant/20 rounded flex items-center gap-2"}><span className={"w-2 h-2 rounded-full bg-[#FF6F00]"}></span>{" TensorFlow\n                                "}</div><div className={"px-6 py-3 bg-white border border-outline-variant/20 rounded flex items-center gap-2"}><span className={"w-2 h-2 rounded-full bg-primary"}></span>{" ONNX\n                                "}</div></div></div><div><div className={"text-label-sm font-label-sm uppercase tracking-widest text-primary mb-4"}>{"Hardware Platforms"}</div><div className={"flex flex-wrap gap-4"}><div className={"px-6 py-3 bg-white border border-outline-variant/20 rounded flex items-center gap-2"}><span className={"w-2 h-2 rounded-full bg-[#76B900]"}></span>{" NVIDIA Jetson\n                                "}</div><div className={"px-6 py-3 bg-white border border-outline-variant/20 rounded flex items-center gap-2"}><span className={"w-2 h-2 rounded-full bg-[#4285F4]"}></span>{" Edge TPUs\n                                "}</div><div className={"px-6 py-3 bg-white border border-outline-variant/20 rounded flex items-center gap-2"}><span className={"w-2 h-2 rounded-full bg-primary"}></span>{" ARM Cortex-M\n                                "}</div></div></div></div></div><div className={"col-span-12 lg:col-span-6"}><div className={"grid grid-cols-2 gap-4"}><div className={"p-1 bg-surface-container rounded-lg"}><div className={"aspect-square bg-cover bg-center rounded"} data-alt={"A close-up macro photograph of a high-performance NVIDIA Jetson embedded AI module. The image showcases the complex circuitry, heat sinks, and golden contact points in extreme detail, with a futuristic blue lighting scheme and professional studio depth of field."} style={{"backgroundImage":"url('https://lh3.googleusercontent.com/aida-public/AB6AXuCSDpe_G7yPwfnH9-DDlH27dyoPCVazJujAP9mSX2PYOYkhLOZMg4e2R4evfgMNyYkQVozW0gT9GedccJcS70x4gljGgk6s1QSFCKD4jS_k3Cgiko0X9KJpxooUU4cMw2XNGdZYaxY2iGN4UqHG-oQEs_LzqXEyJiBzuur4JDTXk4h9l7P93ZL7AqNShb2_FYqnu250U-78YGaEmzuBknaM5D1NmP0Y6O7f1_mjKysh-brhorGs0wESRs-sC9UMu5OMib1-d0YxcT4')"}}></div></div><div className={"p-1 bg-surface-container rounded-lg mt-8"}><div className={"aspect-square bg-cover bg-center rounded"} data-alt={"A clean top-down view of a modern industrial circuit board featuring an AI accelerator chip. The layout is perfectly symmetrical, reflecting engineering precision, with small LED indicator lights and precisely etched copper pathways against a deep charcoal background."} style={{"backgroundImage":"url('https://lh3.googleusercontent.com/aida-public/AB6AXuD0_EZlnQ-C6Rfstz5a-6Cq7rf2NXiu1BPn6EC9auzCprxH1ghV-XjzYLHKK5jQcLtjE7c5_HQFpENaTxyGA4J67YjrQ1nfRCnOfPXcMMAIDBzuje9bZep53wGyt8iN7fMu7U85I0dxoFTDNdXUqGkE0AMT30_sReqPtAHxlD3Ti47yd-GWEqtxQvZLw21gtRLwBxEfgkEPuehX_uk2ZYJMEby2VUqMqnoKgUl0ImupSWkHfJfz_85ExYOAxwx_cu210Bld1GNLmQY')"}}></div></div></div></div></div></section>
-    </>
+    <section className="py-stack-lg px-margin-desktop max-w-container-max mx-auto">
+      <div className="grid grid-cols-12 gap-gutter items-start">
+        <div className="col-span-12 lg:col-span-5">
+          <h2 className="font-headline-lg text-headline-lg mb-6">
+            Technologies &amp; Platforms
+          </h2>
+          <p className="text-on-surface-variant font-body-md">
+            Our technology selection is guided by the customer use case, data
+            security needs, deployment environment, scalability requirements,
+            and integration constraints.
+          </p>
+        </div>
+        <div className="col-span-12 lg:col-span-7">
+          <div className="overflow-x-auto rounded-xl border border-outline-variant/20 bg-white">
+            <table className="w-full min-w-[32rem] text-left">
+              <thead>
+                <tr className="border-b border-outline-variant/20 bg-surface-container">
+                  <th className="px-6 py-4 font-label-sm text-label-sm uppercase tracking-wider text-primary">
+                    Area
+                  </th>
+                  <th className="px-6 py-4 font-label-sm text-label-sm uppercase tracking-wider text-primary">
+                    Capabilities
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {technologyRows.map((row) => (
+                  <tr
+                    key={row.area}
+                    className="border-b border-outline-variant/10 last:border-0"
+                  >
+                    <td className="px-6 py-4 font-headline-md text-body-md font-semibold text-primary align-top whitespace-nowrap">
+                      {row.area}
+                    </td>
+                    <td className="px-6 py-4 text-on-surface-variant font-body-md text-sm">
+                      {row.capabilities}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

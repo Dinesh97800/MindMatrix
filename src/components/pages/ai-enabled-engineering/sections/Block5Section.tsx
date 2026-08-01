@@ -1,7 +1,23 @@
 export function Block5Section() {
   return (
-    <>
-      <section className={"py-stack-lg bg-white"}><div className={"px-margin-desktop max-w-container-max mx-auto"}><div className={"text-center mb-16"}><h2 className={"font-headline-lg text-headline-lg mb-4"}>{"Technical FAQs"}</h2></div><div className={"max-w-3xl mx-auto space-y-4"}><details className={"group border-b border-outline-variant/20 pb-4"} open={true}><summary className={"flex justify-between items-center cursor-pointer list-none font-bold py-4"}>{"\n                            How do you handle model drift in edge environments?\n                            "}<span className={"material-symbols-outlined transition-transform group-open:rotate-180"}>{"expand_more"}</span></summary><div className={"text-on-surface-variant text-sm font-body-md leading-relaxed"}>{"\n                            We implement federated learning and automated re-training triggers. When a distribution shift is detected locally, anonymized edge-cases are securely uploaded for model refinement and redeployed via OTA updates.\n                        "}</div></details><details className={"group border-b border-outline-variant/20 pb-4"}><summary className={"flex justify-between items-center cursor-pointer list-none font-bold py-4"}>{"\n                            What is the typical latency for your computer vision pipelines?\n                            "}<span className={"material-symbols-outlined transition-transform group-open:rotate-180"}>{"expand_more"}</span></summary><div className={"text-on-surface-variant text-sm font-body-md leading-relaxed"}>{"\n                            Our standard object detection pipelines on NVIDIA Jetson Orin modules achieve sub-5ms end-to-end latency, making them suitable for high-speed industrial safety and sorting applications.\n                        "}</div></details><details className={"group border-b border-outline-variant/20 pb-4"}><summary className={"flex justify-between items-center cursor-pointer list-none font-bold py-4"}>{"\n                            Do you support legacy industrial hardware?\n                            "}<span className={"material-symbols-outlined transition-transform group-open:rotate-180"}>{"expand_more"}</span></summary><div className={"text-on-surface-variant text-sm font-body-md leading-relaxed"}>{"\n                            Yes. We use ruggedized IoT gateways that bridge legacy PLC systems (RS232/RS485) with modern AI compute modules, providing a \"digital brain\" to existing industrial assets.\n                        "}</div></details></div></div></section>
-    </>
+    <section className="py-stack-lg bg-white">
+      <div className="px-margin-desktop max-w-container-max mx-auto">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-headline-lg text-headline-lg mb-6">
+            Practical AI for Engineering Teams
+          </h2>
+          <p className="text-on-surface-variant font-body-lg leading-relaxed">
+            Our AI solutions go beyond general-purpose chatbots by integrating
+            customer data, engineering knowledge, software tools, embedded
+            products, and controlled workflows.
+          </p>
+          <p className="text-on-surface-variant font-body-md mt-6 leading-relaxed">
+            We combine AI with embedded systems, industrial data, customer
+            knowledge, and software integration to build practical solutions
+            that are difficult to achieve with a general-purpose chatbot alone.
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }
