@@ -43,13 +43,6 @@ function LoginForm() {
         <p className="text-on-surface-variant font-body-md mb-4">
           Sign in to manage contact submissions and newsletter signups.
         </p>
-        <p className="text-on-surface-variant text-sm mb-8">
-          Use the admin account from your database (created via{" "}
-          <code className="text-primary">npm run db:seed</code>). This is not your
-          MySQL password — use <code className="text-primary">ADMIN_SEED_EMAIL</code>{" "}
-          and <code className="text-primary">ADMIN_SEED_PASSWORD</code> from{" "}
-          <code className="text-primary">.env</code>.
-        </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
