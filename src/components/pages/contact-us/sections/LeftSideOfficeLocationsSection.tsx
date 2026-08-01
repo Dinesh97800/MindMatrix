@@ -1,5 +1,6 @@
 import { CompanyContactBlock } from "@/components/layout/CompanyContactBlock";
 import { companyContact } from "@/config/company";
+import { ContactUsForm } from "@/components/forms/ContactUsForm";
 
 export function LeftSideOfficeLocationsSection() {
   return (
@@ -43,62 +44,7 @@ export function LeftSideOfficeLocationsSection() {
             </p>
           </div>
 
-          <form className="space-y-stack-md">
-            <div className="grid grid-cols-1 gap-stack-md md:grid-cols-2">
-              <div className="space-y-2">
-                <label className="font-label-sm uppercase text-on-surface-variant">
-                  Full Name
-                </label>
-                <input
-                  className="w-full rounded-lg border-transparent bg-surface-container-low p-3 font-body-md transition-all focus:border-primary focus:ring-0"
-                  placeholder="Your name"
-                  type="text"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="font-label-sm uppercase text-on-surface-variant">
-                  Email
-                </label>
-                <input
-                  className="w-full rounded-lg border-transparent bg-surface-container-low p-3 font-body-md transition-all focus:border-primary focus:ring-0"
-                  placeholder="you@company.com"
-                  type="email"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="font-label-sm uppercase text-on-surface-variant">
-                Subject
-              </label>
-              <input
-                className="w-full rounded-lg border-transparent bg-surface-container-low p-3 font-body-md transition-all focus:border-primary focus:ring-0"
-                placeholder="How can we help?"
-                type="text"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="font-label-sm uppercase text-on-surface-variant">
-                Message
-              </label>
-              <textarea
-                className="w-full rounded-lg border-transparent bg-surface-container-low p-4 font-body-md transition-all focus:border-primary focus:ring-0"
-                placeholder="Describe your project or enquiry..."
-                rows={5}
-              />
-            </div>
-
-            <div className="pt-stack-md">
-              <button
-                className="flex w-full items-center justify-center gap-stack-sm rounded-lg bg-primary py-5 font-label-sm uppercase tracking-[0.2em] text-on-primary transition-all hover:bg-secondary active:scale-[0.98]"
-                type="submit"
-              >
-                Send Enquiry
-                <span className="material-symbols-outlined">send</span>
-              </button>
-            </div>
-          </form>
+          <ContactUsForm />
         </div>
       </div>
     </div>

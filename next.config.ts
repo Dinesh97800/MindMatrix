@@ -6,6 +6,7 @@ const isStaticExport =
 
 const nextConfig: NextConfig = {
   ...(isStaticExport ? { output: "export" as const } : {}),
+  serverExternalPackages: ["sequelize", "mysql2", "bcryptjs", "nodemailer"],
   images: {
     unoptimized: isStaticExport,
     remotePatterns: [

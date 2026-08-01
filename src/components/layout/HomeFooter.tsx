@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CompanyContactBlock } from "@/components/layout/CompanyContactBlock";
+import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { footerColumns } from "@/config/navigation";
 
 export function HomeFooter() {
@@ -46,20 +47,7 @@ export function HomeFooter() {
             <h4 className="text-on-primary-container font-bold mb-4 text-label-sm uppercase tracking-wider">
               Stay Updated
             </h4>
-            <div className="flex gap-2 mb-4">
-              <input
-                className="bg-white/5 border border-white/10 text-white px-4 py-3 rounded-lg flex-grow focus:ring-2 focus:ring-outline-variant focus:border-transparent outline-none font-body-md min-h-[44px]"
-                placeholder="Engineering insights to your inbox"
-                type="email"
-                aria-label="Email address"
-              />
-              <Link
-                href="/contact-us"
-                className="bg-white text-primary px-4 py-3 rounded-lg font-bold text-label-sm hover:bg-white/90 transition-all min-h-[44px] inline-flex items-center justify-center"
-              >
-                Join
-              </Link>
-            </div>
+            <NewsletterForm />
           </div>
 
           <div className="col-span-12 lg:col-span-3 grid grid-cols-2 gap-4">
