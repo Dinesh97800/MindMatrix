@@ -13,6 +13,26 @@
   vertical-align: middle;
 }
 
+@layer base {
+  html {
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    overflow-wrap: break-word;
+  }
+
+  .grid > * {
+    min-width: 0;
+  }
+}
+
 @layer components {
   .glass-card {
     background: rgba(255, 255, 255, 0.8);
@@ -90,5 +110,47 @@
 
   .accordion-item.is-open .accordion-content {
     display: block;
+  }
+
+  /* Mobile-first page gutters: reuse px-margin-desktop site-wide */
+  .px-margin-desktop {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .px-margin-desktop {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+  }
+
+  /* Scale hero/display headings down on small screens */
+  .text-display-lg {
+    font-size: 2rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .text-display-lg {
+      font-size: 4rem;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+  }
+
+  .text-headline-lg {
+    font-size: 2rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .text-headline-lg {
+      font-size: 2.5rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
   }
 }

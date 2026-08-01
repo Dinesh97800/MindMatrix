@@ -1,3 +1,4 @@
+import { WhyChooseUsSection } from "@/components/sections/WhyChooseUsSection";
 import { StatsGridSection } from "./sections/StatsGridSection";
 import { Service1Section } from "./sections/Service1Section";
 import { AiSolutionsHighlightSection } from "./sections/AiSolutionsHighlightSection";
@@ -15,6 +16,7 @@ export function HomePageContent() {
       <ProgressLineSection />
       <Section />
       <RepeatedLogosForContinuousLoopSection />
+      <WhyChooseUsSection />
       <Block2Section />
     </main>
   );

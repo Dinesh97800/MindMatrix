@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CompanyContactBlock } from "@/components/layout/CompanyContactBlock";
 import { footerColumns } from "@/config/navigation";
 
 export function DefaultFooter() {
@@ -7,13 +8,14 @@ export function DefaultFooter() {
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
         <div className="grid grid-cols-12 gap-gutter mb-stack-lg">
           <div className="col-span-12 lg:col-span-3 mb-8 lg:mb-0">
-            <div className="text-headline-md font-display-lg text-on-primary-container mb-4">
+            <div className="mb-4 text-headline-md font-display-lg text-on-primary-container">
               Mind Matrix
             </div>
-            <p className="text-on-primary-container/70 font-body-md text-body-md max-w-sm">
+            <p className="mb-6 max-w-sm font-body-md text-body-md text-on-primary-container/70">
               Engineering precision for the digital frontier. We provide elite
               technical solutions for global industrial leaders.
             </p>
+            <CompanyContactBlock variant="compact" />
           </div>
 
           <div className="col-span-12 lg:col-span-9">

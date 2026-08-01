@@ -1,3 +1,4 @@
+import { WhyChooseUsSection } from "@/components/sections/WhyChooseUsSection";
 import { HeroSection } from "./sections/HeroSection";
 import { Section } from "./sections/Section";
 import { Block2006Section } from "./sections/Block2006Section";
@@ -10,6 +11,7 @@ export function AboutUsPageContent() {
       <HeroSection />
       <Section />
       <Block2006Section />
+      <WhyChooseUsSection />
       <Block2Section />
       <Block3Section />
     </main>

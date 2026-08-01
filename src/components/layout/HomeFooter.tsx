@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CompanyContactBlock } from "@/components/layout/CompanyContactBlock";
 import { footerColumns } from "@/config/navigation";
 
 export function HomeFooter() {
@@ -38,6 +39,7 @@ export function HomeFooter() {
               Engineering precision for the digital frontier. Dedicated to robust
               embedded systems and hardware innovation since 2006.
             </p>
+            <CompanyContactBlock variant="compact" />
           </div>
 
           <div className="col-span-12 md:col-span-8 lg:col-span-5">

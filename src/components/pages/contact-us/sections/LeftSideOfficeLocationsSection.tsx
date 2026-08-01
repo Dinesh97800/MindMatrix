@@ -1,9 +1,106 @@
-import { StitchImage } from "@/components/ui/StitchImage";
+import { CompanyContactBlock } from "@/components/layout/CompanyContactBlock";
+import { companyContact } from "@/config/company";
 
 export function LeftSideOfficeLocationsSection() {
   return (
-    <>
-      <div className={"grid grid-cols-12 gap-gutter"}><div className={"col-span-12 lg:col-span-5 flex flex-col gap-stack-md"}><div className={"glass-card p-stack-md rounded-lg border border-outline-variant/30 technical-glow transition-all"}><div className={"flex items-start gap-stack-sm mb-stack-md"}><span className={"material-symbols-outlined text-primary text-3xl"}>{"hub"}</span><div><h3 className={"font-headline-md text-headline-md text-primary"}>{"Silicon Valley HQ"}</h3><p className={"font-label-sm text-on-secondary-container"}>{"Global Strategic Operations"}</p></div></div><div className={"flex flex-col gap-base border-l-2 border-primary/20 pl-stack-md"}><p className={"font-body-md"}>{"2400 Sand Hill Rd, Suite 100"}</p><p className={"font-body-md"}>{"Menlo Park, CA 94025, USA"}</p><div className={"mt-stack-sm flex items-center gap-base"}><span className={"material-symbols-outlined text-sm"}>{"call"}</span><span className={"font-label-sm"}>{"+1 (650) 843-1000"}</span></div></div><div className={"mt-stack-md rounded-lg overflow-hidden h-48 border border-outline-variant/20"}><StitchImage src={"https://lh3.googleusercontent.com/aida-public/AB6AXuChCnj-SqJZfAmqtcXmzJMwwYcv1s9FtabJFKCQtC82CaTHE9Crxs63mnl7LPjprPQDTc2B0rQxA37w-gtoZzvwtVa0edD9Kee_RKX8ks0gfmt6MXOMKGeNXpqw2fhJGy1329jEBSAqafEet2iTevNeVd4aH7dizPIYkwCJz-8t4nHAdxx19uXHc-jipnSRkDFVb9affPdjrLFiUVYq3bQs7s0iWyW8U_D9sPMKTnp6TxFlwItWoBFKLbV4TyG5sMzDHsLeuG7RHGA"} alt={"A clean-room inspired minimalist satellite map visualization of Menlo Park, California. The aesthetic is monochromatic with high-tech blue data overlays, glowing grid lines, and industrial precision markers showing office locations. The lighting is cold and professional, evoking a high-stakes engineering atmosphere."} className={"w-full h-full object-cover grayscale opacity-80 hover:grayscale-0 transition-all duration-700"} /></div></div><div className={"glass-card p-stack-md rounded-lg border border-outline-variant/30 technical-glow transition-all"}><div className={"flex items-start gap-stack-sm mb-stack-md"}><span className={"material-symbols-outlined text-primary text-3xl"}>{"settings_input_component"}</span><div><h3 className={"font-headline-md text-headline-md text-primary"}>{"London Hub"}</h3><p className={"font-label-sm text-on-secondary-container"}>{"EMEA Engineering Core"}</p></div></div><div className={"flex flex-col gap-base border-l-2 border-primary/20 pl-stack-md"}><p className={"font-body-md"}>{"80 Clerkenwell Rd"}</p><p className={"font-body-md"}>{"London EC1M 5RJ, United Kingdom"}</p><div className={"mt-stack-sm flex items-center gap-base"}><span className={"material-symbols-outlined text-sm"}>{"mail"}</span><span className={"font-label-sm"}>{"emea@mindmatrix.io"}</span></div></div></div><div className={"bg-primary-container p-stack-md rounded-lg border border-outline-variant/30"}><h4 className={"font-label-sm text-on-primary-container uppercase tracking-widest mb-stack-sm"}>{"Regional Connectors"}</h4><div className={"grid grid-cols-2 gap-stack-sm"}><div className={"p-stack-sm border border-outline-variant/20 rounded"}><p className={"font-label-sm font-bold text-on-primary-container"}>{"Singapore"}</p><p className={"font-label-sm text-on-primary-container/70"}>{"APAC Logistics"}</p></div><div className={"p-stack-sm border border-outline-variant/20 rounded"}><p className={"font-label-sm font-bold text-on-primary-container"}>{"Munich"}</p><p className={"font-label-sm text-on-primary-container/70"}>{"Precision Systems"}</p></div></div></div></div><div className={"col-span-12 lg:col-span-7"}><div className={"bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant/40 shadow-xl"}><div className={"mb-stack-lg"}><h2 className={"font-headline-lg text-headline-lg text-primary"}>{"Project Inquiry Protocol"}</h2><p className={"font-body-md text-on-surface-variant mt-2"}>{"Initialize engineering discussion by providing mission parameters."}</p></div><form className={"space-y-stack-md"}><div className={"grid grid-cols-1 md:grid-cols-2 gap-stack-md"}><div className={"space-y-2"}><label className={"font-label-sm text-on-surface-variant uppercase"}>{"Full Name"}</label><input className={"w-full bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg p-3 font-body-md transition-all"} placeholder={"Engineering Lead / stakeholder"} type={"text"} /></div><div className={"space-y-2"}><label className={"font-label-sm text-on-surface-variant uppercase"}>{"Corporate Email"}</label><input className={"w-full bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg p-3 font-body-md transition-all"} placeholder={"name@corporation.tech"} type={"email"} /></div></div><div className={"grid grid-cols-1 md:grid-cols-2 gap-stack-md"}><div className={"space-y-2"}><label className={"font-label-sm text-on-surface-variant uppercase"}>{"Industry Sector"}</label><select className={"w-full bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg p-3 font-body-md appearance-none"}><option>{"Aerospace & Defense"}</option><option>{"Quantum Computing"}</option><option>{"Biotech & Life Sciences"}</option><option>{"Autonomous Infrastructure"}</option><option>{"Financial Systems"}</option></select></div><div className={"space-y-2"}><label className={"font-label-sm text-on-surface-variant uppercase"}>{"Project Type"}</label><select className={"w-full bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg p-3 font-body-md appearance-none"}><option>{"Greenfield Development"}</option><option>{"Legacy Infrastructure Migration"}</option><option>{"System Architecture Audit"}</option><option>{"Managed R&D"}</option></select></div></div><div className={"space-y-2"}><label className={"font-label-sm text-on-surface-variant uppercase"}>{"Projected Capital Allocation (Budget)"}</label><div className={"flex flex-wrap gap-base"}><button className={"px-4 py-2 rounded-full border border-outline-variant text-label-sm hover:bg-primary hover:text-on-primary transition-all"} type={"button"}>{"$100k - $500k"}</button><button className={"px-4 py-2 rounded-full border border-primary bg-primary text-on-primary text-label-sm"} type={"button"}>{"$500k - $2M"}</button><button className={"px-4 py-2 rounded-full border border-outline-variant text-label-sm hover:bg-primary hover:text-on-primary transition-all"} type={"button"}>{"$2M - $10M"}</button><button className={"px-4 py-2 rounded-full border border-outline-variant text-label-sm hover:bg-primary hover:text-on-primary transition-all"} type={"button"}>{"$10M+"}</button></div></div><div className={"space-y-2"}><label className={"font-label-sm text-on-surface-variant uppercase"}>{"Mission Brief / Enquiry Details"}</label><textarea className={"w-full bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg p-4 font-body-md transition-all"} placeholder={"Specify technical requirements, timeline, and key performance indicators..."} rows={5}></textarea></div><div className={"pt-stack-md"}><button className={"w-full bg-primary text-on-primary font-label-sm uppercase tracking-[0.2em] py-5 rounded-lg hover:bg-secondary transition-all flex items-center justify-center gap-stack-sm active:scale-[0.98]"} type={"submit"}>{"\n                                Initialize Transmission\n                                "}<span className={"material-symbols-outlined"}>{"send"}</span></button><p className={"font-label-sm text-on-surface-variant/60 text-center mt-stack-sm italic"}>{"Mind Matrix adheres strictly to ISO/IEC 27001 data security protocols."}</p></div></form></div></div></div>
-    </>
+    <div className="grid grid-cols-12 gap-gutter">
+      <div className="col-span-12 lg:col-span-5 flex flex-col gap-stack-md">
+        <div className="glass-card rounded-lg border border-outline-variant/30 p-stack-md technical-glow transition-all">
+          <div className="mb-stack-md flex items-start gap-stack-sm">
+            <span className="material-symbols-outlined text-3xl text-primary">
+              location_on
+            </span>
+            <CompanyContactBlock variant="full" />
+          </div>
+        </div>
+
+        <div className="rounded-lg border border-outline-variant/30 bg-primary-container p-stack-md">
+          <h4 className="mb-stack-sm font-label-sm uppercase tracking-widest text-on-primary-container">
+            Business Enquiries
+          </h4>
+          <p className="font-body-md text-on-primary-container/80">
+            For project discussions, technical support, and general enquiries,
+            reach us at{" "}
+            <a
+              href={`mailto:${companyContact.email}`}
+              className="font-semibold text-secondary underline-offset-2 hover:underline"
+            >
+              {companyContact.email}
+            </a>
+            .
+          </p>
+        </div>
+      </div>
+
+      <div className="col-span-12 lg:col-span-7">
+        <div className="rounded-xl border border-outline-variant/40 bg-surface-container-lowest p-stack-lg shadow-xl">
+          <div className="mb-stack-lg">
+            <h2 className="font-headline-lg text-headline-lg text-primary">
+              Project Inquiry
+            </h2>
+            <p className="mt-2 font-body-md text-on-surface-variant">
+              Share your requirements and our engineering team will respond.
+            </p>
+          </div>
+
+          <form className="space-y-stack-md">
+            <div className="grid grid-cols-1 gap-stack-md md:grid-cols-2">
+              <div className="space-y-2">
+                <label className="font-label-sm uppercase text-on-surface-variant">
+                  Full Name
+                </label>
+                <input
+                  className="w-full rounded-lg border-transparent bg-surface-container-low p-3 font-body-md transition-all focus:border-primary focus:ring-0"
+                  placeholder="Your name"
+                  type="text"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="font-label-sm uppercase text-on-surface-variant">
+                  Email
+                </label>
+                <input
+                  className="w-full rounded-lg border-transparent bg-surface-container-low p-3 font-body-md transition-all focus:border-primary focus:ring-0"
+                  placeholder="you@company.com"
+                  type="email"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="font-label-sm uppercase text-on-surface-variant">
+                Subject
+              </label>
+              <input
+                className="w-full rounded-lg border-transparent bg-surface-container-low p-3 font-body-md transition-all focus:border-primary focus:ring-0"
+                placeholder="How can we help?"
+                type="text"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="font-label-sm uppercase text-on-surface-variant">
+                Message
+              </label>
+              <textarea
+                className="w-full rounded-lg border-transparent bg-surface-container-low p-4 font-body-md transition-all focus:border-primary focus:ring-0"
+                placeholder="Describe your project or enquiry..."
+                rows={5}
+              />
+            </div>
+
+            <div className="pt-stack-md">
+              <button
+                className="flex w-full items-center justify-center gap-stack-sm rounded-lg bg-primary py-5 font-label-sm uppercase tracking-[0.2em] text-on-primary transition-all hover:bg-secondary active:scale-[0.98]"
+                type="submit"
+              >
+                Send Enquiry
+                <span className="material-symbols-outlined">send</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }

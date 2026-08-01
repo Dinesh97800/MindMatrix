@@ -1,9 +1,22 @@
-import { StitchImage } from "@/components/ui/StitchImage";
+import { CompanyContactBlock } from "@/components/layout/CompanyContactBlock";
+import { companyContact } from "@/config/company";
 
 export function InteractiveMapPlaceholderSection() {
   return (
-    <>
-      <section className={"py-stack-lg px-margin-desktop bg-white"}><div className={"max-w-container-max mx-auto"}><div className={"mb-stack-lg"}><h2 className={"font-headline-lg text-headline-lg mb-2"}>{"Global Engineering Clusters"}</h2><p className={"font-body-md text-on-surface-variant max-w-xl"}>{"Strategic locations chosen for proximity to manufacturing hubs and technical talent pools."}</p></div><div className={"w-full h-[500px] bg-primary-container rounded-2xl overflow-hidden mb-stack-lg relative group"}><div className={"absolute inset-0 grayscale opacity-40 mix-blend-overlay"} data-location={"Zurich"} style={{}}><StitchImage src={"https://lh3.googleusercontent.com/aida-public/AB6AXuAwyHmUv73OdErnRQb6h5wBMKvmiHwMk_YdtslZDawjQQQBL1ChuJj04WNn95izz_nL63zB81NyBVbNzjLEeL6fNkH6rtsGov31gvQt7jmiIrYtpwkd8boidYNNm3sL2N5jQMnct-LAEklWHss6KzZ5CD24SbiujMzwgF5D2L8xh2yfs5u_zwC8xMOE63v_PhD4-qI0fDwDGFenERzonoX4x4DOtKneCQcQnanf-Ewot8SJttYh9qEM39XwDrOPwTGsF9wcTr4BTYw"} alt={"A stylized, high-contrast dark mode satellite map showing a metropolitan urban layout with glowing blue geometric data overlays and pinpoint icons. The style is technical and industrial, using a deep navy and cyan color palette with fine vector lines representing global connectivity routes."} className={"w-full h-full object-cover"} /></div><div className={"absolute inset-0 bg-gradient-to-t from-primary-container via-transparent to-transparent"}></div><div className={"absolute top-[30%] left-[45%] group-hover:scale-110 transition-transform cursor-pointer"}><div className={"w-4 h-4 bg-primary-fixed rounded-full shadow-[0_0_15px_rgba(37,99,235,0.6)] border-2 border-white"}></div><div className={"absolute top-6 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded shadow text-xs font-bold whitespace-nowrap"}>{"HQ: ZÜRICH"}</div></div><div className={"absolute top-[35%] left-[15%] cursor-pointer"}><div className={"w-3 h-3 bg-secondary rounded-full shadow-[0_0_10px_rgba(255,255,255,0.4)] border border-white"}></div></div><div className={"absolute top-[40%] left-[80%] cursor-pointer"}><div className={"w-3 h-3 bg-secondary rounded-full shadow-[0_0_10px_rgba(255,255,255,0.4)] border border-white"}></div></div></div><div className={"grid grid-cols-1 md:grid-cols-3 gap-gutter"}><div className={"p-stack-md border border-outline-variant/30 rounded-xl hover:border-primary transition-all"}><div className={"flex items-center gap-2 mb-stack-sm"}><span className={"material-symbols-outlined text-primary"}>{"location_on"}</span><h4 className={"font-headline-md text-headline-md"}>{"San Jose, CA"}</h4></div><p className={"font-body-md text-on-surface-variant mb-stack-sm"}>{"2850 Innovation Dr,"}<br />{"San Jose, CA 95134, USA"}</p><p className={"font-label-sm text-primary"}>{"+1 (408) 555-0192"}</p></div><div className={"p-stack-md border border-outline-variant/30 rounded-xl hover:border-primary transition-all"}><div className={"flex items-center gap-2 mb-stack-sm"}><span className={"material-symbols-outlined text-primary"}>{"location_on"}</span><h4 className={"font-headline-md text-headline-md"}>{"Munich, GER"}</h4></div><p className={"font-body-md text-on-surface-variant mb-stack-sm"}>{"Engineering Strasse 12,"}<br />{"80331 Munich, Germany"}</p><p className={"font-label-sm text-primary"}>{"+49 89 234 567 89"}</p></div><div className={"p-stack-md border border-outline-variant/30 rounded-xl hover:border-primary transition-all"}><div className={"flex items-center gap-2 mb-stack-sm"}><span className={"material-symbols-outlined text-primary"}>{"location_on"}</span><h4 className={"font-headline-md text-headline-md"}>{"Tokyo, JPN"}</h4></div><p className={"font-body-md text-on-surface-variant mb-stack-sm"}>{"Shinjuku Tech Plaza,"}<br />{"Tokyo 160-0022, Japan"}</p><p className={"font-label-sm text-primary"}>{"+81 3-5321-1111"}</p></div></div></div></section>
-    </>
+    <section className="bg-white px-margin-desktop py-stack-lg">
+      <div className="mx-auto max-w-container-max">
+        <div className="mb-stack-lg">
+          <h2 className="mb-2 font-headline-lg text-headline-lg">Our Office</h2>
+          <p className="max-w-xl font-body-md text-on-surface-variant">
+            {companyContact.legalName} is based in Gurugram, Haryana — serving
+            engineering and industrial clients across India and internationally.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-outline-variant/30 bg-surface-container-low p-stack-lg md:p-stack-md">
+          <CompanyContactBlock variant="full" />
+        </div>
+      </div>
+    </section>
   );
 }

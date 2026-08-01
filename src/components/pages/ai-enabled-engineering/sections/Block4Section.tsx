@@ -1,41 +1,4 @@
-const whyChooseItems = [
-  {
-    title: "Edge-to-cloud engineering",
-    description:
-      "Ability to connect AI with embedded devices, sensors, gateways, dashboards, and cloud platforms.",
-    icon: "cloud_sync",
-  },
-  {
-    title: "Customer-specific integration",
-    description:
-      "Solutions built around the customer's documents, databases, APIs, products, and workflows.",
-    icon: "integration_instructions",
-  },
-  {
-    title: "Controlled automation",
-    description:
-      "Human approvals, validation, permissions, and audit logging for important actions.",
-    icon: "verified_user",
-  },
-  {
-    title: "Domain-driven AI",
-    description:
-      "Engineering and industrial context is incorporated into the application design.",
-    icon: "architecture",
-  },
-  {
-    title: "Flexible deployment",
-    description:
-      "Cloud, hybrid, edge, or private deployment according to security and operational needs.",
-    icon: "deployed_code",
-  },
-  {
-    title: "End-to-end ownership",
-    description:
-      "Support from architecture and proof of concept through integration, testing, deployment, and improvement.",
-    icon: "timeline",
-  },
-];
+import { whyChooseItems } from "@/components/sections/WhyChooseUsSection";
 
 export function Block4Section() {
   return (

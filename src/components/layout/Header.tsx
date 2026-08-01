@@ -254,18 +254,29 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [mobileOpen, closeMobile]);
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
       <header
-        className={`top-0 z-[100] border-b border-outline-variant/10 shadow-sm transition-colors duration-200 ${
+        className={`top-0 z-[100] border-b border-outline-variant/10 transition-[box-shadow,background-color] duration-200 ${
           mobileOpen
             ? "fixed inset-x-0 bg-white"
-            : "sticky bg-surface/80 backdrop-blur-xl"
+            : `sticky bg-surface/80 backdrop-blur-xl ${scrolled ? "shadow-md" : "shadow-sm"}`
         }`}
       >
         <nav
           aria-label="Main navigation"
-          className="mx-auto flex h-20 w-full max-w-container-max items-center justify-between px-margin-mobile lg:px-margin-desktop"
+          className={`mx-auto flex w-full max-w-container-max items-center justify-between px-margin-mobile transition-[height] duration-200 lg:px-margin-desktop ${
+            scrolled && !mobileOpen ? "h-16" : "h-20"
+          }`}
         >
           <BrandLogo />
 
