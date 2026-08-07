@@ -1,19 +1,5 @@
-import { TechnicalBadgeSection } from "./sections/TechnicalBadgeSection";
-import { Section } from "./sections/Section";
-import { ArchitectureVisualizerSection } from "./sections/ArchitectureVisualizerSection";
-import { Block2Section } from "./sections/Block2Section";
-import { Block3Section } from "./sections/Block3Section";
-import { Block4Section } from "./sections/Block4Section";
+import { ApprovedPageLayout } from "@/components/pages/shared/ApprovedPageLayout";
 
 export function EnergyMonitoringPageContent() {
-  return (
-    <main>
-      <TechnicalBadgeSection />
-      <Section />
-      <ArchitectureVisualizerSection />
-      <Block2Section />
-      <Block3Section />
-      <Block4Section />
-    </main>
-  );
+  return <ApprovedPageLayout pageKey="energy-monitoring" />;
 }

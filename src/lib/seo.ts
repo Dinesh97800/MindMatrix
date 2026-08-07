@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://mindmatrix.com";
-const SITE_NAME = "Mind Matrix";
+const SITE_NAME = "Mind Matrix Intelligent Solutions";
 
 /** Set NEXT_PUBLIC_PRELAUNCH=false when the site goes live for indexing. */
 export const IS_PRELAUNCH =
@@ -22,7 +22,7 @@ export function buildPageMetadata({
   const url = `${SITE_URL}${path === "/" ? "" : path}`;
   const fullTitle =
     path === "/"
-      ? `${title} | Engineering Intelligent Embedded Products`
+      ? `${title} | Embedded Product Engineering`
       : `${title} | ${SITE_NAME}`;
 
   return {

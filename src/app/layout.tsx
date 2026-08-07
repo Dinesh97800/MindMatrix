@@ -12,20 +12,19 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Mind Matrix",
+  title: "Mind Matrix Intelligent Solutions",
   description:
-    "Engineering intelligent embedded products — industrial-grade hardware design, firmware development, and connectivity solutions since 2006.",
+    "India-based engineering consultancy for custom embedded hardware, firmware, and communication-system development — from requirements and architecture through prototype validation and production support.",
   path: "/",
 });
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Mind Matrix",
+  name: "Mind Matrix Intelligent Solutions",
   url: SITE_URL,
   description:
-    "Industrial-grade embedded engineering partner specializing in hardware design, firmware development, and IoT connectivity.",
-  foundingDate: "2006",
+    "Engineering consultancy specializing in embedded electronics, industrial firmware, communication systems, and custom product development.",
 };
 
 export default function RootLayout({

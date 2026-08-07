@@ -1,11 +1,14 @@
 import Link from "next/link";
+import { siteContent } from "@/config/site-content";
 
 export function StatsGridSection() {
+  const { hero } = siteContent;
+
   return (
     <section className="relative min-h-[640px] md:min-h-[921px] flex items-center overflow-x-clip bg-primary-container">
       <div
         className="absolute inset-0 z-0 opacity-40 mix-blend-overlay"
-        data-alt="A macro cinematic shot of a high-tech printed circuit board with glowing golden traces and neon blue microchips."
+        data-alt="Embedded controller prototype PCB with microcontroller, connectors, and test points on a bench setup."
         style={{
           backgroundImage:
             "url('https://lh3.googleusercontent.com/aida-public/AB6AXuC8Lc9ek2leanWwsnuRipJWXMkKpeEomytTsKi2PmjiHjwcqZxRZZBc3hpFzZbkxg6nZoxtarHI-Oxh7sxD4jjdbyG65FO4sLfKo5HukLyU_56vyQWcBTVVXbPrz8Lp1mU0ukUC2OhIrZRlcvlQvDR-dIe5jp15vZYR2CgeujidebRP4FboY0JwmNOmJEIaHEiKDDRiTl9KMcJmKAyszHz8G3KSh6mNGGKneBYG1v4E2PAFcb90mDHjEgSoa49RN1-pI81RN7LjaMc')",
@@ -16,57 +19,51 @@ export function StatsGridSection() {
           <div className="inline-flex max-w-full items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse shrink-0" />
             <span className="font-label-sm text-label-sm text-on-primary-container uppercase tracking-widest">
-              Global Engineering Partner
+              {hero.eyebrow}
             </span>
           </div>
           <h1 className="font-display-lg text-display-lg text-white leading-tight break-words">
-            Engineering Intelligent{" "}
-            <span className="text-on-primary-container">Embedded Products</span>
+            {hero.headline}
           </h1>
           <p className="font-body-lg text-body-lg text-on-primary-container/80 max-w-2xl">
-            From initial concept to full-scale commercialization, we architect
-            industrial-grade hardware and firmware solutions that redefine
-            precision and connectivity.
+            {hero.subheading}
           </p>
-          <div className="flex flex-wrap gap-4 pt-4">
+          <p className="font-label-sm text-label-sm text-on-primary-container/70 uppercase tracking-wide break-words">
+            {hero.technologyLine}
+          </p>
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-4">
             <Link
-              href="/embedded-firmware-development"
-              className="bg-white text-primary px-6 sm:px-8 py-4 rounded-full font-label-sm text-label-sm font-bold hover:bg-primary-fixed transition-all flex items-center gap-2"
+              href={hero.primaryCta.href}
+              className="w-full sm:w-auto bg-white text-primary px-6 sm:px-8 py-4 rounded-full font-label-sm text-label-sm font-bold hover:bg-primary-fixed transition-all flex items-center justify-center gap-2"
             >
-              Explore Capabilities
+              {hero.primaryCta.label}
               <span className="material-symbols-outlined">arrow_forward</span>
             </Link>
             <Link
-              href="/case-studies"
-              className="border border-white/20 text-white px-6 sm:px-8 py-4 rounded-full font-label-sm text-label-sm font-bold hover:bg-white/10 backdrop-blur-sm transition-all"
+              href={hero.secondaryCta.href}
+              className="w-full sm:w-auto border border-white/20 text-white px-6 sm:px-8 py-4 rounded-full font-label-sm text-label-sm font-bold hover:bg-white/10 backdrop-blur-sm transition-all text-center"
             >
-              View Case Studies
+              {hero.secondaryCta.label}
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter mt-16 md:mt-32 border-t border-white/10 pt-12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-gutter mt-16 md:mt-32 border-t border-white/10 pt-12">
           <div className="space-y-1">
-            <div className="text-headline-lg font-display-lg text-white">
-              18+ Years
-            </div>
+            <div className="text-headline-lg font-display-lg text-white">Nearly 20 Years</div>
             <div className="text-label-sm font-label-sm text-on-primary-container uppercase tracking-wider">
-              Experience
+              Industry Experience
             </div>
           </div>
           <div className="space-y-1">
-            <div className="text-headline-lg font-display-lg text-white">
-              100+ Projects
-            </div>
+            <div className="text-headline-lg font-display-lg text-white">Embedded Focus</div>
             <div className="text-label-sm font-label-sm text-on-primary-container uppercase tracking-wider">
-              Successfully Commercialized
+              Hardware, Firmware &amp; Communication
             </div>
           </div>
           <div className="space-y-1">
-            <div className="text-headline-lg font-display-lg text-white">
-              20+ Platforms
-            </div>
+            <div className="text-headline-lg font-display-lg text-white">India-Based</div>
             <div className="text-label-sm font-label-sm text-on-primary-container uppercase tracking-wider">
-              Technology Architectures
+              Engineering Consultancy
             </div>
           </div>
         </div>

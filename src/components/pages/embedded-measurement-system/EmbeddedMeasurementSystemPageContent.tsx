@@ -1,17 +1,5 @@
-import { GlassmorphicCardOverlayingHardwareSection } from "./sections/GlassmorphicCardOverlayingHardwareSection";
-import { FeatureSamplingSection } from "./sections/FeatureSamplingSection";
-import { App1Section } from "./sections/App1Section";
-import { Section } from "./sections/Section";
-import { BackgroundDecorativeElementSection } from "./sections/BackgroundDecorativeElementSection";
+import { ApprovedPageLayout } from "@/components/pages/shared/ApprovedPageLayout";
 
 export function EmbeddedMeasurementSystemPageContent() {
-  return (
-    <main>
-      <GlassmorphicCardOverlayingHardwareSection />
-      <FeatureSamplingSection />
-      <App1Section />
-      <Section />
-      <BackgroundDecorativeElementSection />
-    </main>
-  );
+  return <ApprovedPageLayout pageKey="embedded-measurement-system" />;
 }

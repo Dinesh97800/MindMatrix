@@ -5,16 +5,17 @@ export function Section() {
   return (
     <>
       <section className={'py-stack-lg bg-white'}>
-        <div className={'max-w-container-max mx-auto px-margin-desktop'}>
+        <div className={'max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop'}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-4 space-y-6 self-start">
               <h2 className="font-display-lg text-headline-lg text-primary">
-                Specialized Industries
+                Industries &amp; Applications
               </h2>
 
               <p className="text-on-surface-variant font-body-lg">
-                We deliver tailored solutions for sectors requiring
-                uncompromising stability and long lifecycle support.
+                We focus on industrial control, power electronics, telecom power, energy
+                monitoring, remote monitoring, instrumentation, and embedded communication
+                products.
               </p>
 
               <Link
@@ -48,7 +49,7 @@ export function Section() {
                   <h4
                     className={'text-white font-headline-md text-headline-md'}
                   >
-                    {'Renewable Energy'}
+                    {'Industrial Control'}
                   </h4>
                 </div>
               </div>
@@ -73,7 +74,7 @@ export function Section() {
                   <h4
                     className={'text-white font-headline-md text-headline-md'}
                   >
-                    {'Smart Grid'}
+                    {'Energy Monitoring'}
                   </h4>
                 </div>
               </div>
@@ -98,7 +99,7 @@ export function Section() {
                   <h4
                     className={'text-white font-headline-md text-headline-md'}
                   >
-                    {'EV Infrastructure'}
+                    {'Telecom Power'}
                   </h4>
                 </div>
               </div>
@@ -123,7 +124,7 @@ export function Section() {
                   <h4
                     className={'text-white font-headline-md text-headline-md'}
                   >
-                    {'Industrial IoT'}
+                    {'Remote Monitoring'}
                   </h4>
                 </div>
               </div>

@@ -18,143 +18,55 @@ export interface NavItem {
 
 const link = (label: string, href: string): NavLink => ({ label, href });
 
-/** No dedicated portal page yet — route inquiries to contact until launch. */
-export const CLIENT_PORTAL_HREF = "/contact-us";
-
-const resourcesNavItem: NavItem = {
-  label: "Resources",
-  href: "/resources-and-blog",
-  links: [
-    link("Engineering Whitepapers", "/engineering-whitepapers"),
-    link("Application Notes & Design Guides", "/application-notes-and-design-guides"),
-    link("Technical Downloads & SDKs", "/technical-downloads-and-sdks"),
-    link("Technical Knowledge Base", "/technical-knowledge-base"),
-    link("Insights & Engineering Blog", "/insights-and-engineering-blog"),
-    link("Resources & Blog", "/resources-and-blog"),
-    link("Deterministic Edge Computing", "/the-future-of-deterministic-edge-computing"),
-  ],
-};
-
-const caseStudiesNavItem: NavItem = {
-  label: "Case Studies",
-  href: "/case-studies",
-  links: [
-    link("Hyperloop Beta", "/hyperloop-beta"),
-    link("Atacama Solar Reserve", "/atacama-solar-reserve"),
-    link("Metropolis EV-Transit", "/metropolis-ev-transit"),
-    link("Nanolithography Cluster Control", "/nanolithography-cluster-control"),
-  ],
-};
-
-/** Top bar only — Home, Services, Industries, Solutions, Technologies, About, Contact */
+/** Top navigation aligned with approved site structure */
 export const headerNavItems: NavItem[] = [
   { label: "Home", href: "/" },
   {
     label: "Services",
     href: "/services",
     links: [
-      link("Product Development", "/product-development"),
-      link("Hardware Development", "/hardware-development"),
+      link("Technical Consultation", "/engineering-consulting"),
+      link("Requirement & Architecture Review", "/engineering-process"),
       link("Embedded Firmware Development", "/embedded-firmware-development"),
-      link("Embedded Linux", "/embedded-linux"),
-      link("Engineering Consulting", "/engineering-consulting"),
-      link("AI Solutions", "/ai-enabled-engineering"),
-      link("Connectivity", "/connectivity"),
+      link("Hardware & Firmware Development", "/hardware-development"),
+      link("Prototype Bring-up", "/product-development"),
+      link("Existing-product Debugging", "/engineering-consulting"),
+      link("Design Upgrade/Redesign", "/product-development"),
+      link("Communication Integration", "/industrial-communication"),
+      link("Test & Calibration Utilities", "/embedded-measurement-system"),
+      link("Production-transition Support", "/manufacturing"),
+      link("Long-term Engineering Support", "/engineering-consulting"),
     ],
   },
   {
     label: "Industries",
     href: "/industries",
     links: [
-      link("Manufacturing", "/manufacturing"),
-      link("Industrial Automation", "/industrial-automation"),
-      link("Oil & Gas", "/oil-and-gas"),
-      link("Renewable Energy", "/renewable-energy"),
-      link("Smart Infrastructure", "/smart-infrastructure"),
-      link("Telecom", "/telecom"),
-      link("EV Infrastructure", "/ev-infrastructure"),
-    ],
-  },
-  {
-    label: "Solutions",
-    href: "/solutions",
-    groups: [
-      {
-        label: "IoT & Edge",
-        links: [
-          link("Industrial IoT Solutions", "/industrial-iot-solutions"),
-          link("Industrial IoT Gateway", "/industrial-iot-gateway"),
-          link("Industrial Controller", "/industrial-controller"),
-          link("SNMP Alarm Gateway", "/snmp-alarm-gateway"),
-        ],
-      },
-      {
-        label: "Monitoring",
-        links: [
-          link("Energy Monitoring", "/energy-monitoring"),
-          link("Energy Management", "/energy-management"),
-          link("Remote Monitoring", "/remote-monitoring"),
-          link("Environmental Monitoring", "/environmental-monitoring"),
-          link("Pipeline Monitoring", "/pipeline-monitoring"),
-          link("Earth Resistance Monitoring", "/earth-resistance-monitoring"),
-        ],
-      },
-      {
-        label: "Infrastructure",
-        links: [
-          link("Building Automation", "/building-automation"),
-          link("Smart Grid", "/smart-grid"),
-          link("Battery Management System", "/battery-management-system"),
-          link("Battery Energy Storage", "/battery-energy-storage"),
-          link("EV Charger Electronics", "/ev-charger-electronics"),
-          link("Embedded Measurement System", "/embedded-measurement-system"),
-          link("Wireless Sensor Network", "/wireless-sensor-network"),
-        ],
-      },
+      link("Industrial Control & Monitoring", "/industrial-automation"),
+      link("Power Electronics & Battery Chargers", "/ev-charger-electronics"),
+      link("Telecom Power Systems", "/telecom"),
+      link("Energy Measurement & Monitoring", "/energy-monitoring"),
+      link("Remote Monitoring & Gateways", "/remote-monitoring"),
+      link("Custom Instrumentation", "/embedded-measurement-system"),
+      link("Data Acquisition & Logging", "/industrial-iot-gateway"),
+      link("Embedded Communication Products", "/snmp-alarm-gateway"),
     ],
   },
   {
     label: "Technologies",
     href: "/technologies",
-    groups: [
-      {
-        label: "Embedded Platforms",
-        links: [
-          link("STM32", "/stm32"),
-          link("ESP32", "/esp32"),
-          link("NXP", "/nxp"),
-          link("Nordic", "/nordic"),
-          link("Renesas", "/renesas"),
-          link("Microchip", "/microchip"),
-          link("Texas Instruments", "/texas-instruments"),
-        ],
-      },
-      {
-        label: "Operating Systems",
-        links: [
-          link("FreeRTOS", "/freertos"),
-          link("Embedded Linux", "/embedded-linux"),
-        ],
-      },
-      {
-        label: "Connectivity",
-        links: [
-          link("MQTT", "/mqtt"),
-          link("AWS IoT", "/aws-iot"),
-          link("Azure IoT", "/azure-iot"),
-          link("Industrial Protocols", "/industrial-protocols"),
-          link("Industrial Communication", "/industrial-communication"),
-        ],
-      },
-      {
-        label: "AI & Software",
-        links: [
-          link("AI Solutions", "/ai-enabled-engineering"),
-          link("Cognitive Core OS", "/cognitive-core-os"),
-          link("Quantum-Ready Data Architecture", "/quantum-ready-data-architecture"),
-        ],
-      },
+    links: [
+      link("STM32", "/stm32"),
+      link("FreeRTOS", "/freertos"),
+      link("Industrial Protocols", "/industrial-protocols"),
+      link("Industrial Communication", "/industrial-communication"),
+      link("MQTT", "/mqtt"),
+      link("Embedded Linux", "/embedded-linux"),
     ],
+  },
+  {
+    label: "Projects",
+    href: "/case-studies",
   },
   {
     label: "About",
@@ -162,27 +74,24 @@ export const headerNavItems: NavItem[] = [
     links: [
       link("About Us", "/about-us"),
       link("Engineering Process", "/engineering-process"),
-      link("Careers", "/careers"),
       link("FAQ", "/faq"),
     ],
+  },
+  {
+    label: "Engineering Consultation",
+    href: "/contact-us-and-engineering-consultation",
   },
   {
     label: "Contact",
     href: "/contact-us",
     links: [
       link("Contact Us", "/contact-us"),
-      link("Request Consultation", "/request-consultation"),
       link("Engineering Consultation", "/contact-us-and-engineering-consultation"),
     ],
   },
 ];
 
-/** Header + footer-only sections (Resources, Case Studies) for routing helpers */
-export const mainNavItems: NavItem[] = [
-  ...headerNavItems,
-  resourcesNavItem,
-  caseStudiesNavItem,
-];
+export const mainNavItems: NavItem[] = [...headerNavItems];
 
 export interface FooterColumn {
   title: string;
@@ -194,23 +103,20 @@ export const footerColumns: FooterColumn[] = [
     title: "Services",
     links: [
       link("All Services", "/services"),
-      link("Product Development", "/product-development"),
-      link("Hardware Development", "/hardware-development"),
       link("Embedded Firmware", "/embedded-firmware-development"),
-      link("Embedded Linux", "/embedded-linux"),
+      link("Hardware Development", "/hardware-development"),
       link("Engineering Consulting", "/engineering-consulting"),
-      link("Connectivity", "/connectivity"),
+      link("Industrial Communication", "/industrial-communication"),
     ],
   },
   {
     title: "Industries",
     links: [
       link("All Industries", "/industries"),
-      link("Manufacturing", "/manufacturing"),
       link("Industrial Automation", "/industrial-automation"),
-      link("Oil & Gas", "/oil-and-gas"),
-      link("Renewable Energy", "/renewable-energy"),
-      link("Telecom", "/telecom"),
+      link("Telecom Power", "/telecom"),
+      link("Energy Monitoring", "/energy-monitoring"),
+      link("Remote Monitoring", "/remote-monitoring"),
     ],
   },
   {
@@ -218,49 +124,20 @@ export const footerColumns: FooterColumn[] = [
     links: [
       link("Tech Stack", "/technologies"),
       link("STM32", "/stm32"),
-      link("ESP32", "/esp32"),
       link("FreeRTOS", "/freertos"),
-      link("MQTT", "/mqtt"),
       link("Industrial Protocols", "/industrial-protocols"),
+      link("MQTT", "/mqtt"),
     ],
   },
   {
-    title: "Solutions",
-    links: [
-      link("All Solutions", "/solutions"),
-      link("Industrial IoT", "/industrial-iot-solutions"),
-      link("Smart Grid", "/smart-grid"),
-      link("Energy Monitoring", "/energy-monitoring"),
-      link("Building Automation", "/building-automation"),
-      link("SNMP Alarm Gateway", "/snmp-alarm-gateway"),
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      link("Whitepapers", "/engineering-whitepapers"),
-      link("Application Notes", "/application-notes-and-design-guides"),
-      link("Downloads & SDKs", "/technical-downloads-and-sdks"),
-      link("Knowledge Base", "/technical-knowledge-base"),
-      link("Insights & Blog", "/insights-and-engineering-blog"),
-    ],
-  },
-  {
-    title: "Case Studies",
-    links: [
-      link("All Case Studies", "/case-studies"),
-      link("Hyperloop Beta", "/hyperloop-beta"),
-      link("Atacama Solar Reserve", "/atacama-solar-reserve"),
-      link("Metropolis EV-Transit", "/metropolis-ev-transit"),
-      link("Nanolithography", "/nanolithography-cluster-control"),
-    ],
+    title: "Projects",
+    links: [link("Selected Project Experience", "/case-studies")],
   },
   {
     title: "Company",
     links: [
       link("About Us", "/about-us"),
       link("Engineering Process", "/engineering-process"),
-      link("Careers", "/careers"),
       link("FAQ", "/faq"),
     ],
   },
@@ -268,30 +145,28 @@ export const footerColumns: FooterColumn[] = [
     title: "Legal",
     links: [
       link("Privacy Policy", "/privacy-policy"),
-      link("Terms & Conditions", "/terms-and-conditions"),
+      link("Terms of Website Use", "/terms-and-conditions"),
     ],
   },
   {
     title: "Contact",
     links: [
       link("Contact Us", "/contact-us"),
-      link("Request Consultation", "/request-consultation"),
-      link("Client Portal", CLIENT_PORTAL_HREF),
+      link("Engineering Consultation", "/contact-us-and-engineering-consultation"),
     ],
   },
 ];
 
-/** @deprecated Use footerColumns — kept for minimal imports */
 export const homeFooterServiceLinks = footerColumns[0].links.slice(1, 5);
-export const homeFooterCompanyLinks = footerColumns[6].links.concat(
-  footerColumns[7].links.slice(0, 1)
+export const homeFooterCompanyLinks = footerColumns[4].links.concat(
+  footerColumns[5].links.slice(0, 1)
 );
 export const defaultFooterExpertiseLinks = footerColumns[0].links
   .slice(0, 1)
   .concat(footerColumns[1].links.slice(0, 1), footerColumns[2].links.slice(0, 1));
-export const defaultFooterResourceLinks = footerColumns[4].links;
-export const defaultFooterCompanyLinks = footerColumns[6].links.concat(
-  footerColumns[8].links.slice(0, 1)
+export const defaultFooterResourceLinks = footerColumns[3].links;
+export const defaultFooterCompanyLinks = footerColumns[4].links.concat(
+  footerColumns[6].links.slice(0, 1)
 );
 
 export function collectNavHrefs(items: NavItem[] = mainNavItems): string[] {
@@ -313,7 +188,6 @@ export function collectNavHrefs(items: NavItem[] = mainNavItems): string[] {
   return [...hrefs];
 }
 
-/** All in-app routes linked from main nav and footer (for audits). */
 export function collectAllSiteHrefs(): string[] {
   const hrefs = new Set(collectNavHrefs(mainNavItems));
   footerColumns.forEach((col) =>

@@ -1,17 +1,6 @@
-import { AbstractBackgroundElementSection } from "./sections/AbstractBackgroundElementSection";
-import { RenewableEnergyLargeSection } from "./sections/RenewableEnergyLargeSection";
-import { Section } from "./sections/Section";
-import { Block2Section } from "./sections/Block2Section";
-import { Block3Section } from "./sections/Block3Section";
+import { IndexPageLayout } from "@/components/pages/shared/IndexPageLayout";
+import { siteContent } from "@/config/site-content";
 
 export function IndustriesPageContent() {
-  return (
-    <main className={"technical-grid min-h-screen"}>
-      <AbstractBackgroundElementSection />
-      <RenewableEnergyLargeSection />
-      <Section />
-      <Block2Section />
-      <Block3Section />
-    </main>
-  );
+  return <IndexPageLayout pageKey="industries" items={siteContent.industries} />;
 }

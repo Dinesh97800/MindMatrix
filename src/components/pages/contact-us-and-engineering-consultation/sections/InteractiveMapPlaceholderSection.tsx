@@ -3,7 +3,7 @@ import { companyContact } from "@/config/company";
 
 export function InteractiveMapPlaceholderSection() {
   return (
-    <section className="bg-white px-margin-desktop py-stack-lg">
+    <section className="bg-white px-margin-mobile md:px-margin-desktop py-stack-lg">
       <div className="mx-auto max-w-container-max">
         <div className="mb-stack-lg">
           <h2 className="mb-2 font-headline-lg text-headline-lg">Our Office</h2>

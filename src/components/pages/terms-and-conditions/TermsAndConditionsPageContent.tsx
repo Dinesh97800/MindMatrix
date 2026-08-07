@@ -1,13 +1,11 @@
 import { HeroSection } from "./sections/HeroSection";
-import { FloatingNavigationSidebarStickySection } from "./sections/FloatingNavigationSidebarStickySection";
-import { Section } from "./sections/Section";
+import { TermsContentSection } from "./sections/TermsContentSection";
 
 export function TermsAndConditionsPageContent() {
   return (
-    <main className={"technical-grid min-h-screen"}>
+    <main>
       <HeroSection />
-      <FloatingNavigationSidebarStickySection />
-      <Section />
+      <TermsContentSection />
     </main>
   );
 }

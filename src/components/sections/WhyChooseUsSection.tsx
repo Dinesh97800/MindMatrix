@@ -1,62 +1,23 @@
-export const whyChooseItems = [
-  {
-    title: "Edge-to-cloud engineering",
-    description:
-      "Ability to connect AI with embedded devices, sensors, gateways, dashboards, and cloud platforms.",
-    icon: "cloud_sync",
-  },
-  {
-    title: "Customer-specific integration",
-    description:
-      "Solutions built around the customer's documents, databases, APIs, products, and workflows.",
-    icon: "integration_instructions",
-  },
-  {
-    title: "Controlled automation",
-    description:
-      "Human approvals, validation, permissions, and audit logging for important actions.",
-    icon: "verified_user",
-  },
-  {
-    title: "Domain-driven AI",
-    description:
-      "Engineering and industrial context is incorporated into the application design.",
-    icon: "architecture",
-  },
-  {
-    title: "Flexible deployment",
-    description:
-      "Cloud, hybrid, edge, or private deployment according to security and operational needs.",
-    icon: "deployed_code",
-  },
-  {
-    title: "End-to-end ownership",
-    description:
-      "Support from architecture and proof of concept through integration, testing, deployment, and improvement.",
-    icon: "timeline",
-  },
-] as const;
+import { siteContent } from "@/config/site-content";
 
 export function WhyChooseUsSection() {
   return (
     <section className="py-stack-lg bg-surface">
-      <div className="max-w-container-max mx-auto px-margin-desktop">
+      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <div className="max-w-3xl mx-auto text-center mb-16 space-y-4">
           <span className="inline-block font-label-sm text-label-sm uppercase tracking-widest text-secondary">
-            Our Advantage
+            Why Work With Us
           </span>
           <h2 className="font-display-lg text-headline-lg text-primary">
-            Why Choose Mind Matrix Workspace
+            Senior-Led Embedded Product Engineering
           </h2>
           <p className="text-on-surface-variant font-body-lg">
-            We combine AI with embedded systems, industrial data, and customer
-            knowledge to deliver complete, production-ready solutions—not
-            isolated tools.
+            {siteContent.locationStatement}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-          {whyChooseItems.map((item) => (
+          {siteContent.whyChooseUs.map((item) => (
             <div
               key={item.title}
               className="glass-card p-8 rounded-xl flex flex-col h-full"

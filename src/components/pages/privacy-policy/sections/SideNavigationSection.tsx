@@ -1,7 +1,137 @@
+import Link from "next/link";
+import { companyContact, formatCompanyAddress } from "@/config/company";
+import { siteContent } from "@/config/site-content";
+
 export function SideNavigationSection() {
   return (
-    <>
-      <div className={"grid grid-cols-12 gap-gutter"}><aside className={"hidden md:block col-span-3"}><div className={"sticky top-28"}><h3 className={"font-headline-md text-headline-md mb-6"}>{"Contents"}</h3><nav className={"flex flex-col gap-2"}><a className={"nav-link font-label-sm text-label-sm text-on-surface-variant hover:text-primary px-4 py-2 border-l border-outline-variant/30 transition-all"} href={"#introduction"}>{"Introduction"}</a><a className={"nav-link font-label-sm text-label-sm text-on-surface-variant hover:text-primary px-4 py-2 border-l border-outline-variant/30 transition-all"} href={"#data-collection"}>{"Data Collection"}</a><a className={"nav-link font-label-sm text-label-sm text-on-surface-variant hover:text-primary px-4 py-2 border-l border-outline-variant/30 transition-all"} href={"#usage"}>{"How We Use Data"}</a><a className={"nav-link font-label-sm text-label-sm text-on-surface-variant hover:text-primary px-4 py-2 border-l border-outline-variant/30 transition-all"} href={"#security"}>{"Technical Security"}</a><a className={"nav-link font-label-sm text-label-sm text-on-surface-variant hover:text-primary px-4 py-2 border-l border-outline-variant/30 transition-all"} href={"#third-parties"}>{"Third-Party Sharing"}</a><a className={"nav-link font-label-sm text-label-sm text-on-surface-variant hover:text-primary px-4 py-2 border-l border-outline-variant/30 transition-all"} href={"#rights"}>{"Your Rights"}</a><a className={"nav-link font-label-sm text-label-sm text-on-surface-variant hover:text-primary px-4 py-2 border-l border-outline-variant/30 transition-all"} href={"#contact"}>{"Contact Engineering"}</a></nav><div className={"mt-12 p-6 bg-surface-container-low rounded-xl border border-outline-variant/20"}><span className={"material-symbols-outlined text-primary mb-2"}>{"shield_with_heart"}</span><p className={"font-label-sm text-label-sm text-on-surface-variant mb-4"}>{"Last Updated: October 24, 2023"}</p><p className={"text-xs text-on-surface-variant/70 leading-relaxed"}>{"Our policy adheres to ISO/IEC 27001 standards and GDPR compliance frameworks."}</p></div></div></aside><article className={"col-span-12 md:col-span-9 privacy-content"}><header className={"mb-12"}><span className={"inline-block px-3 py-1 bg-primary text-on-primary text-[10px] font-bold uppercase tracking-widest rounded-full mb-4"}>{"Legal Framework v4.2"}</span><h1 className={"font-display-lg text-display-lg text-primary mb-6"}>{"Privacy Policy"}</h1><p className={"font-body-lg text-body-lg text-on-surface-variant max-w-3xl"}>{"\n                        At Mind Matrix Workspace, we engineer trust. This document outlines the technical protocols and administrative safeguards we employ to protect your intellectual property and personal identifiers within our digital ecosystem.\n                    "}</p></header><section id={"introduction"}><h2 className={"font-headline-lg text-headline-lg text-primary flex items-center gap-3"}><span className={"material-symbols-outlined text-primary"}>{"info"}</span>{"\n                        1. Introduction\n                    "}</h2><p className={"font-body-md text-body-md"}>{"\n                        Mind Matrix Workspace (\"we,\" \"us,\" or \"our\") operates the Mind Matrix platform and associated services. We are committed to the highest standards of data integrity and transparency. This policy describes how we collect, process, and protect information when you utilize our high-performance workspace solutions.\n                    "}</p><p className={"font-body-md text-body-md"}>{"\n                        By accessing our platform, you acknowledge the systematic processing of data as described herein. Our infrastructure is designed with privacy-by-design principles, ensuring that security is not a feature, but a fundamental component of the architecture.\n                    "}</p></section><div className={"my-stack-md relative h-80 rounded-xl overflow-hidden border border-outline-variant/20 shadow-sm"}><div className={"w-full h-full bg-cover bg-center"} data-alt={"A clean, minimalist high-tech server room with glowing blue fiber optic cables and brushed steel surfaces. The lighting is cold and precise, suggesting a secure, professional environment. The composition is symmetrical and organized, reflecting industrial precision and technical authority."} style={{"backgroundImage":"url('https://lh3.googleusercontent.com/aida-public/AB6AXuCABAVT8D0CkCKY2Tf3jwnmD7_7FjYMTBTgsSboUGGcsPjPx4mCKwGcAyGE4FfU3Gkl8RXhGrR-ENU25qSwQH00zh8uVVIjtT63S-CyMg6v9JSDU_g_6bewXCyCZa45Dlme27_IRJzH3Qoilmz9uevMjc_XL80a_k0xEogELFL_riEcS3rmeLqCLakZxcUBYjjczyHUoCaXkMLyVcOsvhOQn3fazqBEzTifnNoXpWrzQOcy9ywRWA72r74e3FoUbnEw1CPlxdgWqJ8')"}}></div><div className={"absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex flex-col justify-end p-8"}><p className={"text-on-primary font-headline-md text-headline-md"}>{"Security-First Architecture"}</p><p className={"text-on-primary/80 font-body-md text-body-md"}>{"Data is encrypted at rest and in transit using AES-256 protocols."}</p></div></div><section id={"data-collection"}><h2 className={"font-headline-lg text-headline-lg text-primary flex items-center gap-3"}><span className={"material-symbols-outlined text-primary"}>{"database"}</span>{"\n                        2. Data Collection\n                    "}</h2><p className={"font-body-md text-body-md"}>{"\n                        We collect specific telemetry and identification data necessary for the operation of the workspace. This collection is categorized into three primary vectors:\n                    "}</p><div className={"grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"}><div className={"p-6 bg-surface-container rounded-lg border border-outline-variant/10"}><h4 className={"font-headline-md text-headline-md mb-2"}>{"Operational Metadata"}</h4><p className={"text-sm text-on-surface-variant"}>{"Log data including IP addresses, browser hardware profiles, and navigation timestamps required for security auditing."}</p></div><div className={"p-6 bg-surface-container rounded-lg border border-outline-variant/10"}><h4 className={"font-headline-md text-headline-md mb-2"}>{"Account Identifiers"}</h4><p className={"text-sm text-on-surface-variant"}>{"Validated email addresses, organizational affiliation, and professional credentials used for access control."}</p></div></div><p className={"font-body-md text-body-md"}>{"\n                        We do not collect sensitive biological, political, or private lifestyle data. Our focus remains exclusively on professional workspace interactions.\n                    "}</p></section><section id={"usage"}><h2 className={"font-headline-lg text-headline-lg text-primary flex items-center gap-3"}><span className={"material-symbols-outlined text-primary"}>{"settings_applications"}</span>{"\n                        3. How We Use Data\n                    "}</h2><p className={"font-body-md text-body-md"}>{"\n                        The utilization of your data is governed by the principle of least privilege. Your information is strictly applied to:\n                    "}</p><ul className={"list-disc pl-6 space-y-3 mb-6 text-on-surface-variant"}><li>{"Provisioning and maintaining the high-availability Mind Matrix infrastructure."}</li><li>{"Executing algorithm-based workspace optimizations to improve individual user productivity."}</li><li>{"Proactive threat detection and vulnerability management across our network."}</li><li>{"Compliance with mandatory legal obligations and regulatory reporting."}</li></ul></section><section id={"security"}><h2 className={"font-headline-lg text-headline-lg text-primary flex items-center gap-3"}><span className={"material-symbols-outlined text-primary"}>{"lock_open"}</span>{"\n                        4. Technical Security\n                    "}</h2><p className={"font-body-md text-body-md"}>{"\n                        Our security stack represents the frontier of industrial digital protection. We utilize a multi-layered defense-in-depth strategy:\n                    "}</p><div className={"overflow-hidden rounded-xl border border-outline-variant/20 mb-6"}><table className={"w-full text-left border-collapse"}><thead><tr className={"bg-surface-container-high"}><th className={"p-4 font-headline-md text-sm uppercase tracking-wider border-b border-outline-variant/20"}>{"Layer"}</th><th className={"p-4 font-headline-md text-sm uppercase tracking-wider border-b border-outline-variant/20"}>{"Protocol"}</th></tr></thead><tbody><tr className={"border-b border-outline-variant/10"}><td className={"p-4 font-bold text-primary"}>{"Transmission"}</td><td className={"p-4 text-on-surface-variant"}>{"TLS 1.3 with Perfect Forward Secrecy"}</td></tr><tr className={"border-b border-outline-variant/10"}><td className={"p-4 font-bold text-primary"}>{"Storage"}</td><td className={"p-4 text-on-surface-variant"}>{"FIPS 140-2 compliant hardware security modules"}</td></tr><tr><td className={"p-4 font-bold text-primary"}>{"Access"}</td><td className={"p-4 text-on-surface-variant"}>{"Mandatory Multi-Factor Authentication (MFA)"}</td></tr></tbody></table></div></section><section id={"third-parties"}><h2 className={"font-headline-lg text-headline-lg text-primary flex items-center gap-3"}><span className={"material-symbols-outlined text-primary"}>{"hub"}</span>{"\n                        5. Third-Party Sharing\n                    "}</h2><p className={"font-body-md text-body-md"}>{"\n                        Mind Matrix does not monetize user data through sale or exchange. We only engage with vetted subprocessors who adhere to our technical and ethical standards. These partners are strictly limited to providing specialized infrastructure services (e.g., cloud hosting via AWS/Azure) and are bound by stringent Data Processing Agreements (DPAs).\n                    "}</p></section><section id={"rights"}><h2 className={"font-headline-lg text-headline-lg text-primary flex items-center gap-3"}><span className={"material-symbols-outlined text-primary"}>{"fingerprint"}</span>{"\n                        6. Your Rights\n                    "}</h2><p className={"font-body-md text-body-md"}>{"\n                        In accordance with global data protection regulations, you maintain absolute sovereignty over your personal data. You have the right to:\n                    "}</p><div className={"flex flex-wrap gap-4 mb-6"}><div className={"flex items-center gap-2 px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium"}><span className={"material-symbols-outlined text-primary text-lg"}>{"visibility"}</span>{"\n                            Access Data\n                        "}</div><div className={"flex items-center gap-2 px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium"}><span className={"material-symbols-outlined text-primary text-lg"}>{"edit"}</span>{"\n                            Rectification\n                        "}</div><div className={"flex items-center gap-2 px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium"}><span className={"material-symbols-outlined text-primary text-lg"}>{"delete"}</span>{"\n                            Erasure\n                        "}</div><div className={"flex items-center gap-2 px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium"}><span className={"material-symbols-outlined text-primary text-lg"}>{"export_notes"}</span>{"\n                            Portability\n                        "}</div></div></section><section className={"bg-primary text-on-primary p-8 md:p-12 rounded-2xl mt-12 relative overflow-hidden"} id={"contact"}><div className={"relative z-10"}><h2 className={"font-headline-lg text-headline-lg mb-4 !mt-0"}>{"Technical Inquiries"}</h2><p className={"text-on-primary/80 mb-8 max-w-xl"}>{"\n                            If you have specific questions regarding our encryption algorithms or data handling workflows, our engineering team is available for technical deep-dives.\n                        "}</p><a className={"inline-flex items-center gap-3 bg-on-primary text-primary px-8 py-3 rounded-DEFAULT font-bold hover:bg-on-primary-fixed-variant transition-colors group"} href={"mailto:privacy@mindmatrix.io"}>{"\n                            Contact Privacy Engineering\n                            "}<span className={"material-symbols-outlined group-hover:translate-x-1 transition-transform"}>{"arrow_forward"}</span></a></div><div className={"absolute right-0 top-0 w-64 h-64 bg-on-primary/5 rounded-full blur-3xl -mr-20 -mt-20"}></div><div className={"absolute left-1/2 bottom-0 w-32 h-32 bg-on-primary/10 rounded-full blur-2xl -ml-16 -mb-16"}></div></section></article></div>
-    </>
+    <div className="grid grid-cols-12 gap-gutter">
+      <aside className="hidden md:block col-span-3">
+        <div className="sticky top-28">
+          <h3 className="font-headline-md text-headline-md mb-6">Contents</h3>
+          <nav className="flex flex-col gap-2">
+            {[
+              ["#introduction", "Introduction"],
+              ["#data-collection", "Information We Collect"],
+              ["#usage", "How We Use Information"],
+              ["#sharing", "Sharing"],
+              ["#retention", "Retention"],
+              ["#security", "Security"],
+              ["#rights", "Your Rights"],
+              ["#contact", "Contact"],
+            ].map(([href, label]) => (
+              <a
+                key={href}
+                className="font-label-sm text-label-sm text-on-surface-variant hover:text-primary px-4 py-2 border-l border-outline-variant/30 transition-all"
+                href={href}
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </aside>
+
+      <article className="col-span-12 md:col-span-9 privacy-content space-y-10">
+        <header className="mb-4">
+          <h1 className="font-display-lg text-display-lg text-primary mb-6">Privacy Policy</h1>
+          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">
+            This policy describes how {siteContent.legalName} handles information collected
+            through this website and related enquiry channels.
+          </p>
+        </header>
+
+        <section id="introduction" className="space-y-4">
+          <h2 className="font-headline-lg text-headline-lg text-primary">1. Introduction</h2>
+          <p className="font-body-md text-on-surface-variant">
+            {siteContent.legalName} operates this website to provide information about our
+            embedded engineering services and to receive business enquiries. We collect only the
+            information needed to respond to enquiries and operate the website responsibly.
+          </p>
+        </section>
+
+        <section id="data-collection" className="space-y-4">
+          <h2 className="font-headline-lg text-headline-lg text-primary">
+            2. Information We Collect
+          </h2>
+          <ul className="list-disc pl-6 space-y-2 text-on-surface-variant">
+            <li>Contact details submitted through enquiry forms, such as name, email, phone, and company.</li>
+            <li>Technical information you choose to share about a product requirement or project.</li>
+            <li>Basic website usage information such as pages visited, browser type, and approximate location derived from IP address, if analytics or server logs are enabled.</li>
+            <li>Cookie or similar technology data if used for basic site functionality or analytics.</li>
+          </ul>
+        </section>
+
+        <section id="usage" className="space-y-4">
+          <h2 className="font-headline-lg text-headline-lg text-primary">
+            3. How We Use Information
+          </h2>
+          <ul className="list-disc pl-6 space-y-2 text-on-surface-variant">
+            <li>To respond to enquiries and provide requested engineering consultation.</li>
+            <li>To communicate about proposals, meetings, or project discussions you request.</li>
+            <li>To maintain, secure, and improve the website.</li>
+            <li>To comply with applicable legal obligations.</li>
+          </ul>
+        </section>
+
+        <section id="sharing" className="space-y-4">
+          <h2 className="font-headline-lg text-headline-lg text-primary">
+            4. Sharing With Service Providers
+          </h2>
+          <p className="font-body-md text-on-surface-variant">
+            We may share information with essential service providers that help us operate the
+            website or process enquiries, such as hosting, email delivery, form processing, or
+            analytics providers. These providers are expected to handle information only for the
+            services they provide to us.
+          </p>
+        </section>
+
+        <section id="retention" className="space-y-4">
+          <h2 className="font-headline-lg text-headline-lg text-primary">5. Retention</h2>
+          <p className="font-body-md text-on-surface-variant">
+            Enquiry information is retained only as long as reasonably necessary to respond to the
+            request, maintain business records, or meet legal requirements. Retention periods may
+            vary depending on the nature of the enquiry and any ongoing commercial discussion.
+          </p>
+        </section>
+
+        <section id="security" className="space-y-4">
+          <h2 className="font-headline-lg text-headline-lg text-primary">6. Security</h2>
+          <p className="font-body-md text-on-surface-variant">
+            We apply reasonable administrative and technical measures to protect information
+            submitted through this website. No online transmission or storage system can be
+            guaranteed to be completely secure.
+          </p>
+        </section>
+
+        <section id="rights" className="space-y-4">
+          <h2 className="font-headline-lg text-headline-lg text-primary">7. Your Rights</h2>
+          <p className="font-body-md text-on-surface-variant">
+            You may request access to, correction of, or deletion of personal information we hold
+            about you, subject to applicable law and legitimate business record requirements. To
+            make a request, contact us using the details below.
+          </p>
+        </section>
+
+        <section
+          id="contact"
+          className="bg-primary text-on-primary p-8 md:p-12 rounded-2xl space-y-4"
+        >
+          <h2 className="font-headline-lg text-headline-lg !mt-0">8. Contact</h2>
+          <p className="text-on-primary/80 max-w-xl">
+            For privacy-related requests, contact {siteContent.legalName} at{" "}
+            <Link href={`mailto:${companyContact.email}`} className="underline">
+              {companyContact.email}
+            </Link>
+            .
+          </p>
+          <p className="text-on-primary/80">{formatCompanyAddress()}</p>
+          <p className="text-on-primary/70 text-sm">
+            This website privacy policy should be reviewed against the actual hosting, analytics,
+            email, and form services in use. Project-specific commercial terms remain in proposals
+            and agreements, not in this general website policy.
+          </p>
+        </section>
+      </article>
+    </div>
   );
 }

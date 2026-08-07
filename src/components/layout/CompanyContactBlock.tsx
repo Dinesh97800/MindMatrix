@@ -7,28 +7,45 @@ import {
 
 interface CompanyContactBlockProps {
   variant?: "compact" | "full";
+  tone?: "default" | "inverse";
   className?: string;
 }
 
 export function CompanyContactBlock({
   variant = "compact",
+  tone = "default",
   className = "",
 }: CompanyContactBlockProps) {
   const address = formatCompanyAddress(variant === "full");
+  const inverse = tone === "inverse";
 
   if (variant === "full") {
     return (
       <div className={`space-y-4 ${className}`}>
         <div>
-          <h3 className="font-headline-md text-headline-md text-primary mb-1">
+          <h3
+            className={`font-headline-md text-headline-md mb-1 ${
+              inverse ? "text-on-primary-container" : "text-primary"
+            }`}
+          >
             {companyContact.legalName}
           </h3>
-          <p className="font-label-sm text-on-secondary-container uppercase tracking-wider">
+          <p
+            className={`font-label-sm uppercase tracking-wider ${
+              inverse ? "text-on-primary-container/70" : "text-on-secondary-container"
+            }`}
+          >
             Registered Office
           </p>
         </div>
 
-        <address className="not-italic flex flex-col gap-1 border-l-2 border-primary/20 pl-4 font-body-md text-on-surface">
+        <address
+          className={`not-italic flex flex-col gap-1 border-l-2 pl-4 font-body-md ${
+            inverse
+              ? "border-on-primary-container/30 text-on-primary-container/90"
+              : "border-primary/20 text-on-surface"
+          }`}
+        >
           <span>{companyContact.address.line1}</span>
           <span>
             {companyContact.address.city}, {companyContact.address.state}
@@ -38,12 +55,22 @@ export function CompanyContactBlock({
         <div className="space-y-3">
           <Link
             href={`mailto:${companyContact.email}`}
-            className="inline-flex min-h-[44px] items-center gap-2 font-label-sm text-primary transition-colors hover:text-secondary"
+            className={`inline-flex min-h-[44px] items-center gap-2 font-label-sm transition-colors ${
+              inverse
+                ? "text-on-primary-container hover:text-secondary"
+                : "text-primary hover:text-secondary"
+            }`}
           >
             <span className="material-symbols-outlined text-lg">mail</span>
             {companyContact.email}
           </Link>
-          <p className="font-label-sm text-on-surface-variant">{formatGstinLabel()}</p>
+          <p
+            className={`font-label-sm ${
+              inverse ? "text-on-primary-container/70" : "text-on-surface-variant"
+            }`}
+          >
+            {formatGstinLabel()}
+          </p>
         </div>
       </div>
     );

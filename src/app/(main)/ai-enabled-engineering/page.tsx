@@ -5,7 +5,7 @@ import { AiEnabledEngineeringPageContent } from "@/components/pages/ai-enabled-e
 export const metadata: Metadata = buildPageMetadata({
   title: "AI Solutions",
   description:
-    "Edge AI, intelligent automation, and custom AI solutions from Mind Matrix Workspace — combining AI with embedded systems, IoT, industrial data, and customer knowledge for practical engineering applications.",
+    "AI-assisted engineering tools and embedded/industrial AI prototypes may be offered where appropriate to the application.",
   path: "/ai-enabled-engineering",
   keywords: [
     "mind matrix",

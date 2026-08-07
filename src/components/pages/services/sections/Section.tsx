@@ -1,9 +1,45 @@
 import { StitchImage } from "@/components/ui/StitchImage";
+import { siteContent } from "@/config/site-content";
+
+const approachPoints = siteContent.whyChooseUs.slice(0, 3);
 
 export function Section() {
   return (
-    <>
-      <section className={"py-stack-lg px-margin-mobile md:px-margin-desktop bg-primary-container text-on-primary"}><div className={"max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center"}><div className={"reveal-on-scroll"}><h2 className={"font-display-lg text-headline-lg-mobile md:text-headline-lg mb-8"}>{"Our Engineering Approach"}</h2><div className={"space-y-12"}><div className={"flex gap-6"}><div className={"flex-shrink-0 w-12 h-12 rounded-lg border border-on-primary/20 flex items-center justify-center"}><span className={"material-symbols-outlined"} data-icon={"verified"}>{"verified"}</span></div><div><h4 className={"font-headline-md text-xl mb-2"}>{"Technical Excellence"}</h4><p className={"text-on-primary-container font-body-md"}>{"Our engineers adhere to rigorous standards, utilizing peer-reviewed architectures and best-in-class tooling to ensure zero-defect delivery."}</p></div></div><div className={"flex gap-6"}><div className={"flex-shrink-0 w-12 h-12 rounded-lg border border-on-primary/20 flex items-center justify-center"}><span className={"material-symbols-outlined"} data-icon={"shield"}>{"shield"}</span></div><div><h4 className={"font-headline-md text-xl mb-2"}>{"Industrial Reliability"}</h4><p className={"text-on-primary-container font-body-md"}>{"We design for the most hostile environments, focusing on MTBF metrics and hardware-level safety mechanisms."}</p></div></div><div className={"flex gap-6"}><div className={"flex-shrink-0 w-12 h-12 rounded-lg border border-on-primary/20 flex items-center justify-center"}><span className={"material-symbols-outlined"} data-icon={"forward"}>{"forward"}</span></div><div><h4 className={"font-headline-md text-xl mb-2"}>{"Forward-Thinking Scalability"}</h4><p className={"text-on-primary-container font-body-md"}>{"Architecture that anticipates future upgrades, preventing technical debt and ensuring long-term product viability."}</p></div></div></div></div><div className={"relative h-[500px] w-full rounded-2xl overflow-hidden glass-card group"}><div className={"absolute inset-0 blueprint-pattern opacity-10"}></div><StitchImage src={"https://lh3.googleusercontent.com/aida-public/AB6AXuAflVGcvisbgzSU0i_hdzWrn8nlqP60yxJ0aBEcRDUHs_zZFhqz-YKTGmd711qdAwaA6RSgHNgr0bCWek7e61MD2EbccHZHWsGBDyWnC69efZDi2b5d0oUYQq1mDmFB8Hzfvfk-B3O3DAFvirupeJJ4mEqvjBOsj3Eyvj2L0gG3J6TUBOvcRLiAqCzMU-NnpdYQ5AJp3IE0_Xt0I9pYFwwMn8AaEuxqubDX-kiyV7fzVgQUaDMM6cqe4A4dGcYiT9_MOiUiCVCW5dU"} alt={"A high-tech industrial engineering workspace with macro photography of a sophisticated circuit board. Technical blue lighting highlights the precise traces and high-end components. The atmosphere is professional, clean, and futuristic, following a minimalist industrial aesthetic with sharp focus and cinematic depth of field."} className={"absolute inset-0 w-full h-full object-cover mix-blend-luminosity opacity-80 group-hover:scale-105 transition-transform duration-700"} /><div className={"absolute inset-0 bg-gradient-to-t from-primary-container via-transparent to-transparent opacity-60"}></div><div className={"absolute bottom-8 left-8 right-8"}><div className={"p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl"}><p className={"text-on-primary font-body-md italic"}>{"\"Mind Matrix represents the absolute pinnacle of technical authority. Their firmware methodology transformed our entire production stack.\""}</p><div className={"mt-4 flex items-center gap-3"}><div className={"w-10 h-10 rounded-full bg-primary flex items-center justify-center font-bold text-xs"}>{"CTO"}</div><div><p className={"font-label-sm text-label-sm text-on-primary"}>{"Chief Technical Officer"}</p><p className={"text-[10px] text-on-primary-container uppercase tracking-widest"}>{"Aerospace Division"}</p></div></div></div></div></div></div></section>
-    </>
+    <section className="bg-primary-container px-margin-mobile py-stack-lg text-on-primary md:px-margin-desktop">
+      <div className="mx-auto grid max-w-container-max grid-cols-1 items-center gap-stack-lg lg:grid-cols-2 lg:gap-gutter">
+        <div>
+          <h2 className="mb-8 font-display-lg text-headline-lg-mobile md:text-headline-lg">
+            Our Engineering Approach
+          </h2>
+          <div className="space-y-8">
+            {approachPoints.map((item) => (
+              <div key={item.title} className="flex gap-6">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-on-primary/20">
+                  <span className="material-symbols-outlined">{item.icon}</span>
+                </div>
+                <div>
+                  <h4 className="mb-2 font-headline-md text-xl">{item.title}</h4>
+                  <p className="font-body-md text-on-primary-container">{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="group relative h-[420px] w-full overflow-hidden rounded-2xl border border-on-primary/10">
+          <StitchImage
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAflVGcvisbgzSU0i_hdzWrn8nlqP60yxJ0aBEcRDUHs_zZFhqz-YKTGmd711qdAwaA6RSgHNgr0bCWek7e61MD2EbccHZHWsGBDyWnC69efZDi2b5d0oUYQq1mDmFB8Hzfvfk-B3O3DAFvirupeJJ4mEqvjBOsj3Eyvj2L0gG3J6TUBOvcRLiAqCzMU-NnpdYQ5AJp3IE0_Xt0I9pYFwwMn8AaEuxqubDX-kiyV7fzVgQUaDMM6cqe4A4dGcYiT9_MOiUiCVCW5dU"
+            alt="Engineering workspace with a detailed circuit board during prototype bring-up and validation."
+            className="absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary-container via-primary-container/20 to-transparent" />
+          <div className="absolute bottom-8 left-8 right-8">
+            <div className="rounded-xl border border-white/20 bg-white/10 p-6 backdrop-blur-md">
+              <p className="font-body-md text-on-primary">{siteContent.intro}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

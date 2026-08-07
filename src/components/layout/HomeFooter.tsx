@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { CompanyContactBlock } from "@/components/layout/CompanyContactBlock";
-import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { footerColumns } from "@/config/navigation";
+import { copyrightNotice, siteContent } from "@/config/site-content";
 
 export function HomeFooter() {
-  const primaryColumns = footerColumns.slice(0, 6);
+  const primaryColumns = footerColumns.slice(0, 5);
 
   return (
     <footer className="bg-primary-container dark:bg-primary-container border-t border-outline/20">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-gutter mb-stack-lg">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-gutter mb-stack-lg">
           {primaryColumns.map((column) => (
             <div key={column.title}>
               <h4 className="text-on-primary-container font-bold mb-4 text-label-sm uppercase tracking-wider">
@@ -32,26 +32,18 @@ export function HomeFooter() {
         </div>
 
         <div className="grid grid-cols-12 gap-gutter border-t border-white/10 pt-stack-md">
-          <div className="col-span-12 lg:col-span-4 space-y-4">
+          <div className="col-span-12 lg:col-span-5 space-y-4">
             <div className="text-headline-md font-display-lg text-on-primary-container">
-              Mind Matrix
+              {siteContent.legalName}
             </div>
-            <p className="text-on-primary-container/70 max-w-xs font-body-md">
-              Engineering precision for the digital frontier. Dedicated to robust
-              embedded systems and hardware innovation since 2006.
+            <p className="text-on-primary-container/70 max-w-xl font-body-md">
+              {siteContent.footerTagline}
             </p>
             <CompanyContactBlock variant="compact" />
           </div>
 
-          <div className="col-span-12 md:col-span-8 lg:col-span-5">
-            <h4 className="text-on-primary-container font-bold mb-4 text-label-sm uppercase tracking-wider">
-              Stay Updated
-            </h4>
-            <NewsletterForm />
-          </div>
-
-          <div className="col-span-12 lg:col-span-3 grid grid-cols-2 gap-4">
-            {footerColumns.slice(6).map((column) => (
+          <div className="col-span-12 lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-4">
+            {footerColumns.slice(5).map((column) => (
               <div key={column.title}>
                 <h4 className="text-on-primary-container font-bold mb-3 text-label-sm uppercase tracking-wider">
                   {column.title}
@@ -73,32 +65,16 @@ export function HomeFooter() {
           </div>
         </div>
 
-        <div className="col-span-12 pt-8 mt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-on-primary-container/70 text-label-sm">
-            © 2024 Mind Matrix Workspace. Engineering precision for the digital
-            frontier.
+        <div className="pt-8 mt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-on-primary-container/70 text-label-sm text-center md:text-left">
+            {copyrightNotice()}
           </p>
-          <div className="flex gap-6">
-            <Link
-              href="/about"
-              className="text-on-primary-container/70 hover:text-on-primary-container transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label="About Mind Matrix"
-            >
-              <span className="material-symbols-outlined">public</span>
+          <div className="flex flex-wrap justify-center gap-6">
+            <Link href="/privacy-policy" className="text-on-primary-container/70 hover:text-on-primary-container text-label-sm">
+              Privacy Policy
             </Link>
-            <Link
-              href="/connectivity"
-              className="text-on-primary-container/70 hover:text-on-primary-container transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label="Connectivity solutions"
-            >
-              <span className="material-symbols-outlined">lan</span>
-            </Link>
-            <Link
-              href="/technologies"
-              className="text-on-primary-container/70 hover:text-on-primary-container transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label="Technologies"
-            >
-              <span className="material-symbols-outlined">memory</span>
+            <Link href="/terms-and-conditions" className="text-on-primary-container/70 hover:text-on-primary-container text-label-sm">
+              Terms of Website Use
             </Link>
           </div>
         </div>

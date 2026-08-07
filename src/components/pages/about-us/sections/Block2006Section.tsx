@@ -1,7 +1,43 @@
+import Link from "next/link";
+import { siteContent } from "@/config/site-content";
+
 export function Block2006Section() {
   return (
-    <>
-      <section className={"py-32 bg-surface-container-low overflow-hidden"}><div className={"px-margin-desktop max-w-container-max mx-auto"}><div className={"text-center mb-24"}><span className={"font-label-sm text-label-sm uppercase tracking-widest text-secondary"}>{"A Proven Legacy"}</span><h2 className={"font-headline-lg text-headline-lg text-primary mt-4"}>{"18 Years of Evolution"}</h2></div><div className={"relative"}><div className={"absolute left-1/2 top-0 bottom-0 w-px timeline-line -translate-x-1/2 hidden md:block"}></div><div className={"space-y-24"}><div className={"relative flex flex-col md:flex-row items-center md:justify-between group"}><div className={"md:w-[45%] md:text-right"}><span className={"font-display-lg text-display-lg text-outline-variant/30 group-hover:text-primary/10 transition-colors"}>{"2006"}</span><h4 className={"font-headline-md text-headline-md text-primary mt-2"}>{"The Genesis"}</h4><p className={"font-body-md text-body-md text-on-surface-variant mt-4"}>{"Mind Matrix founded in Zurich, focusing on data center physical layer architecture and secure terminal interfaces."}</p></div><div className={"absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-primary rounded-full z-10 hidden md:block ring-8 ring-background"}></div><div className={"md:w-[45%] hidden md:block"}><div className={"w-full h-48 bg-cover bg-center rounded-lg border border-outline-variant"} data-alt={"A vintage tech office with CRT monitors and complex server racks in a clean, industrial setting. The lighting is cool white, highlighting the organized cable management and technical layout. The overall aesthetic is early 2000s industrial minimalism, focusing on order and precision engineering."} style={{"backgroundImage":"url('https://lh3.googleusercontent.com/aida-public/AB6AXuDhg3NE1rd3rF5O2YDH9qVbjY94w533jbJSUGX20a4V5NTWbiQLMKz1C2DQGWwX5ygGq0SCqVCH-FqW20Go1cp4oj6p2JjF0Mg4NHbYdfuozmzd1SRa3psaA8WgppMNFAjsTEV1NlFJJGDe9PJ9S--M4uJRI-Zch_8Llp72Cy3FZKm-a7MCYmpSbLXZ8AuK1amvuELaNkus__rixyjeu9MzjmmEpP0zLLfa8DGiDcHj-LZR_dMSh_XHWpKG8RqkfOp4DtyQ6gt4wj8')"}}></div></div></div><div className={"relative flex flex-col md:flex-row-reverse items-center md:justify-between group"}><div className={"md:w-[45%]"}><span className={"font-display-lg text-display-lg text-outline-variant/30 group-hover:text-primary/10 transition-colors"}>{"2014"}</span><h4 className={"font-headline-md text-headline-md text-primary mt-2"}>{"Matrix 2.0 Integration"}</h4><p className={"font-body-md text-body-md text-on-surface-variant mt-4"}>{"Launched our proprietary Matrix Integration framework, bridging the gap between physical workspace IoT and enterprise cloud dashboards."}</p></div><div className={"absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-primary rounded-full z-10 hidden md:block ring-8 ring-background"}></div><div className={"md:w-[45%] hidden md:block"}><div className={"w-full h-48 bg-cover bg-center rounded-lg border border-outline-variant"} data-alt={"A modern engineering workspace with multiple high-resolution displays showing complex code and 3D architectural diagrams. The setting is a bright, minimalist office with clean-room aesthetics and subtle blue glowing accent lights, emphasizing technical innovation and digital connectivity."} style={{"backgroundImage":"url('https://lh3.googleusercontent.com/aida-public/AB6AXuA39fAFg4zEhrxOxtjMRSBx-hjhdpVViuaxKqXe84-2bebPNQdsZAqpoKQeBeHp733_G-9I6yyUFPEDk1ese2dzmtYQE_JF9ycZlyVMkRVp-hb6JV8sm4DWT9FuTAg01Lw-ta_I09uPLR10p92XW3_zluSJzZGov9iPAbSBb2t_0T0egnYN2Wx1Q7L6N1zahmCkooW1Tza3sjq1kbkD-5doIczhADwcrhchIjZ7VygN8PONA_Ct-vTNM1CZRi5PEgOhdZweRvFMImI')"}}></div></div></div><div className={"relative flex flex-col md:flex-row items-center md:justify-between group"}><div className={"md:w-[45%] md:text-right"}><span className={"font-display-lg text-display-lg text-outline-variant/30 group-hover:text-primary/10 transition-colors"}>{"2024"}</span><h4 className={"font-headline-md text-headline-md text-primary mt-2"}>{"Global Frontier"}</h4><p className={"font-body-md text-body-md text-on-surface-variant mt-4"}>{"Reaching 450+ successful deployments across 30 countries, leading the industry in zero-latency technical environments."}</p></div><div className={"absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-primary rounded-full z-10 hidden md:block ring-8 ring-background"}></div><div className={"md:w-[45%] hidden md:block"}><div className={"w-full h-48 bg-cover bg-center rounded-lg border border-outline-variant"} data-alt={"A futuristic command center with a massive curved glass display wall and sleek metallic furniture. The lighting is high-key and white with subtle cyan technical glows. The image represents the pinnacle of digital frontier engineering with a polished, minimalist industrial aesthetic."} style={{"backgroundImage":"url('https://lh3.googleusercontent.com/aida-public/AB6AXuAr-S9LpXuabAeYGGRbgKrqHoB58IhNgZJhnDvpZFhUcGzg0F9sp31ZzTflCwKLS0yMuJl_UV17JJ7AO4pSrSQsQpLf7k-ENF2yfeM6UeCHH7LHGwcw70g7wTVgxC2tyec9COC0THfZpyMILiP7IFFYQUYG-JX5UVlWbJxxwxdGKYWaEiBpSmt0wT571bIRGo7XfI1MYSY8tKJZFXnSWt5Wp4zTj64ZSNxE3V_6Thtvn4ldgTK4wFWap0JuX38P2srUwqNXA-Dbefs')"}}></div></div></div></div></div></div></section>
-    </>
+    <section className="py-stack-lg bg-surface-container">
+      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-gutter items-center">
+          <div>
+            <h2 className="font-headline-lg text-headline-lg text-primary mb-4">
+              Production Transition Support
+            </h2>
+            <p className="font-body-lg text-on-surface-variant mb-6">
+              {siteContent.manufacturingSupport}
+            </p>
+            <p className="font-body-md text-on-surface-variant">
+              {siteContent.confidentialityShort}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {siteContent.coreServices.slice(0, 4).map((service) => (
+              <div
+                key={service}
+                className="rounded-lg border border-outline-variant/20 bg-white p-5 text-sm text-on-surface-variant"
+              >
+                {service}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mt-12 text-center">
+          <Link
+            href="/contact-us-and-engineering-consultation"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-on-primary font-label-sm text-label-sm font-bold hover:bg-primary-container transition-all"
+          >
+            Discuss Your Requirement
+            <span className="material-symbols-outlined text-sm">arrow_forward</span>
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }

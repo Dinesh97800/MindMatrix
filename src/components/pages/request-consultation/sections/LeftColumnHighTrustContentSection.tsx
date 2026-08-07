@@ -1,40 +1,39 @@
 "use client";
 
 import { RequestConsultationForm } from "@/components/forms/RequestConsultationForm";
+import { siteContent } from "@/config/site-content";
 
 export function LeftColumnHighTrustContentSection() {
   return (
     <div className="grid grid-cols-12 gap-gutter">
       <div className="col-span-12 lg:col-span-5 flex flex-col justify-center gap-stack-md">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-container/10 text-on-primary-container rounded-full w-fit">
-          <span className="material-symbols-outlined text-[16px]">verified</span>
-          <span className="font-label-sm text-label-sm">ISO 27001 & SOC2 CERTIFIED</span>
+          <span className="material-symbols-outlined text-[16px]">engineering</span>
+          <span className="font-label-sm text-label-sm">Engineering Consultation</span>
         </div>
         <h1 className="font-display-lg text-display-lg leading-tight">
-          Speak with a{" "}
-          <span className="text-on-primary-container">Senior Engineering Architect.</span>
+          Discuss Your{" "}
+          <span className="text-on-primary-container">Embedded Product Requirement</span>
         </h1>
         <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
-          Skip the sales pitch. Get a direct technical evaluation of your
-          infrastructure, scalability roadmap, and security posture from our lead
-          architects.
+          {siteContent.contactCta}
         </p>
         <div className="flex flex-col gap-6 mt-4">
           {[
             {
-              icon: "architecture",
-              title: "Structural Analysis",
-              text: "Review of existing architecture and bottleneck identification.",
+              icon: "developer_board",
+              title: "Firmware & Hardware Support",
+              text: "Bare-metal/RTOS firmware, integration, bring-up, debugging, and redesign.",
             },
             {
-              icon: "security",
-              title: "Security Audit",
-              text: "Zero-trust strategy and compliance gap analysis.",
+              icon: "router",
+              title: "Industrial Communication",
+              text: "CAN, Modbus, RS-485, UART, SPI, I²C, Ethernet, MQTT and SNMP where applicable.",
             },
             {
-              icon: "precision_manufacturing",
-              title: "Industrial Scaling",
-              text: "Precision engineering for high-throughput digital ecosystems.",
+              icon: "verified_user",
+              title: "Confidential Engagement",
+              text: siteContent.confidentialityShort,
             },
           ].map((item) => (
             <div key={item.title} className="flex items-start gap-4">

@@ -1,29 +1,22 @@
-import { whyChooseItems } from "@/components/sections/WhyChooseUsSection";
+import { siteContent } from "@/config/site-content";
 
 export function Block4Section() {
   return (
-    <section className="py-stack-lg px-margin-desktop max-w-container-max mx-auto">
+    <section className="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <div className="grid grid-cols-12 gap-gutter">
         <div className="col-span-12 lg:col-span-5">
-          <h2 className="font-headline-lg text-headline-lg mb-6">
-            Our Differentiation
-          </h2>
-          <h3 className="font-headline-md text-headline-md text-primary mb-4">
-            AI + Real-World Product Engineering
-          </h3>
+          <h2 className="font-headline-lg text-headline-lg mb-6">Secondary AI Capability</h2>
           <p className="text-on-surface-variant font-body-md mb-8">
-            Our strength is the ability to combine AI with embedded hardware,
-            firmware, sensors, IoT connectivity, customer knowledge, cloud
-            platforms, and industrial systems. This enables us to build complete
-            solutions rather than simple prompt-based assistants.
+            {siteContent.aiSecondaryStatement}
           </p>
-          <h3 className="font-headline-md text-headline-md text-primary mb-4">
-            Why Choose Mind Matrix Workspace
-          </h3>
+          <p className="text-on-surface-variant font-body-md">
+            Primary engineering support remains embedded hardware, firmware, industrial
+            communication, monitoring, control, and product debugging.
+          </p>
         </div>
         <div className="col-span-12 lg:col-span-7">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-gutter">
-            {whyChooseItems.map((item) => (
+            {siteContent.whyChooseUs.map((item) => (
               <div
                 key={item.title}
                 className="bg-surface-container p-6 rounded-xl border border-outline-variant/10 flex gap-4"

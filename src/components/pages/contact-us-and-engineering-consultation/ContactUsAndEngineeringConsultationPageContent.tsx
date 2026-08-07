@@ -6,7 +6,7 @@ import { Section } from "./sections/Section";
 
 export function ContactUsAndEngineeringConsultationPageContent() {
   return (
-    <main className={"pt-24"}>
+    <main>
       <HeroSection />
       <ConsultationFormSection />
       <InteractiveMapPlaceholderSection />

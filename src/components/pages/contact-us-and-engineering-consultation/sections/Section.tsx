@@ -1,7 +1,44 @@
+import Link from "next/link";
+import { companyContact } from "@/config/company";
+
 export function Section() {
   return (
-    <>
-      <section className={"py-stack-lg px-margin-desktop bg-primary text-on-primary"}><div className={"max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-stack-lg"}><div className={"p-stack-lg border border-on-primary/10 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group"}><span className={"material-symbols-outlined text-3xl mb-stack-sm text-primary-fixed"}>{"support_agent"}</span><h3 className={"font-headline-md text-headline-md mb-2"}>{"Technical Support"}</h3><p className={"font-body-md text-on-primary/70 mb-stack-md"}>{"Already a client? Access the Level 3 Support portal or initiate a critical system ticket."}</p><span className={"font-label-sm uppercase tracking-widest text-primary-fixed group-hover:underline"}>{"Access Portal →"}</span></div><div className={"p-stack-lg border border-on-primary/10 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group"}><span className={"material-symbols-outlined text-3xl mb-stack-sm text-primary-fixed"}>{"engineering"}</span><h3 className={"font-headline-md text-headline-md mb-2"}>{"Join Our Team"}</h3><p className={"font-body-md text-on-primary/70 mb-stack-md"}>{"Seeking a career in high-precision engineering? Explore open technical roles at our global clusters."}</p><span className={"font-label-sm uppercase tracking-widest text-primary-fixed group-hover:underline"}>{"View Openings →"}</span></div></div></section>
-    </>
+    <section className="bg-primary px-margin-mobile py-stack-lg text-on-primary md:px-margin-desktop">
+      <div className="mx-auto grid max-w-container-max grid-cols-1 gap-stack-lg md:grid-cols-2">
+        <Link
+          href="/contact-us"
+          className="group cursor-pointer rounded-2xl border border-on-primary/10 bg-white/5 p-stack-lg transition-colors hover:bg-white/10"
+        >
+          <span className="material-symbols-outlined mb-stack-sm text-3xl text-primary-fixed">
+            support_agent
+          </span>
+          <h3 className="mb-2 font-headline-md text-headline-md">Technical Support</h3>
+          <p className="mb-stack-md font-body-md text-on-primary/70">
+            Existing customer? Contact us for engineering support, issue diagnosis, or
+            follow-up on an active project.
+          </p>
+          <span className="font-label-sm uppercase tracking-widest text-primary-fixed group-hover:underline">
+            Contact Support →
+          </span>
+        </Link>
+
+        <Link
+          href="/about-us"
+          className="group cursor-pointer rounded-2xl border border-on-primary/10 bg-white/5 p-stack-lg transition-colors hover:bg-white/10"
+        >
+          <span className="material-symbols-outlined mb-stack-sm text-3xl text-primary-fixed">
+            engineering
+          </span>
+          <h3 className="mb-2 font-headline-md text-headline-md">About Our Team</h3>
+          <p className="mb-stack-md font-body-md text-on-primary/70">
+            Learn more about {companyContact.legalName}, our engineering approach, and
+            the types of embedded product work we support.
+          </p>
+          <span className="font-label-sm uppercase tracking-widest text-primary-fixed group-hover:underline">
+            About Us →
+          </span>
+        </Link>
+      </div>
+    </section>
   );
 }

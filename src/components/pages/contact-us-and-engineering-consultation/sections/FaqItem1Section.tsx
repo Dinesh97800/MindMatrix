@@ -1,9 +1,59 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+import { siteContent } from "@/config/site-content";
 
 export function FaqItem1Section() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
   return (
-    <>
-      <section className={"py-stack-lg px-margin-desktop bg-surface-container-low border-y border-outline-variant/10"}><div className={"max-w-3xl mx-auto"}><div className={"text-center mb-stack-lg"}><h2 className={"font-headline-lg text-headline-lg mb-2"}>{"Technical FAQ"}</h2><p className={"font-body-md text-on-surface-variant"}>{"Core documentation and protocol standards for engagement."}</p></div><div className={"space-y-stack-sm"}><div className={"bg-surface-container-lowest border border-outline-variant/40 rounded-lg overflow-hidden"}><Link href={"/request-consultation"} className={"w-full flex justify-between items-center p-stack-md text-left transition-colors hover:bg-surface"}><span className={"font-headline-md text-headline-md text-sm md:text-lg"}>{"What is your typical lead time for custom firmware development?"}</span><span className={"material-symbols-outlined chevron transition-transform"}>{"expand_more"}</span></Link><div className={"hidden p-stack-md pt-0 border-t border-outline-variant/10"}><p className={"font-body-md text-on-surface-variant"}>{"Standard discovery and architecture definition usually require 2-4 weeks. Development timelines depend on complexity and safety certification requirements (e.g., IEC 61508 or ISO 26262), typically ranging from 3 to 9 months for deployment-ready firmware."}</p></div></div><div className={"bg-surface-container-lowest border border-outline-variant/40 rounded-lg overflow-hidden"}><Link href={"/request-consultation"} className={"w-full flex justify-between items-center p-stack-md text-left transition-colors hover:bg-surface"}><span className={"font-headline-md text-headline-md text-sm md:text-lg"}>{"Do you support legacy system integration?"}</span><span className={"material-symbols-outlined chevron transition-transform"}>{"expand_more"}</span></Link><div className={"hidden p-stack-md pt-0 border-t border-outline-variant/10"}><p className={"font-body-md text-on-surface-variant"}>{"Yes. We specialize in building 'Bridge Interfaces' that allow modern IIoT and Matrix AI layers to communicate with legacy PLC, SCADA, and proprietary hardware via secure edge-gateways."}</p></div></div><div className={"bg-surface-container-lowest border border-outline-variant/40 rounded-lg overflow-hidden"}><Link href={"/request-consultation"} className={"w-full flex justify-between items-center p-stack-md text-left transition-colors hover:bg-surface"}><span className={"font-headline-md text-headline-md text-sm md:text-lg"}>{"Are initial feasibility studies billable?"}</span><span className={"material-symbols-outlined chevron transition-transform"}>{"expand_more"}</span></Link><div className={"hidden p-stack-md pt-0 border-t border-outline-variant/10"}><p className={"font-body-md text-on-surface-variant"}>{"Initial 30-minute consultations are complimentary for qualifying corporate entities. Detailed Phase 0 Feasibility Studies, which include full technical reports and high-level bill-of-materials, are structured as fixed-fee engagements."}</p></div></div></div></div></section>
-    </>
+    <section className="border-y border-outline-variant/10 bg-surface-container-low px-margin-mobile py-stack-lg md:px-margin-desktop">
+      <div className="mx-auto max-w-3xl">
+        <div className="mb-stack-lg text-center">
+          <h2 className="mb-2 font-headline-lg text-headline-lg">Technical FAQ</h2>
+          <p className="font-body-md text-on-surface-variant">
+            Common questions about how we scope and deliver engineering work.
+          </p>
+        </div>
+
+        <div className="space-y-stack-sm">
+          {siteContent.consultationFaq.map((item, index) => {
+            const isOpen = openIndex === index;
+
+            return (
+              <div
+                key={item.question}
+                className="overflow-hidden rounded-lg border border-outline-variant/40 bg-surface-container-lowest"
+              >
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between gap-4 p-stack-md text-left transition-colors hover:bg-surface"
+                  aria-expanded={isOpen}
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                >
+                  <span className="font-headline-md text-headline-md text-sm md:text-lg">
+                    {item.question}
+                  </span>
+                  <span
+                    className={`material-symbols-outlined shrink-0 transition-transform ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  >
+                    expand_more
+                  </span>
+                </button>
+                {isOpen && (
+                  <div className="border-t border-outline-variant/10 p-stack-md pt-0">
+                    <p className="pt-stack-md font-body-md text-on-surface-variant">
+                      {item.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }
