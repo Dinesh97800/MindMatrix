@@ -2,7 +2,7 @@ export const companyContact = {
   legalName: "Mind Matrix Intelligent Solutions",
   shortName: "Mind Matrix",
   address: {
-    line1: "181, Near Signature Tower, Sani Khera",
+    line1: "181, Near Signature Tower, Saini Khera",
     city: "Gurugram",
     state: "Haryana",
     stateCode: "06",

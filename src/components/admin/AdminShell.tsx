@@ -8,6 +8,7 @@ const navItems = [
   { href: "/admin/submissions", label: "Submissions" },
   { href: "/admin/newsletter", label: "Newsletter" },
   { href: "/admin/users", label: "Admin Users", superAdminOnly: true },
+  { href: "/admin/profile", label: "Profile" },
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
@@ -42,9 +43,12 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             </nav>
           </div>
           <div className="flex items-center gap-4">
-            <span className="hidden sm:block text-sm text-on-surface-variant">
+            <Link
+              href="/admin/profile"
+              className="hidden sm:block text-sm text-on-surface-variant hover:text-primary transition-colors"
+            >
               {session?.user?.email}
-            </span>
+            </Link>
             <button
               type="button"
               onClick={() => signOut({ callbackUrl: "/admin/login" })}
