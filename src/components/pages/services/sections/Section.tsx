@@ -28,7 +28,7 @@ export function Section() {
 
         <div className="group relative h-[420px] w-full overflow-hidden rounded-2xl border border-on-primary/10">
           <StitchImage
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAflVGcvisbgzSU0i_hdzWrn8nlqP60yxJ0aBEcRDUHs_zZFhqz-YKTGmd711qdAwaA6RSgHNgr0bCWek7e61MD2EbccHZHWsGBDyWnC69efZDi2b5d0oUYQq1mDmFB8Hzfvfk-B3O3DAFvirupeJJ4mEqvjBOsj3Eyvj2L0gG3J6TUBOvcRLiAqCzMU-NnpdYQ5AJp3IE0_Xt0I9pYFwwMn8AaEuxqubDX-kiyV7fzVgQUaDMM6cqe4A4dGcYiT9_MOiUiCVCW5dU"
+            src="/Engineering-Approach.png"
             alt="Engineering workspace with a detailed circuit board during prototype bring-up and validation."
             className="absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
           />

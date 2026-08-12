@@ -48,7 +48,7 @@ export const headerNavItems: NavItem[] = [
       link("Energy Measurement & Monitoring", "/energy-monitoring"),
       link("Remote Monitoring & Gateways", "/remote-monitoring"),
       link("Custom Instrumentation", "/embedded-measurement-system"),
-      link("Data Acquisition & Logging", "/industrial-iot-gateway"),
+      link("Industrial IoT", "/iot"),
       link("Embedded Communication Products", "/snmp-alarm-gateway"),
     ],
   },

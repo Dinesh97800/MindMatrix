@@ -86,7 +86,7 @@ export function Section() {
                 ></div>
                 <StitchImage
                   src={
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuCgJApu5c5a2u4Zyx7SmZSRIp7Yr04lbhcCX_e0Xjo-LH_mT-BQXetDhGzPCjU3FFmd5xQzBy_bkl002mnbnkf6b9r_NCcCcCOoGDXsTiVL2njVI2-m1zhlL1-EIGKaIILOoZwBlXlXlF8XX32Awdp2WlGo3EMi3X3UFKlHaLlVL3aqDOpyvjrN34_RCy5boN2ghwNYgVla0AdR14DoSgHl3G6JqobDutNsOH-gxHqK0nNuKolkre-p_TgfIo6K7lvdPKIVmRVXp04'
+                    '/telecom-power.png'
                   }
                   alt={
                     'Electric vehicle charging station infrastructure at a high-tech corporate campus. Sleek, minimalist design of the chargers with subtle LED indicators. Bright, clean light-mode photography.'

@@ -189,17 +189,17 @@ export const pageContent = {
       "Prototype validation and deployment readiness",
     ],
   },
-  "industrial-iot-gateway": {
-    eyebrow: "Data Acquisition",
-    title: "Data Acquisition & Logging",
+  iot: {
+    eyebrow: "Industrial IoT",
+    title: "Industrial IoT & Gateway Development",
     description:
-      "Embedded gateway and data-acquisition development for industrial products requiring reliable collection, logging, and communication of field data.",
+      "Embedded IoT gateway and connected-device development for industrial products — data acquisition, protocol handling, remote connectivity, and integration with supervisory systems.",
     capabilities: [
-      "Field data acquisition and structured logging",
-      "Industrial protocol and network integration",
-      "Diagnostics, alarms, and device configuration",
-      "Edge processing where required by the application",
-      "Prototype bring-up and validation support",
+      "Gateway firmware and edge data collection",
+      "MQTT, SNMP, Modbus, and industrial protocol integration",
+      "Field data acquisition, buffering, and structured logging",
+      "Diagnostics, alarms, and remote configuration support",
+      "Prototype bring-up and deployment validation",
     ],
   },
   "snmp-alarm-gateway": {

@@ -1,5 +1,5 @@
-import { ApprovedPageLayout } from "@/components/pages/shared/ApprovedPageLayout";
+import { IotPageContent } from "@/components/pages/iot/IotPageContent";
 
 export function IndustrialIotGatewayPageContent() {
-  return <ApprovedPageLayout pageKey="industrial-iot-gateway" />;
+  return <IotPageContent />;
 }

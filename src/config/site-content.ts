@@ -72,7 +72,7 @@ export const siteContent = {
     { label: "Energy Measurement & Monitoring", href: "/energy-monitoring" },
     { label: "Remote Monitoring & Gateways", href: "/remote-monitoring" },
     { label: "Custom Instrumentation", href: "/embedded-measurement-system" },
-    { label: "Data Acquisition & Logging", href: "/industrial-iot-gateway" },
+    { label: "Industrial IoT", href: "/iot" },
     { label: "Embedded Communication Products", href: "/snmp-alarm-gateway" },
   ],
 
