@@ -1,14 +1,29 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ScrollEffects } from "@/components/layout/ScrollEffects";
 import { buildPageMetadata, SITE_URL } from "@/lib/seo";
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
+const montserrat = localFont({
+  src: [
+    {
+      path: "../../public/fonts/montserrat/montserrat-400.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/montserrat/montserrat-600.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/montserrat/montserrat-700.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-montserrat",
   display: "swap",
-  weight: ["400", "600", "700"],
 });
 
 export const metadata: Metadata = buildPageMetadata({
