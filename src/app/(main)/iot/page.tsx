@@ -5,9 +5,9 @@ import { IotPageContent } from "@/components/pages/iot/IotPageContent";
 export const metadata: Metadata = buildPageMetadata({
   title: "Industrial IoT",
   description:
-    "Mind Matrix Industrial IoT — embedded gateway development, data acquisition, protocol integration, and remote connectivity for industrial products.",
+    "Mind Matrix Industrial IoT — gateway firmware, edge data collection, protocol integration, and remote monitoring for connected industrial products.",
   path: "/iot",
-  keywords: ["mind matrix", "embedded systems", "industrial", "iot", "gateway"],
+  keywords: ["mind matrix", "embedded systems", "industrial iot", "gateway", "edge"],
 });
 
 export default function IotPage() {

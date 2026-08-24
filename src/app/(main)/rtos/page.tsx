@@ -7,8 +7,9 @@ export const metadata: Metadata = buildPageMetadata({
   description:
     "Mind Matrix RTOS development — structured task management, timing control, communication handling, and reliable embedded device operation.",
   path: "/rtos",
+  keywords: ["mind matrix", "embedded systems", "rtos", "real-time operating system"],
 });
 
-export default function FreertosPage() {
+export default function RtosPage() {
   return <FreertosPageContent />;
 }

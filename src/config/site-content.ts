@@ -11,7 +11,7 @@ export const siteContent = {
   locationStatement:
     "Mind Matrix Intelligent Solutions is an India-based engineering consultancy specializing in embedded electronics and industrial product development.",
 
-  experienceStatement: "Nearly two decades of industry experience",
+  experienceStatement: "Nearly 18 years of industry experience",
 
   projectsStatement:
     "Experience across a broad range of embedded and industrial product-development assignments.",
@@ -22,7 +22,7 @@ export const siteContent = {
     subheading:
       "Mind Matrix Intelligent Solutions provides custom embedded hardware, firmware and communication-system development — from requirements and system architecture through prototype validation and production support.",
     technologyLine:
-      "STM32 · FreeRTOS · CAN · Modbus · Industrial Control · Telecom Power · Energy Monitoring",
+      "32-bit Controller · RTOS · CAN · Modbus · Industrial IoT · Telecom Power · Energy Monitoring",
     primaryCta: { label: "Discuss Your Requirement", href: "/contact-us-and-engineering-consultation" },
     secondaryCta: { label: "View Engineering Capabilities", href: "/services" },
   },
@@ -43,9 +43,11 @@ export const siteContent = {
     "Embedded firmware development: bare-metal and RTOS",
     "Microcontroller peripheral drivers and board-support packages",
     "Hardware-firmware integration and prototype bring-up",
-    "CAN, Modbus, RS-485, UART, SPI, I²C, Ethernet, MQTT and SNMP integration where applicable",
+    "Industrial IoT gateway, edge data collection, and remote connectivity",
+    "IoT/Edge AI prototypes where appropriate to the application",
+    "Ethernet, TCP/IP stack, L2 switch, SNMP V2/V3, CAN, Modbus, RS-485, UART, SPI, I²C, and MQTT integration",
     "Industrial measurement, monitoring, control, diagnostics and event logging",
-    "Bootloaders, firmware update mechanisms and configuration storage",
+    "Secure Bootloader, firmware update mechanisms and configuration storage",
     "PC/Python tools for configuration, testing and calibration",
     "Existing-product debugging, redesign and feature enhancement",
     "Production documentation, test support and technical transition",
@@ -56,6 +58,8 @@ export const siteContent = {
     { label: "Requirement & Architecture Review", href: "/engineering-process" },
     { label: "Embedded Firmware Development", href: "/embedded-firmware-development" },
     { label: "Hardware & Firmware Development", href: "/hardware-development" },
+    { label: "Industrial IoT", href: "/iot" },
+    { label: "IoT/Edge AI", href: "/ai-enabled-engineering" },
     { label: "Prototype Bring-up", href: "/product-development" },
     { label: "Existing-product Debugging", href: "/engineering-consulting" },
     { label: "Design Upgrade/Redesign", href: "/product-development" },
@@ -77,10 +81,11 @@ export const siteContent = {
   ],
 
   technologies: [
-    { label: "STM32", href: "/stm32" },
-    { label: "FreeRTOS", href: "/freertos" },
+    { label: "32-bit Controller & Processor", href: "/32-bit-controller" },
+    { label: "RTOS", href: "/rtos" },
     { label: "Industrial Protocols", href: "/industrial-protocols" },
     { label: "Industrial Communication", href: "/industrial-communication" },
+    { label: "Industrial IoT", href: "/iot" },
     { label: "MQTT", href: "/mqtt" },
     { label: "Embedded Linux", href: "/embedded-linux" },
   ],
@@ -140,7 +145,7 @@ export const siteContent = {
     {
       title: "Industrial communication",
       description:
-        "CAN, Modbus, RS-485, UART, SPI, I²C, Ethernet, MQTT and SNMP integration where delivered for the application.",
+        "Ethernet, TCP/IP stack, L2 switch, SNMP V2 and V3, plus CAN, Modbus, RS-485, UART, SPI, I²C, and MQTT integration where delivered for the application.",
       icon: "router",
     },
     {

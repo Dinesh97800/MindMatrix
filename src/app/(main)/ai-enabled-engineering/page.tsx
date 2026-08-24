@@ -1,26 +1,23 @@
 import type { Metadata } from "next";
+import fs from "fs";
+import path from "path";
+import { StitchHtmlContent } from "@/components/layout/StitchHtmlContent";
 import { buildPageMetadata } from "@/lib/seo";
-import { AiEnabledEngineeringPageContent } from "@/components/pages/ai-enabled-engineering/AiEnabledEngineeringPageContent";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "AI Solutions",
-  description:
-    "AI-assisted engineering tools and embedded/industrial AI prototypes may be offered where appropriate to the application.",
+  title: "AI-enabled Engineering",
+  description: "Mind Matrix AI-enabled Engineering — industrial-grade embedded engineering, hardware design, and firmware development for mission-critical systems.",
   path: "/ai-enabled-engineering",
-  keywords: [
-    "mind matrix",
-    "edge ai",
-    "intelligent automation",
-    "custom ai solutions",
-    "embedded ai",
-    "industrial ai",
-    "agentic ai",
-    "rag",
-    "tinyml",
-    "engineering automation",
-  ],
 });
 
+function getPageHtml() {
+  return fs.readFileSync(
+    path.join(process.cwd(), "src/content/pages/ai-enabled-engineering.html"),
+    "utf8"
+  );
+}
+
 export default function AiEnabledEngineeringPage() {
-  return <AiEnabledEngineeringPageContent />;
+  const html = getPageHtml();
+  return <StitchHtmlContent html={html} />;
 }

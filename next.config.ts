@@ -26,6 +26,8 @@ const nextConfig: NextConfig = {
       { source: "/insights-and-engineering-blog", destination: "/about-us", permanent: true },
       { source: "/resources-and-blog", destination: "/about-us", permanent: true },
       { source: "/the-future-of-deterministic-edge-computing", destination: "/about-us", permanent: true },
+      { source: "/stm32", destination: "/32-bit-controller", permanent: true },
+      { source: "/freertos", destination: "/rtos", permanent: true },
       { source: "/aws-iot", destination: "/iot", permanent: true },
       { source: "/azure-iot", destination: "/iot", permanent: true },
       { source: "/industrial-iot-solutions", destination: "/iot", permanent: true },

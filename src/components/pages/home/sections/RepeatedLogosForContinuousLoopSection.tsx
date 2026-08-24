@@ -1,7 +1,31 @@
 export function RepeatedLogosForContinuousLoopSection() {
+  const logos = [
+    "32-BIT MCU",
+    "NORDIC",
+    "AWS IoT",
+    "ESPRESSIF",
+    "RTOS",
+    "ZEPHYR",
+    "ARM",
+    "NXP",
+  ] as const;
+
   return (
-    <>
-      <section className={"py-stack-md bg-surface-container overflow-hidden border-y border-outline-variant/10"}><div className={"flex whitespace-nowrap animate-scroll-x"}><div className={"flex gap-20 items-center px-10"}><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"STM32"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"NORDIC"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"AWS IoT"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"ESPRESSIF"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"FREERTOS"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"ZEPHYR"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"ARM"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"NXP"}</span></div><div className={"flex gap-20 items-center px-10"}><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"STM32"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"NORDIC"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"AWS IoT"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"ESPRESSIF"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"FREERTOS"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"ZEPHYR"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"ARM"}</span><span className={"text-headline-md font-display-lg text-outline-variant opacity-50"}>{"NXP"}</span></div></div></section>
-    </>
+    <section className="py-stack-md bg-surface-container overflow-hidden border-y border-outline-variant/10">
+      <div className="flex whitespace-nowrap animate-scroll-x">
+        {[0, 1].map((copy) => (
+          <div key={copy} className="flex gap-20 items-center px-10">
+            {logos.map((logo) => (
+              <span
+                key={`${copy}-${logo}`}
+                className="text-headline-md font-display-lg text-outline-variant opacity-50"
+              >
+                {logo}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }

@@ -29,6 +29,10 @@ export function buildPageMetadata({
     title: fullTitle,
     description,
     ...(keywords?.length ? { keywords } : {}),
+    icons: {
+      icon: [{ url: "/icon.png", type: "image/png" }],
+      apple: [{ url: "/apple-icon.png", type: "image/png" }],
+    },
     alternates: { canonical: url },
     openGraph: {
       type: "website",

@@ -196,11 +196,18 @@
     "screenId": "6ee17bea6ddf423e88871b9d0aeb2984"
   },
   {
-    "slug": "iot",
-    "title": "Industrial IoT | Mind Matrix Workspace",
+    "slug": "industrial-iot-gateway",
+    "title": "Industrial IoT Gateway | Mind Matrix Workspace",
     "filename": "industrial-iot-gateway.html",
     "deviceType": "DESKTOP",
     "screenId": "ec9cdd2383ae4503a07d7747c95bbb14"
+  },
+  {
+    "slug": "azure-iot",
+    "title": "Azure IoT | Mind Matrix Workspace",
+    "filename": "azure-iot.html",
+    "deviceType": "DESKTOP",
+    "screenId": "f2ffaa98b96942fbae503f9f2aa095a4"
   },
   {
     "slug": "ev-charger-electronics",
@@ -239,7 +246,7 @@
   },
   {
     "slug": "ai-enabled-engineering",
-    "title": "AI Solutions | Mind Matrix Workspace",
+    "title": "AI-enabled Engineering | Mind Matrix Workspace",
     "filename": "ai-enabled-engineering.html",
     "deviceType": "DESKTOP",
     "screenId": "a1d5e85853194960a2ed0ef329917aed"
@@ -278,6 +285,13 @@
     "filename": "texas-instruments.html",
     "deviceType": "DESKTOP",
     "screenId": "cd606efe11474defa9cbd7c40de7f6f5"
+  },
+  {
+    "slug": "aws-iot",
+    "title": "AWS IoT | Mind Matrix Workspace",
+    "filename": "aws-iot.html",
+    "deviceType": "DESKTOP",
+    "screenId": "7dd690aa5f1b4ea5b0eb36d6b208636f"
   },
   {
     "slug": "energy-management",
@@ -404,6 +418,13 @@
     "filename": "manufacturing.html",
     "deviceType": "DESKTOP",
     "screenId": "57d9f2d519ce48d4aa07185c0b863f64"
+  },
+  {
+    "slug": "industrial-iot-solutions",
+    "title": "Industrial IoT Solutions | Mind Matrix Workspace",
+    "filename": "industrial-iot-solutions.html",
+    "deviceType": "DESKTOP",
+    "screenId": "63482cb2ebb6439fa1739c864e1edf5b"
   },
   {
     "slug": "stm32",

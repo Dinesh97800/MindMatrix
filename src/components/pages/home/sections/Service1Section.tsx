@@ -5,7 +5,7 @@ const serviceCards = [
   {
     title: "Embedded Firmware",
     description:
-      "Bare-metal and RTOS firmware, peripheral drivers, bootloaders, diagnostics, and configuration storage.",
+      "Bare-metal and RTOS firmware, peripheral drivers, secure bootloaders, diagnostics, and configuration storage.",
     icon: "terminal",
     href: "/embedded-firmware-development",
   },
@@ -17,9 +17,23 @@ const serviceCards = [
     href: "/hardware-development",
   },
   {
+    title: "Industrial IoT",
+    description:
+      "Gateway firmware, edge data collection, protocol integration, and remote monitoring for connected industrial products.",
+    icon: "hub",
+    href: "/iot",
+  },
+  {
+    title: "IoT/Edge AI",
+    description:
+      "Edge AI and intelligent embedded-system development where appropriate to the application.",
+    icon: "psychology",
+    href: "/ai-enabled-engineering",
+  },
+  {
     title: "Industrial Communication",
     description:
-      "CAN, Modbus, RS-485, UART, SPI, I²C, Ethernet, MQTT and SNMP integration where applicable.",
+      "Ethernet, TCP/IP stack, L2 switch, SNMP V2 and V3, plus CAN, Modbus, RS-485, UART, SPI, I²C, and MQTT integration.",
     icon: "router",
     href: "/industrial-communication",
   },
@@ -51,7 +65,7 @@ export function Service1Section() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
           {serviceCards.map((item) => (
             <div
               key={item.title}

@@ -49,15 +49,15 @@ export function StatsGridSection() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-gutter mt-16 md:mt-32 border-t border-white/10 pt-12">
           <div className="space-y-1">
-            <div className="text-headline-lg font-display-lg text-white">Nearly 20 Years</div>
+            <div className="text-headline-lg font-display-lg text-white">18+ Years</div>
             <div className="text-label-sm font-label-sm text-on-primary-container uppercase tracking-wider">
               Industry Experience
             </div>
           </div>
           <div className="space-y-1">
-            <div className="text-headline-lg font-display-lg text-white">Embedded Focus</div>
+            <div className="text-headline-lg font-display-lg text-white">IoT</div>
             <div className="text-label-sm font-label-sm text-on-primary-container uppercase tracking-wider">
-              Hardware, Firmware &amp; Communication
+              Firmware, Hardware + Communication
             </div>
           </div>
           <div className="space-y-1">

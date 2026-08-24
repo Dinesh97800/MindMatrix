@@ -8,16 +8,17 @@ export type PageContentEntry = {
 };
 
 const communicationCapabilities = [
+  "Ethernet, TCP/IP stack, and L2 switch integration",
+  "SNMP V2 and V3 protocol expertise",
   "CAN, Modbus, RS-485, UART, SPI, and I²C integration",
-  "Ethernet, MQTT, and SNMP connectivity where required",
   "Protocol stacks, gateway logic, and field-device interfacing",
   "Diagnostics, event logging, and communication fault handling",
-  "Integration with existing PLC, SCADA, or proprietary systems",
 ] as const;
 
 const firmwareCapabilities = [
   "Bare-metal and RTOS-based firmware development",
   "Microcontroller peripheral drivers and board-support packages",
+  "Secure Bootloader development and field-update support",
   "Bootloaders, configuration storage, and update mechanisms",
   "Hardware-firmware integration and prototype bring-up",
   "Debugging, validation, and production-transition support",
@@ -89,7 +90,7 @@ export const pageContent = {
     eyebrow: "Communication Integration",
     title: "Industrial Communication",
     description:
-      "Industrial communication integration for embedded products, including field protocols, gateway logic, and reliable data exchange between devices and supervisory systems.",
+      "Industrial communication integration for embedded products, including Ethernet, TCP/IP stack, L2 switch, SNMP V2 and V3, field protocols, gateway logic, and reliable data exchange between devices and supervisory systems.",
     capabilities: communicationCapabilities,
   },
   "embedded-measurement-system": {
@@ -193,12 +194,13 @@ export const pageContent = {
     eyebrow: "Industrial IoT",
     title: "Industrial IoT & Gateway Development",
     description:
-      "Embedded IoT gateway and connected-device development for industrial products — data acquisition, protocol handling, remote connectivity, and integration with supervisory systems.",
+      "Embedded IoT gateway and connected-device development for industrial products — data acquisition, protocol handling, remote connectivity, edge intelligence, and integration with supervisory systems.",
     capabilities: [
       "Gateway firmware and edge data collection",
       "MQTT, SNMP, Modbus, and industrial protocol integration",
       "Field data acquisition, buffering, and structured logging",
       "Diagnostics, alarms, and remote configuration support",
+      "Edge AI and intelligent embedded-system prototypes where applicable",
       "Prototype bring-up and deployment validation",
     ],
   },
@@ -222,22 +224,22 @@ export const pageContent = {
       "Practical embedded technologies used across MMIS engagements, selected according to product requirements rather than generic platform marketing.",
     capabilities: siteContent.technologies.map((t) => t.label),
   },
-  stm32: {
+  "32-bit-controller": {
     eyebrow: "Microcontrollers",
-    title: "STM32 Development",
+    title: "32-bit Controller & Processor Development",
     description:
-      "STM32-based firmware and product development, including peripheral drivers, RTOS integration, communication stacks, and prototype bring-up.",
+      "32-bit microcontroller and processor-based firmware and product development, including peripheral drivers, RTOS integration, communication stacks, and prototype bring-up.",
     capabilities: [
-      "STM32 peripheral drivers and board-support packages",
-      "Bare-metal and FreeRTOS-based application firmware",
+      "32-bit controller peripheral drivers and board-support packages",
+      "Bare-metal and RTOS-based application firmware",
       "Communication and measurement integration",
-      "Bootloaders and field-update support",
+      "Secure Bootloader and field-update support",
       "Debugging, validation, and production transition",
     ],
   },
-  freertos: {
+  rtos: {
     eyebrow: "RTOS",
-    title: "FreeRTOS & RTOS Development",
+    title: "RTOS Development",
     description:
       "RTOS-based embedded firmware for applications requiring structured task management, timing control, communication handling, and reliable device operation.",
     capabilities: [

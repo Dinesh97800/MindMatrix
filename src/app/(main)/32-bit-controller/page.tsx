@@ -7,8 +7,9 @@ export const metadata: Metadata = buildPageMetadata({
   description:
     "Mind Matrix 32-bit controller and processor development — firmware, peripheral drivers, RTOS integration, communication stacks, and prototype bring-up.",
   path: "/32-bit-controller",
+  keywords: ["mind matrix", "embedded systems", "32-bit controller", "microcontroller", "processor"],
 });
 
-export default function Stm32Page() {
+export default function ThirtyTwoBitControllerPage() {
   return <Stm32PageContent />;
 }
