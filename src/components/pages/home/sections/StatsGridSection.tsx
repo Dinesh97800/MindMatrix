@@ -15,15 +15,17 @@ export function StatsGridSection() {
         }}
       />
       <div className="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
-        <div className="max-w-4xl min-w-0 space-y-stack-md">
-          <div className="inline-flex max-w-full items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse shrink-0" />
-            <span className="font-label-sm text-label-sm text-on-primary-container uppercase tracking-widest">
-              {hero.eyebrow}
-            </span>
-          </div>
-          <h1 className="font-display-lg text-display-lg text-white leading-tight break-words">
-            {hero.headline}
+        <div className="flex w-full max-w-4xl min-w-0 flex-col items-start space-y-stack-md">
+          <p className="font-label-sm text-label-sm text-on-primary-container uppercase tracking-widest">
+            {hero.eyebrow}
+          </p>
+          <h1 className="w-full text-left font-display-lg text-display-lg text-white leading-tight [text-wrap:wrap]">
+            {hero.headlineLines.map((line, index) => (
+              <span key={line}>
+                {index > 0 ? <br /> : null}
+                {line}
+              </span>
+            ))}
           </h1>
           <p className="font-body-lg text-body-lg text-on-primary-container/80 max-w-2xl">
             {hero.subheading}

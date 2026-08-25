@@ -19,6 +19,10 @@ export const siteContent = {
   hero: {
     eyebrow: "Embedded Product Engineering",
     headline: "Embedded Product Engineering for Industrial and Power-Electronics Applications",
+    headlineLines: [
+      "Embedded Product Engineering for",
+      "Industrial and Power-Electronics Applications",
+    ],
     subheading:
       "Mind Matrix Intelligent Solutions provides custom embedded hardware, firmware and communication-system development — from requirements and system architecture through prototype validation and production support.",
     technologyLine:

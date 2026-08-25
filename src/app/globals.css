@@ -26,6 +26,7 @@
   h6,
   p {
     overflow-wrap: break-word;
+    text-wrap: wrap;
   }
 
   .grid > * {
