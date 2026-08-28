@@ -8,44 +8,33 @@ const SITE_NAME = "Mind Matrix Intelligent Solutions";
 export const IS_PRELAUNCH =
   process.env.NEXT_PUBLIC_PRELAUNCH !== "false";
 
-export function buildPageMetadata({
-  title,
-  description,
-  path,
-  keywords,
-}: {
-  title: string;
-  description: string;
-  path: string;
-  keywords?: string[];
-}): Metadata {
-  const url = `${SITE_URL}${path === "/" ? "" : path}`;
-  const fullTitle =
-    path === "/"
-      ? `${title} | Embedded Product Engineering`
-      : `${title} | ${SITE_NAME}`;
+export function getMetadataBase(): URL {
+  return new URL(SITE_URL);
+}
 
+export function canonicalPath(path: string): string {
+  if (!path || path === "/") return "/";
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+export function canonicalUrl(path: string): string {
+  const normalizedPath = canonicalPath(path);
+  return `${SITE_URL}${normalizedPath === "/" ? "" : normalizedPath}`;
+}
+
+/** Site-wide defaults for the root layout (no page-specific canonical). */
+export function buildRootMetadata(): Metadata {
   return {
-    title: fullTitle,
-    description,
-    ...(keywords?.length ? { keywords } : {}),
+    metadataBase: getMetadataBase(),
+    title: {
+      default: `${SITE_NAME} | Embedded Product Engineering`,
+      template: `%s | ${SITE_NAME}`,
+    },
+    description:
+      "India-based engineering consultancy for custom embedded hardware, firmware, and communication-system development — from requirements and architecture through prototype validation and production support.",
     icons: {
-      icon: [{ url: "/icon.png", type: "image/png" }],
-      apple: [{ url: "/apple-icon.png", type: "image/png" }],
-    },
-    alternates: { canonical: url },
-    openGraph: {
-      type: "website",
-      locale: "en_US",
-      url,
-      siteName: SITE_NAME,
-      title: fullTitle,
-      description,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: fullTitle,
-      description,
+      icon: [{ url: "/favicon.png", type: "image/png" }],
+      apple: [{ url: "/favicon.png", type: "image/png" }],
     },
     robots: IS_PRELAUNCH
       ? {
@@ -57,6 +46,47 @@ export function buildPageMetadata({
           index: true,
           follow: true,
         },
+  };
+}
+
+export function buildPageMetadata({
+  title,
+  description,
+  path,
+  keywords,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  keywords?: string[];
+}): Metadata {
+  const pagePath = canonicalPath(path);
+  const url = canonicalUrl(path);
+  const fullTitle =
+    path === "/"
+      ? `${title} | Embedded Product Engineering`
+      : `${title} | ${SITE_NAME}`;
+
+  return {
+    title: fullTitle,
+    description,
+    ...(keywords?.length ? { keywords } : {}),
+    alternates: {
+      canonical: pagePath,
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: pagePath,
+      siteName: SITE_NAME,
+      title: fullTitle,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description,
+    },
   };
 }
 

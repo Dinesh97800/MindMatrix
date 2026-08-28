@@ -63,7 +63,7 @@ export const siteContent = {
     { label: "Embedded Firmware Development", href: "/embedded-firmware-development" },
     { label: "Hardware & Firmware Development", href: "/hardware-development" },
     { label: "Industrial IoT", href: "/iot" },
-    { label: "IoT/Edge AI", href: "/ai-enabled-engineering" },
+    { label: "Edge AI", href: "/ai-enabled-engineering" },
     { label: "Prototype Bring-up", href: "/product-development" },
     { label: "Existing-product Debugging", href: "/engineering-consulting" },
     { label: "Design Upgrade/Redesign", href: "/product-development" },

@@ -218,7 +218,7 @@ export const pageContent = {
     ],
   },
   technologies: {
-    eyebrow: "Technology Stack",
+    eyebrow: "TECHNOLOGY STACK",
     title: "Technologies We Work With",
     description:
       "Practical embedded technologies used across MMIS engagements, selected according to product requirements rather than generic platform marketing.",

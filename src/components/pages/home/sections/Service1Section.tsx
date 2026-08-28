@@ -24,7 +24,7 @@ const serviceCards = [
     href: "/iot",
   },
   {
-    title: "IoT/Edge AI",
+    title: "Edge AI",
     description:
       "Edge AI and intelligent embedded-system development where appropriate to the application.",
     icon: "psychology",

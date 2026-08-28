@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageContentHero } from "@/components/sections/hero";
 import { getPageContent, type PageContentKey } from "@/config/page-content";
 import { siteContent } from "@/config/site-content";
 
@@ -16,19 +17,7 @@ export function ApprovedPageLayout({
 
   return (
     <main>
-      <section className="px-margin-mobile py-stack-lg md:px-margin-desktop">
-        <div className="mx-auto max-w-container-max">
-          <div className="max-w-3xl">
-            <span className="mb-4 inline-block rounded-full bg-primary-container/10 px-3 py-1 font-label-sm text-label-sm uppercase tracking-widest text-primary">
-              {content.eyebrow}
-            </span>
-            <h1 className="mb-6 font-display-lg text-display-lg text-primary">{content.title}</h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant">
-              {content.description}
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageContentHero pageKey={pageKey} />
 
       {pageKey !== "faq" && (
         <section className="border-y border-outline-variant/10 bg-surface-container-low px-margin-mobile py-stack-lg md:px-margin-desktop">

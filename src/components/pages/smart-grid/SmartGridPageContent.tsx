@@ -1,4 +1,4 @@
-import { DynamicDataGridOverlaySection } from "./sections/DynamicDataGridOverlaySection";
+import { ConfiguredHero } from "@/components/sections/hero/ConfiguredHero";
 import { Section } from "./sections/Section";
 import { Solution1Section } from "./sections/Solution1Section";
 import { Block2Section } from "./sections/Block2Section";
@@ -9,7 +9,7 @@ import { Block5Section } from "./sections/Block5Section";
 export function SmartGridPageContent() {
   return (
     <main>
-      <DynamicDataGridOverlaySection />
+      <ConfiguredHero slug="smart-grid" />
       <Section />
       <Solution1Section />
       <Block2Section />

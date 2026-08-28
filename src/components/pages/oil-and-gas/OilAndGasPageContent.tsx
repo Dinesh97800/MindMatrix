@@ -1,4 +1,4 @@
-import { TechnicalOverlayElementsSection } from "./sections/TechnicalOverlayElementsSection";
+import { ConfiguredHero } from "@/components/sections/hero/ConfiguredHero";
 import { ExplosiveEnvironmentsSection } from "./sections/ExplosiveEnvironmentsSection";
 import { SmallAccentSection } from "./sections/SmallAccentSection";
 import { Section } from "./sections/Section";
@@ -8,7 +8,7 @@ import { AtmosphericBgElementSection } from "./sections/AtmosphericBgElementSect
 export function OilAndGasPageContent() {
   return (
     <main>
-      <TechnicalOverlayElementsSection />
+      <ConfiguredHero slug="oil-and-gas" />
       <ExplosiveEnvironmentsSection />
       <SmallAccentSection />
       <Section />

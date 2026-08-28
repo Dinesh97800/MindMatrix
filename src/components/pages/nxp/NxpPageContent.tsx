@@ -1,4 +1,4 @@
-import { TechnicalFloatingStatsSection } from "./sections/TechnicalFloatingStatsSection";
+import { ConfiguredHero } from "@/components/sections/hero/ConfiguredHero";
 import { EdgeIntelligenceSection } from "./sections/EdgeIntelligenceSection";
 import { InteractiveLabelsOverlaySection } from "./sections/InteractiveLabelsOverlaySection";
 import { Section } from "./sections/Section";
@@ -7,7 +7,7 @@ import { AbstractBackgroundDecorationSection } from "./sections/AbstractBackgrou
 export function NxpPageContent() {
   return (
     <main>
-      <TechnicalFloatingStatsSection />
+      <ConfiguredHero slug="nxp" />
       <EdgeIntelligenceSection />
       <InteractiveLabelsOverlaySection />
       <Section />

@@ -1,4 +1,4 @@
-import { TechnicalOverlayTagSection } from "./sections/TechnicalOverlayTagSection";
+import { ConfiguredHero } from "@/components/sections/hero/ConfiguredHero";
 import { ProcessingCoreSection } from "./sections/ProcessingCoreSection";
 import { Section } from "./sections/Section";
 import { SubtleTechBackgroundEffectSection } from "./sections/SubtleTechBackgroundEffectSection";
@@ -6,7 +6,7 @@ import { SubtleTechBackgroundEffectSection } from "./sections/SubtleTechBackgrou
 export function IndustrialControllerPageContent() {
   return (
     <main className={"technical-grid min-h-screen"}>
-      <TechnicalOverlayTagSection />
+      <ConfiguredHero slug="industrial-controller" />
       <ProcessingCoreSection />
       <Section />
       <SubtleTechBackgroundEffectSection />

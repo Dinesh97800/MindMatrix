@@ -1,4 +1,4 @@
-import { AnimatedShaderOverlayForFlowSection } from "./sections/AnimatedShaderOverlayForFlowSection";
+import { ConfiguredHero } from "@/components/sections/hero/ConfiguredHero";
 import { Section } from "./sections/Section";
 import { Solution1Section } from "./sections/Solution1Section";
 import { Block2Section } from "./sections/Block2Section";
@@ -8,7 +8,7 @@ import { Block4Section } from "./sections/Block4Section";
 export function PipelineMonitoringPageContent() {
   return (
     <main>
-      <AnimatedShaderOverlayForFlowSection />
+      <ConfiguredHero slug="pipeline-monitoring" />
       <Section />
       <Solution1Section />
       <Block2Section />

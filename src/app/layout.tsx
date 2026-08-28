@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ScrollEffects } from "@/components/layout/ScrollEffects";
-import { buildPageMetadata, SITE_URL } from "@/lib/seo";
+import { buildRootMetadata, SITE_URL } from "@/lib/seo";
 
 const montserrat = localFont({
   src: [
@@ -26,12 +26,7 @@ const montserrat = localFont({
   display: "swap",
 });
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "Mind Matrix Intelligent Solutions",
-  description:
-    "India-based engineering consultancy for custom embedded hardware, firmware, and communication-system development — from requirements and architecture through prototype validation and production support.",
-  path: "/",
-});
+export const metadata: Metadata = buildRootMetadata();
 
 const organizationJsonLd = {
   "@context": "https://schema.org",

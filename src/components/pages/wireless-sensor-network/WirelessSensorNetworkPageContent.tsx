@@ -1,4 +1,4 @@
-import { DecorativeOverlayUiSection } from "./sections/DecorativeOverlayUiSection";
+import { ConfiguredHero } from "@/components/sections/hero/ConfiguredHero";
 import { Section } from "./sections/Section";
 import { EndNodesSection } from "./sections/EndNodesSection";
 import { Block2Section } from "./sections/Block2Section";
@@ -8,7 +8,7 @@ import { SubtleBackgroundDecorationSection } from "./sections/SubtleBackgroundDe
 export function WirelessSensorNetworkPageContent() {
   return (
     <main className={"tech-grid"}>
-      <DecorativeOverlayUiSection />
+      <ConfiguredHero slug="wireless-sensor-network" />
       <Section />
       <EndNodesSection />
       <Block2Section />
