@@ -1,5 +1,6 @@
 import type { BackgroundImageHeroOverlay } from "@/components/sections/hero";
 import type { HeroTone } from "@/components/sections/hero/hero-foundation";
+import { getHeroAsset, HERO_ASSETS } from "@/config/hero-images";
 
 export type HeroVariant = "split" | "background";
 
@@ -13,26 +14,19 @@ export interface HeroVisualConfig {
 
 /** Default embedded-engineering imagery used when a page has no dedicated hero asset. */
 export const DEFAULT_HERO_IMAGE =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuC8Lc9ek2leanWwsnuRipJWXMkKpeEomytTsKi2PmjiHjwcqZxRZZBc3hpFzZbkxg6nZoxtarHI-Oxh7sxD4jjdbyG65FO4sLfKo5HukLyU_56vyQWcBTVVXbPrz8Lp1mU0ukUC2OhIrZRlcvlQvDR-dIe5jp15vZYR2CgeujidebRP4FboY0JwmNOmJEIaHEiKDDRiTl9KMcJmKAyszHz8G3KSh6mNGGKneBYG1v4E2PAFcb90mDHjEgSoa49RN1-pI81RN7LjaMc";
+  HERO_ASSETS.engineering;
 
 export const DEFAULT_HERO_IMAGE_ALT =
   "Embedded controller prototype PCB with microcontroller, connectors, and test points on a bench setup.";
 
 export const HERO_IMAGES = {
-  aiEngineering:
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuCU6toPdDiRj4bpPQWDel9oYIFDfPQEhfxI56-c0oXuqhdtyeyG6GMScPkpb-n8hF4jb_LKzE32SV3jHMur7FD9xloxAiSocb8za8DTPm2qj6KpNYH_UYcZRoHFl04hvpnbf7kice5MJKHfTMgGO5c6vzFu5OONCXzBbDFSMMsvsTxx1FHYYcxASko0Mt8rU8Ziy-9A3rPPvYSGybpFRQhXEKpHTKwZi4fFscX_lxK0v0jiPKkoezTDzipHyUgYr9CENSQim_8Qpzw",
-  aboutBench:
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuCYmbMYrtbaUv9ure55r9yaOGB5FXHvEu74Sawbv3_UmbkKSpNgUu16TwZzLUJSYZ-BSZdlsP4noc5bVN_FtSDZqD1LIgTelZFdWLlzN3PiZmOzBjfETNR5an8rTp2pJkQnIW3IRp3ffPh0tW78zD1dFJhFAxTNESDto_1FOx-fT_Jno38FecoHsisPGrFuS8sUCjFL9JJSuJK2CNVq8PIuo92a7mGZxeY6ZLQ1IN4Rt_SRawAuoO5UqJAUfgMggMOgdD8OK4AqyYk",
-  firmwarePcb:
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuCyOe3i5ZFvxdB7WlJb3GT0AdZIAbeYpyijLRo15n_mBwFSJgZxOROGvuCmzCLZ7xAHMILFM9pzG3je5CgjlAQ_mrHazu9aGxTm1Ses3HUnMDc36uYb5uWu9bGw8PiD8fe748gzmK5lGX9tSwE7KB9lWEgr82RiOLAgovekpmNTAn9WZQ09UEUUe3F6D4UdHnmzNT_eJCR9bGFszSpn_QmsOSUwFLMDr758ixxt2SulEmL8FBO6DrJaKvwgFfj-c5vnlx6JrFWbdOE",
-  telecomTower:
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuA5Pe2bSmh3jAdNwPH9q-8SE0vmLQd571o8fYK9tl2V6gfDY1CshdNZwxnPpHCtcQtzNM9ZcV63h47wvJfmBBeiYvZZZWAEcXp0D8doWoUK6WQqtXvQNAjpxAcyZT_WyAHY7kd-ZSsTzq0mHcSUeicHpIRis5bfklDSCpk8BW3lc-OC8Jg2JbQct3IvBqnR9G_zZDQCkS7I5Yo_eY9R4FF7Xq3_pf33URfpKp6EGLCdzkdSqKW4JZlEs_o_YnHSgl-KE4fsvjn01jM",
-  dataCenter:
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuA3UbsXUr8A_HbdfY5WLtPwJWvIo4U5M8LtJ7KCUeAUqLbeqXtZtmFc-ARE-JjEYQSpuZbqe71V5-9kWoXP21_G10yJy00ZQYrK6hJGm4C49S1M93-liHUK-ogeIE44j2vnsdcw2XoAIX4HFaRTHoQXWRCNrIqMd61NeszDHLB2ADEWHstI_y4xRfTD4-sTuLAsi7MFVHIuUheolPVngrPl0yydShgwNWYpPqQST72LdBEHlGP9TYO62hkeo8P3K3borOSwqjgNFzk",
-  solarFarm:
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuB9aqjKWhMRG2fMOM-0dvPpFJMHD4NFqgNh61hccyDISpjQR5VwFZzIHjYtl3ifJrqBAaPNggsyibnYnErSQ6oZLe230ivZWFgH0su2MNcj19B4M2SZf7hPmGbAoZXOUjbLMFFxmZN4UTEHC4YUIvpHGXFaPzo7pgEJdanYpI2Ok4Q1DdXOtlG_-WGECAU",
-  offshoreOil:
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuCMnWGL3qzCNcS_T_zS8JH8xVc_Y80D8crAbNLt8SuXyLynDgd8Q9Nm0s5VqLWYuIntklqms0j8hltV381fxFLIiL773GLptImTFQmYmY3uUZTOshMo4Y16Oc6Ct5cFbNoI3s-qlOjwPfaW9Q7H9dWe0MgAW4zqkUtntAjP9XfLekoC6DcRRwFHgnSPpBh-fyuEnIS-cC9V8MKWaUNxyfr-PH6Nv",
+  aiEngineering: HERO_ASSETS.edgeComputing,
+  aboutBench: HERO_ASSETS.engineering,
+  firmwarePcb: HERO_ASSETS.controller,
+  telecomTower: HERO_ASSETS.telecom,
+  dataCenter: HERO_ASSETS.edgeComputing,
+  solarFarm: HERO_ASSETS.energy,
+  offshoreOil: HERO_ASSETS.fieldMonitoring,
 } as const;
 
 const split = (image: string, imageAlt: string, tone: HeroTone = "dark"): HeroVisualConfig => ({
@@ -60,7 +54,8 @@ export const heroVisualBySlug: Record<string, HeroVisualConfig> = {
   // Index / approved layout pages
   industries: split(DEFAULT_HERO_IMAGE, DEFAULT_HERO_IMAGE_ALT),
   technologies: split(DEFAULT_HERO_IMAGE, DEFAULT_HERO_IMAGE_ALT),
-  "engineering-consulting": split(DEFAULT_HERO_IMAGE, DEFAULT_HERO_IMAGE_ALT),
+  // "engineering-consulting": split(DEFAULT_HERO_IMAGE, DEFAULT_HERO_IMAGE_ALT),
+  "engineering-consulting": background(HERO_IMAGES.aboutBench, "Engineering the Digital Frontier", "gradient-left-light"),
   "engineering-process": background(DEFAULT_HERO_IMAGE, DEFAULT_HERO_IMAGE_ALT),
   "embedded-firmware-development": background(HERO_IMAGES.firmwarePcb, "High-performance PCB with embedded firmware traces.", "gradient-left-light"),
   "hardware-development": split(DEFAULT_HERO_IMAGE, DEFAULT_HERO_IMAGE_ALT),
@@ -113,8 +108,9 @@ export const heroVisualBySlug: Record<string, HeroVisualConfig> = {
 };
 
 export function getHeroVisual(slug: string): HeroVisualConfig {
-  return (
+  const visual = (
     heroVisualBySlug[slug] ??
     split(DEFAULT_HERO_IMAGE, DEFAULT_HERO_IMAGE_ALT)
   );
+  return { ...visual, ...getHeroAsset(slug) };
 }

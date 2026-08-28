@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { SplitHero } from "@/components/sections/hero";
-
-const AI_ENGINEERING_HERO_IMAGE =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCU6toPdDiRj4bpPQWDel9oYIFDfPQEhfxI56-c0oXuqhdtyeyG6GMScPkpb-n8hF4jb_LKzE32SV3jHMur7FD9xloxAiSocb8za8DTPm2qj6KpNYH_UYcZRoHFl04hvpnbf7kice5MJKHfTMgGO5c6vzFu5OONCXzBbDFSMMsvsTxx1FHYYcxASko0Mt8rU8Ziy-9A3rPPvYSGybpFRQhXEKpHTKwZi4fFscX_lxK0v0jiPKkoezTDzipHyUgYr9CENSQim_8Qpzw";
+import { HERO_ASSETS } from "@/config/hero-images";
 
 export function AnimatedShaderBackgroundSection() {
   return (
@@ -17,7 +15,7 @@ export function AnimatedShaderBackgroundSection() {
       }
       description="We combine AI with embedded systems, sensors, IoT, industrial data, and customer knowledge to build practical intelligent products and automation solutions."
       supportingText="Artificial Intelligence + Embedded Systems + IoT + Industrial Automation"
-      image={AI_ENGINEERING_HERO_IMAGE}
+      image={HERO_ASSETS.edgeComputing}
       imageAlt="Industrial engineering workspace with embedded systems and sensor hardware used for edge AI development."
       imageOverlay={
         <div className="absolute bottom-6 left-6 right-6">

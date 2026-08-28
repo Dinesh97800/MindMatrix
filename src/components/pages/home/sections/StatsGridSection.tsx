@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { siteContent } from "@/config/site-content";
+import { HERO_ASSETS } from "@/config/hero-images";
 
 export function StatsGridSection() {
   const { hero } = siteContent;
@@ -10,8 +11,7 @@ export function StatsGridSection() {
         className="absolute inset-0 z-0 opacity-40 mix-blend-overlay"
         data-alt="Embedded controller prototype PCB with microcontroller, connectors, and test points on a bench setup."
         style={{
-          backgroundImage:
-            "url('https://lh3.googleusercontent.com/aida-public/AB6AXuC8Lc9ek2leanWwsnuRipJWXMkKpeEomytTsKi2PmjiHjwcqZxRZZBc3hpFzZbkxg6nZoxtarHI-Oxh7sxD4jjdbyG65FO4sLfKo5HukLyU_56vyQWcBTVVXbPrz8Lp1mU0ukUC2OhIrZRlcvlQvDR-dIe5jp15vZYR2CgeujidebRP4FboY0JwmNOmJEIaHEiKDDRiTl9KMcJmKAyszHz8G3KSh6mNGGKneBYG1v4E2PAFcb90mDHjEgSoa49RN1-pI81RN7LjaMc')",
+          backgroundImage: `url('${HERO_ASSETS.engineering}')`,
         }}
       />
       <div className="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">

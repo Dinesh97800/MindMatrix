@@ -1,5 +1,6 @@
 import type { BackgroundImageHeroOverlay } from "@/components/sections/hero";
 import type { HeroTone } from "@/components/sections/hero/hero-foundation";
+import { getHeroAsset } from "@/config/hero-images";
 import {
   DEFAULT_HERO_IMAGE,
   DEFAULT_HERO_IMAGE_ALT,
@@ -644,5 +645,6 @@ const HERO_SLUG_ALIASES: Record<string, string> = {
 
 export function getHeroPageConfig(slug: string): HeroPageConfig | undefined {
   const key = HERO_SLUG_ALIASES[slug] ?? slug;
-  return heroPageConfigs[key];
+  const config = heroPageConfigs[key];
+  return config ? { ...config, ...getHeroAsset(slug) } : undefined;
 }

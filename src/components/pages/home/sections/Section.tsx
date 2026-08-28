@@ -61,7 +61,7 @@ export function Section() {
                 ></div>
                 <StitchImage
                   src={
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuBVTm33KWRt_b1Q5yFYMSsN5ycYqV1lktR148Wf4K1nRbIl2sMcoDuZa0y0CqpqD6DVN_8uTt9wU79y2f2A17cdOWn_VoAzqCRc09B3Hz2KJHGECVaywUSN-fjsmrP7jeI0mPf6ox5ARxIGIrqwKebH8gEVB5TBXaJNTBGW31dGRARBOhA_BDr30M41zAUxoL5JJw7jsnRYHwJLMvJCShUc4RAEydBVHgiOMHkeHX0qnVED0WXXcmnP3aoc7277ecaF3AZuz2LoaZ4'
+                    '/Midnight-Network-Operations-Center.webp'
                   }
                   alt={
                     'Close up of a smart grid digital interface showing electricity flow through a city at night. The lighting is dominated by deep blues and vibrant cyan data visualizations. Technical precision and high-stakes infrastructure theme.'
