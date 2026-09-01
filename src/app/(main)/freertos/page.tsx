@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import { buildPageMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { FreertosPageContent } from "@/components/pages/freertos/FreertosPageContent";
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "RTOS",
-  description:
-    "Mind Matrix RTOS development — structured task management, timing control, communication handling, and reliable embedded device operation.",
-  path: "/rtos",
-});
+export const metadata: Metadata = pageMetadata("/rtos");
 
 export default function FreertosPage() {
   return <FreertosPageContent />;

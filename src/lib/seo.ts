@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { PAGE_SEO } from "@/config/page-seo";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mindmatrix.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mmisindia.com";
 const SITE_NAME = "Mind Matrix Intelligent Solutions";
 
 /** Set NEXT_PUBLIC_PRELAUNCH=false when the site goes live for indexing. */
@@ -24,13 +25,15 @@ export function canonicalUrl(path: string): string {
 
 /** Site-wide defaults for the root layout (no page-specific canonical). */
 export function buildRootMetadata(): Metadata {
+  const home = PAGE_SEO["/"];
   return {
     metadataBase: getMetadataBase(),
     title: {
-      default: `${SITE_NAME} | Embedded Product Engineering`,
+      default: home?.title ?? `${SITE_NAME} | Embedded Product Engineering`,
       template: `%s | ${SITE_NAME}`,
     },
     description:
+      home?.description ??
       "India-based engineering consultancy for custom embedded hardware, firmware, and communication-system development — from requirements and architecture through prototype validation and production support.",
     icons: {
       icon: [{ url: "/favicon.png", type: "image/png" }],
@@ -54,16 +57,18 @@ export function buildPageMetadata({
   description,
   path,
   keywords,
+  absoluteTitle = false,
 }: {
   title: string;
   description: string;
   path: string;
   keywords?: string[];
+  absoluteTitle?: boolean;
 }): Metadata {
   const pagePath = canonicalPath(path);
-  const url = canonicalUrl(path);
-  const fullTitle =
-    path === "/"
+  const fullTitle = absoluteTitle
+    ? title
+    : path === "/"
       ? `${title} | Embedded Product Engineering`
       : `${title} | ${SITE_NAME}`;
 
@@ -88,6 +93,30 @@ export function buildPageMetadata({
       description,
     },
   };
+}
+
+/** Metadata for a public page from {@link PAGE_SEO}, with legacy fallback. */
+export function pageMetadata(path: string, keywords?: string[]): Metadata {
+  const pagePath = canonicalPath(path);
+  const entry = PAGE_SEO[pagePath];
+
+  if (entry) {
+    return buildPageMetadata({
+      title: entry.title,
+      description: entry.description,
+      path: pagePath,
+      keywords,
+      absoluteTitle: true,
+    });
+  }
+
+  return buildPageMetadata({
+    title: "Mind Matrix Intelligent Solutions",
+    description:
+      "India-based engineering consultancy for embedded hardware, firmware, Industrial IoT and communication solutions.",
+    path: pagePath,
+    keywords,
+  });
 }
 
 export { SITE_URL, SITE_NAME };
