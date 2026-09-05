@@ -16,9 +16,18 @@
     "urls:local": "node scripts/generate-local-urls.mjs",
     "audit:nav": "node scripts/audit-navigation.mjs",
     "db:seed": "node scripts/seed-admin.mjs",
-    "db:check": "node scripts/check-db.mjs"
+    "db:check": "node scripts/check-db.mjs",
+    "db:migrate": "node scripts/run-migrations.mjs",
+    "db:migrate:undo": "node scripts/rollback-migration.mjs",
+    "db:seed:cms": "node scripts/seed-cms-categories.mjs",
+    "db:seed:cms:content": "npx --yes tsx scripts/seed-cms-content.ts"
   },
   "dependencies": {
+    "@tiptap/extension-link": "^3.31.3",
+    "@tiptap/extension-placeholder": "^3.31.3",
+    "@tiptap/extension-underline": "^3.31.3",
+    "@tiptap/react": "^3.31.3",
+    "@tiptap/starter-kit": "^3.31.3",
     "bcryptjs": "^3.0.3",
     "cheerio": "^1.0.0",
     "dotenv": "^17.4.2",
@@ -29,7 +38,8 @@
     "nodemailer": "^7.0.13",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sequelize": "^6.37.8"
+    "sequelize": "^6.37.8",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
