@@ -91,9 +91,21 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     page.sortOrder = Number(body.sortOrder) || 0;
   }
 
+  if (
+    body.classification !== undefined ||
+    body.publishable !== undefined ||
+    body.redirectTarget !== undefined ||
+    body.stableKey !== undefined
+  ) {
+    return cmsError("Page classification and publishable flags are developer-controlled.", 403);
+  }
+
   if (body.status !== undefined) {
     if (body.status !== "draft" && body.status !== "published") {
       return cmsError("Invalid status.");
+    }
+    if (body.status === "published" && page.publishable === false) {
+      return cmsError("Redirect routes cannot be published as CMS pages.", 403);
     }
     page.status = body.status;
     page.publishedAt =

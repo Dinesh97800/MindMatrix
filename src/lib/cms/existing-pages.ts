@@ -14,6 +14,8 @@ function slugFromHref(href: string): string | null {
 export function getExistingWebsiteSlugs(): string[] {
   const slugs = new Set<string>();
 
+  slugs.add("home");
+
   for (const path of Object.keys(PAGE_SEO)) {
     const slug = slugFromHref(path);
     if (slug) slugs.add(slug);
@@ -40,7 +42,7 @@ export function isExistingWebsiteSlug(slug: string): boolean {
 }
 
 export function getExistingPageTitle(slug: string): string {
-  const seo = PAGE_SEO[`/${slug}`];
+  const seo = PAGE_SEO[slug === "home" ? "/" : `/${slug}`];
   if (seo?.title) {
     return seo.title.replace(/\s*\|\s*MMIS.*$/i, "").trim();
   }
@@ -61,7 +63,7 @@ export function isApprovedLayoutPage(slug: string): slug is PageContentKey {
 
 /**
  * Custom frontend pages with additional legacy sections not yet mapped to CMS.
- * CMS MIGRATION PENDING for listed section components.
+ * @deprecated Prefer UNMAPPED_LEGACY_SECTIONS in migration/unmapped-sections.ts
  */
 export const CUSTOM_LEGACY_PAGE_SECTIONS: Record<string, string[]> = {
   "oil-and-gas": [

@@ -5,6 +5,8 @@ import { RichTextEditor } from "@/cms/sections/rich-text/RichTextEditor";
 import { CTAEditor } from "@/cms/sections/cta/CTAEditor";
 import { getSectionDefinition } from "@/cms/sections/registry";
 import { CapabilitiesEditor } from "@/cms/sections/capabilities/CapabilitiesEditor";
+import { StructuredContentEditor } from "@/cms/sections/structured/StructuredContentEditor";
+import { isStructuredSectionType } from "@/cms/sections/registry";
 import type {
   CapabilitiesSectionData,
   CtaSectionData,
@@ -58,6 +60,14 @@ export function SectionEditor({
         />
       );
     default:
+      if (isStructuredSectionType(type)) {
+        return (
+          <StructuredContentEditor
+            data={validated}
+            onChange={(next) => onChange(next)}
+          />
+        );
+      }
       return null;
   }
 }

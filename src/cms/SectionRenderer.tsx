@@ -1,8 +1,9 @@
 "use client";
 
 /**
- * CMS preview-only section renderer.
- * TODO CMS MIGRATION: Do NOT use on existing public pages until migration phase.
+ * Legacy generic CMS preview renderer.
+ * Admin preview now uses src/cms/preview/CanonicalPreview.tsx.
+ * Do NOT use this on public pages.
  */
 import Link from "next/link";
 import { BackgroundImageHero, SplitHero } from "@/components/sections/hero";
@@ -104,6 +105,59 @@ function CtaPreview({ data }: { data: CtaSectionData }) {
   );
 }
 
+function StructuredPreview({ data }: { data: Record<string, unknown> }) {
+  const title = String(data.title ?? "");
+  const description = String(data.description ?? "");
+  const items = Array.isArray(data.items) ? data.items : [];
+  const cards = Array.isArray(data.cards) ? data.cards : [];
+  const stats = Array.isArray(data.stats) ? data.stats : [];
+  const faqs = Array.isArray(data.faqs) ? data.faqs : [];
+  const studies = Array.isArray(data.studies) ? data.studies : [];
+
+  return (
+    <section className="border-y border-outline-variant/10 bg-surface-container-low px-4 py-12">
+      <div className="mx-auto max-w-5xl space-y-4">
+        {data.componentKey ? (
+          <p className="text-xs uppercase tracking-wide text-on-surface-variant">
+            {String(data.componentKey)}
+          </p>
+        ) : null}
+        {title ? <h2 className="font-headline-lg text-headline-lg">{title}</h2> : null}
+        {description ? <p className="text-on-surface-variant">{description}</p> : null}
+        {stats.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {stats.map((stat, index) => (
+              <div key={index} className="rounded-lg border bg-white p-4 text-sm">
+                {typeof stat === "object" && stat
+                  ? JSON.stringify(stat)
+                  : String(stat)}
+              </div>
+            ))}
+          </div>
+        ) : null}
+        {items.length > 0 ? (
+          <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            {items.slice(0, 8).map((item, index) => (
+              <li key={index} className="rounded-lg border bg-white p-4 text-sm">
+                {typeof item === "object" && item ? JSON.stringify(item) : String(item)}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        {cards.length > 0 ? (
+          <p className="text-sm text-on-surface-variant">{cards.length} card(s) in CMS data.</p>
+        ) : null}
+        {faqs.length > 0 ? (
+          <p className="text-sm text-on-surface-variant">{faqs.length} FAQ item(s) in CMS data.</p>
+        ) : null}
+        {studies.length > 0 ? (
+          <p className="text-sm text-on-surface-variant">{studies.length} case study record(s) in CMS data.</p>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
 export function SectionRenderer({ section }: { section: SerializedSection }) {
   if (!section.isVisible) return null;
 
@@ -132,6 +186,6 @@ export function SectionRenderer({ section }: { section: SerializedSection }) {
     case "cta":
       return <CtaPreview data={data as CtaSectionData} />;
     default:
-      return null;
+      return <StructuredPreview data={data} />;
   }
 }

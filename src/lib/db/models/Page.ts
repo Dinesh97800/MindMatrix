@@ -8,6 +8,7 @@ import {
 } from "sequelize";
 
 export type PageStatus = "draft" | "published";
+export type PageClassification = "active" | "redirect";
 
 export class Page extends Model<
   InferAttributes<Page>,
@@ -19,6 +20,9 @@ export class Page extends Model<
   declare categoryId: CreationOptional<number | null>;
   declare template: CreationOptional<string>;
   declare status: CreationOptional<PageStatus>;
+  declare classification: CreationOptional<PageClassification>;
+  declare redirectTarget: CreationOptional<string | null>;
+  declare publishable: CreationOptional<boolean>;
   declare sortOrder: CreationOptional<number>;
   declare publishedAt: CreationOptional<Date | null>;
   declare createdBy: CreationOptional<number | null>;
@@ -53,6 +57,21 @@ export function initPageModel(sequelize: Sequelize) {
         type: DataTypes.ENUM("draft", "published"),
         allowNull: false,
         defaultValue: "draft",
+      },
+      classification: {
+        type: DataTypes.ENUM("active", "redirect"),
+        allowNull: false,
+        defaultValue: "active",
+      },
+      redirectTarget: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        field: "redirect_target",
+      },
+      publishable: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
       sortOrder: {
         type: DataTypes.INTEGER,

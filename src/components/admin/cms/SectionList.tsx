@@ -67,18 +67,27 @@ export function SectionList({
                   <span className="material-symbols-outlined text-on-surface-variant">lock</span>
                   <div className="flex-1">
                     <p className="font-medium">{definition?.label ?? section.type}</p>
-                    <p className="text-xs text-on-surface-variant">Existing section</p>
+                    <p className="text-xs text-on-surface-variant">
+                      {section.stableKey
+                        ? `stableKey: ${section.stableKey}`
+                        : "Existing section"}
+                      {section.model ? ` · ${section.model}` : ""}
+                    </p>
                   </div>
-                  <button
-                    type="button"
-                    className="rounded-lg bg-primary px-4 py-2 text-sm text-white"
-                    onClick={() => {
-                      setEditing(section);
-                      setDraftData(section.data ?? {});
-                    }}
-                  >
-                    Edit Content
-                  </button>
+                  {section.model === "UTILITY" ? (
+                    <span className="text-xs text-on-surface-variant">Developer-controlled</span>
+                  ) : (
+                    <button
+                      type="button"
+                      className="rounded-lg bg-primary px-4 py-2 text-sm text-white"
+                      onClick={() => {
+                        setEditing(section);
+                        setDraftData(section.data ?? {});
+                      }}
+                    >
+                      Edit Content
+                    </button>
+                  )}
                 </div>
               </div>
             );

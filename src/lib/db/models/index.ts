@@ -14,6 +14,9 @@ import { PageCategory, initPageCategoryModel } from "./PageCategory";
 import { PageSection, initPageSectionModel } from "./PageSection";
 import { PageSEO, initPageSEOModel } from "./PageSEO";
 import { SiteSetting, initSiteSettingModel } from "./SiteSetting";
+import { CaseStudy, initCaseStudyModel } from "./CaseStudy";
+import { Resource, initResourceModel } from "./Resource";
+import { Job, initJobModel } from "./Job";
 
 export { AdminUser } from "./AdminUser";
 export type { AdminRole } from "./AdminUser";
@@ -26,8 +29,11 @@ export { NewsletterSubscription } from "./NewsletterSubscription";
 export type { NewsletterStatus } from "./NewsletterSubscription";
 export { PageCategory } from "./PageCategory";
 export { Page } from "./Page";
-export type { PageStatus } from "./Page";
+export type { PageClassification, PageStatus } from "./Page";
 export { PageSection } from "./PageSection";
+export { CaseStudy } from "./CaseStudy";
+export { Resource } from "./Resource";
+export { Job } from "./Job";
 export { PageSEO } from "./PageSEO";
 export type { SeoRobots } from "./PageSEO";
 export { Media } from "./Media";
@@ -49,6 +55,9 @@ export type DbModels = {
   BlogCategory: typeof BlogCategory;
   Blog: typeof Blog;
   SiteSetting: typeof SiteSetting;
+  CaseStudy: typeof CaseStudy;
+  Resource: typeof Resource;
+  Job: typeof Job;
 };
 
 const globalForModels = globalThis as typeof globalThis & {
@@ -76,6 +85,9 @@ export function initModels(sequelize: Sequelize) {
   initBlogCategoryModel(sequelize);
   initBlogModel(sequelize);
   initSiteSettingModel(sequelize);
+  initCaseStudyModel(sequelize);
+  initResourceModel(sequelize);
+  initJobModel(sequelize);
 
   globalForModels.__dbModels = {
     AdminUser,
@@ -89,6 +101,9 @@ export function initModels(sequelize: Sequelize) {
     BlogCategory,
     Blog,
     SiteSetting,
+    CaseStudy,
+    Resource,
+    Job,
   };
 
   if (!globalForModels.__dbAssociationsReady) {

@@ -6,6 +6,11 @@ import type { PageCategory } from "@/lib/db/models/PageCategory";
 import type { PageSection } from "@/lib/db/models/PageSection";
 import type { PageSEO } from "@/lib/db/models/PageSEO";
 import type { SiteSetting } from "@/lib/db/models/SiteSetting";
+import {
+  normalizeJsonArray,
+  normalizeJsonColumn,
+  normalizeJsonObject,
+} from "@/lib/cms/canonical/json";
 
 export function serializeCategory(category: PageCategory) {
   return {
@@ -28,6 +33,9 @@ export function serializePage(page: Page) {
     categoryId: page.categoryId,
     template: page.template,
     status: page.status,
+    classification: page.classification ?? "active",
+    redirectTarget: page.redirectTarget ?? null,
+    publishable: page.publishable !== false,
     sortOrder: page.sortOrder,
     publishedAt: page.publishedAt,
     createdBy: page.createdBy,
@@ -42,8 +50,14 @@ export function serializePageSection(section: PageSection) {
     id: section.id,
     pageId: section.pageId,
     type: section.type,
+    stableKey: section.stableKey ?? null,
+    model: section.model ?? null,
+    template: section.template ?? null,
+    source: normalizeJsonObject(section.sourceMeta),
+    editorPolicy: normalizeJsonObject(section.editorPolicy),
+    decorations: normalizeJsonObject(section.decorations),
     sortOrder: section.sortOrder,
-    data: section.data,
+    data: normalizeJsonObject(section.data),
     isVisible: section.isVisible,
     createdAt: section.createdAt,
     updatedAt: section.updatedAt,
@@ -61,7 +75,7 @@ export function serializePageSeo(seo: PageSEO) {
     ogDescription: seo.ogDescription,
     ogImageId: seo.ogImageId,
     robots: seo.robots,
-    keywords: seo.keywords,
+    keywords: normalizeJsonArray(seo.keywords).map(String),
     createdAt: seo.createdAt,
     updatedAt: seo.updatedAt,
   };
@@ -86,11 +100,12 @@ export function serializeMedia(media: Media) {
 }
 
 export function serializeSiteSetting(setting: SiteSetting) {
+  const normalizedValue = normalizeJsonColumn(setting.value).value;
   return {
     id: setting.id,
     group: setting.group,
     key: setting.key,
-    value: setting.value,
+    value: normalizedValue,
     updatedBy: setting.updatedBy,
     updatedAt: setting.updatedAt,
   };
@@ -109,17 +124,23 @@ export function serializeBlogCategory(category: BlogCategory) {
 }
 
 export function serializeBlog(blog: Blog) {
+  const normalizedContent = normalizeJsonColumn(blog.content).value;
   return {
     id: blog.id,
     title: blog.title,
     slug: blog.slug,
     excerpt: blog.excerpt,
-    content: blog.content,
+    content:
+      normalizedContent &&
+      typeof normalizedContent === "object" &&
+      !Array.isArray(normalizedContent)
+        ? normalizedContent
+        : null,
     featuredMediaId: blog.featuredMediaId,
     featuredImageAlt: blog.featuredImageAlt,
     authorId: blog.authorId,
     categoryId: blog.categoryId,
-    tags: blog.tags,
+    tags: normalizeJsonArray(blog.tags).map(String),
     status: blog.status,
     publishedAt: blog.publishedAt,
     metaTitle: blog.metaTitle,

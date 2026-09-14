@@ -14,6 +14,12 @@ export class PageSection extends Model<
   declare id: CreationOptional<number>;
   declare pageId: number;
   declare type: string;
+  declare stableKey: CreationOptional<string | null>;
+  declare model: CreationOptional<string | null>;
+  declare template: CreationOptional<string | null>;
+  declare sourceMeta: CreationOptional<Record<string, unknown> | null>;
+  declare editorPolicy: CreationOptional<Record<string, unknown> | null>;
+  declare decorations: CreationOptional<Record<string, unknown> | null>;
   declare sortOrder: CreationOptional<number>;
   declare data: CreationOptional<Record<string, unknown>>;
   declare isVisible: CreationOptional<boolean>;
@@ -37,6 +43,20 @@ export function initPageSectionModel(sequelize: Sequelize) {
         field: "page_id",
       },
       type: { type: DataTypes.STRING(80), allowNull: false },
+      stableKey: {
+        type: DataTypes.STRING(190),
+        allowNull: true,
+        field: "stable_key",
+      },
+      model: { type: DataTypes.STRING(40), allowNull: true },
+      template: { type: DataTypes.STRING(190), allowNull: true },
+      sourceMeta: { type: DataTypes.JSON, allowNull: true, field: "source_meta" },
+      editorPolicy: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        field: "editor_policy",
+      },
+      decorations: { type: DataTypes.JSON, allowNull: true },
       sortOrder: {
         type: DataTypes.INTEGER,
         allowNull: false,

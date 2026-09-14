@@ -6,7 +6,11 @@ import {
   capabilitiesDefaults,
   validateCapabilitiesData,
 } from "./capabilities/CapabilitiesSchema";
-import type { SectionType } from "./types";
+import {
+  structuredContentDefaults,
+  validateStructuredContent,
+} from "./structured/StructuredContentSchema";
+import type { SectionType, StructuredSectionType } from "./types";
 
 export type SectionDefinition = {
   type: SectionType;
@@ -15,6 +19,37 @@ export type SectionDefinition = {
   defaults: Record<string, unknown>;
   validate: (data: Record<string, unknown>) => Record<string, unknown>;
 };
+
+const STRUCTURED_SECTION_LABELS: Record<StructuredSectionType, { label: string; description: string }> = {
+  content_block: {
+    label: "Content Block",
+    description: "Legacy section content preserved from an existing React component.",
+  },
+  stats_row: { label: "Stats Row", description: "Hero statistics and headline content." },
+  icon_card_grid: { label: "Icon Card Grid", description: "Cards with title, description, and optional links." },
+  link_index_grid: { label: "Link Index Grid", description: "Index page link cards." },
+  case_study_list: { label: "Case Study List", description: "Project experience case studies." },
+  faq_list: { label: "FAQ List", description: "Question and answer pairs." },
+  info_card_pair: { label: "Info Card Pair", description: "Two-column informational cards." },
+  process_timeline: { label: "Process Timeline", description: "Sequential process steps." },
+  image_tile_grid: { label: "Image Tile Grid", description: "Image tiles with titles and links." },
+  logo_marquee: { label: "Logo Marquee", description: "Scrolling logo or label strip." },
+  legal_document: { label: "Legal Document", description: "Structured legal page sections." },
+  resource_cards: { label: "Resource Cards", description: "Downloadable resource cards." },
+  blog_card_grid: { label: "Blog Card Grid", description: "Blog or article cards." },
+  contact_block: { label: "Contact Block", description: "Contact and consultation supporting content." },
+};
+
+function buildStructuredRegistryEntry(type: StructuredSectionType): SectionDefinition {
+  const meta = STRUCTURED_SECTION_LABELS[type];
+  return {
+    type,
+    label: meta.label,
+    description: meta.description,
+    defaults: structuredContentDefaults,
+    validate: validateStructuredContent,
+  };
+}
 
 export const SECTION_REGISTRY: Record<SectionType, SectionDefinition> = {
   hero: {
@@ -63,6 +98,20 @@ export const SECTION_REGISTRY: Record<SectionType, SectionDefinition> = {
           : "primary",
     }),
   },
+  content_block: buildStructuredRegistryEntry("content_block"),
+  stats_row: buildStructuredRegistryEntry("stats_row"),
+  icon_card_grid: buildStructuredRegistryEntry("icon_card_grid"),
+  link_index_grid: buildStructuredRegistryEntry("link_index_grid"),
+  case_study_list: buildStructuredRegistryEntry("case_study_list"),
+  faq_list: buildStructuredRegistryEntry("faq_list"),
+  info_card_pair: buildStructuredRegistryEntry("info_card_pair"),
+  process_timeline: buildStructuredRegistryEntry("process_timeline"),
+  image_tile_grid: buildStructuredRegistryEntry("image_tile_grid"),
+  logo_marquee: buildStructuredRegistryEntry("logo_marquee"),
+  legal_document: buildStructuredRegistryEntry("legal_document"),
+  resource_cards: buildStructuredRegistryEntry("resource_cards"),
+  blog_card_grid: buildStructuredRegistryEntry("blog_card_grid"),
+  contact_block: buildStructuredRegistryEntry("contact_block"),
 };
 
 export const SECTION_TYPE_OPTIONS = Object.values(SECTION_REGISTRY).map(
@@ -85,4 +134,8 @@ export function validateSectionData(
   const definition = getSectionDefinition(type);
   if (!definition) return data;
   return definition.validate(data);
+}
+
+export function isStructuredSectionType(type: string): boolean {
+  return type in STRUCTURED_SECTION_LABELS;
 }

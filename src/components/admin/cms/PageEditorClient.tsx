@@ -51,7 +51,10 @@ export function PageEditorClient({ pageId }: { pageId: number }) {
     }
 
     setPage(pageData.page ?? null);
-    setSections(pageData.sections ?? []);
+    setSections(pageData.sections?.map((i: any) =>({
+      ...i,
+      data: typeof i.data === 'string' ? JSON.parse(i.data) : i.data
+    })) ?? []);
     setSeo({
       metaTitle: pageData.seo?.metaTitle ?? "",
       metaDescription: pageData.seo?.metaDescription ?? "",
@@ -134,6 +137,8 @@ export function PageEditorClient({ pageId }: { pageId: number }) {
           <h1 className="font-headline-lg text-headline-lg text-primary">Edit Website Page</h1>
           <p className="mt-2 text-on-surface-variant">
             Update existing website content. Page structure and layout remain locked.
+            Publishing a page serves CMS content on its public URL. Draft pages keep the
+            legacy website.
           </p>
           <div className="mt-2 flex items-center gap-3">
             <StatusBadge status={page.status} />

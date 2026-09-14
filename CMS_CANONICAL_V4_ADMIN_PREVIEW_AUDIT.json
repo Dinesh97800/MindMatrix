@@ -1,0 +1,518 @@
+{
+  "activePages": 55,
+  "testedPages": 55,
+  "failedPages": [],
+  "totalSections": 255,
+  "missingAdapters": [],
+  "mediaMissing": [],
+  "unresolvedEntities": [],
+  "servicesHero": {
+    "id": 200,
+    "stableKey": "services.hero",
+    "template": "services.hero",
+    "adapterId": "hero",
+    "dataOrigin": "admin-edited",
+    "preservedRowId": 200,
+    "title": "Edge AI and Intelligent Engineering Solutions",
+    "imageId": 6,
+    "mediaUrl": "/api/cms/media/6",
+    "mediaMissing": null
+  },
+  "pages": [
+    {
+      "slug": "32-bit-controller",
+      "id": 51,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "about-us",
+      "id": 26,
+      "status": "draft",
+      "sections": 6,
+      "adapters": 6,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "ai-enabled-engineering",
+      "id": 36,
+      "status": "draft",
+      "sections": 8,
+      "adapters": 8,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "battery-energy-storage",
+      "id": 56,
+      "status": "draft",
+      "sections": 7,
+      "adapters": 7,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "battery-management-system",
+      "id": 57,
+      "status": "draft",
+      "sections": 5,
+      "adapters": 5,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "careers",
+      "id": 28,
+      "status": "draft",
+      "sections": 5,
+      "adapters": 5,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "case-studies",
+      "id": 59,
+      "status": "draft",
+      "sections": 2,
+      "adapters": 2,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "cognitive-core-os",
+      "id": 60,
+      "status": "draft",
+      "sections": 7,
+      "adapters": 7,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "connectivity",
+      "id": 37,
+      "status": "draft",
+      "sections": 6,
+      "adapters": 6,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "contact-us",
+      "id": 46,
+      "status": "draft",
+      "sections": 2,
+      "adapters": 2,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "contact-us-and-engineering-consultation",
+      "id": 48,
+      "status": "draft",
+      "sections": 5,
+      "adapters": 5,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "earth-resistance-monitoring",
+      "id": 61,
+      "status": "draft",
+      "sections": 6,
+      "adapters": 6,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "embedded-firmware-development",
+      "id": 33,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "embedded-linux",
+      "id": 34,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "embedded-measurement-system",
+      "id": 62,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "energy-management",
+      "id": 63,
+      "status": "draft",
+      "sections": 7,
+      "adapters": 7,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "energy-monitoring",
+      "id": 64,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "engineering-consulting",
+      "id": 35,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "engineering-process",
+      "id": 27,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "environmental-monitoring",
+      "id": 66,
+      "status": "draft",
+      "sections": 5,
+      "adapters": 5,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "esp32",
+      "id": 67,
+      "status": "draft",
+      "sections": 6,
+      "adapters": 6,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "ev-charger-electronics",
+      "id": 68,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "ev-infrastructure",
+      "id": 45,
+      "status": "draft",
+      "sections": 5,
+      "adapters": 5,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "faq",
+      "id": 29,
+      "status": "draft",
+      "sections": 3,
+      "adapters": 3,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "hardware-development",
+      "id": 32,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "home",
+      "id": 93,
+      "status": "draft",
+      "sections": 8,
+      "adapters": 8,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "industrial-automation",
+      "id": 40,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "industrial-communication",
+      "id": 71,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "industrial-controller",
+      "id": 72,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "industrial-protocols",
+      "id": 74,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "industries",
+      "id": 38,
+      "status": "draft",
+      "sections": 3,
+      "adapters": 3,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "iot",
+      "id": 75,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "manufacturing",
+      "id": 39,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "microchip",
+      "id": 77,
+      "status": "draft",
+      "sections": 6,
+      "adapters": 6,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "mqtt",
+      "id": 78,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "nordic",
+      "id": 79,
+      "status": "draft",
+      "sections": 5,
+      "adapters": 5,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "nxp",
+      "id": 80,
+      "status": "draft",
+      "sections": 5,
+      "adapters": 5,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "oil-and-gas",
+      "id": 41,
+      "status": "draft",
+      "sections": 6,
+      "adapters": 6,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "pipeline-monitoring",
+      "id": 81,
+      "status": "draft",
+      "sections": 6,
+      "adapters": 6,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "privacy-policy",
+      "id": 49,
+      "status": "draft",
+      "sections": 2,
+      "adapters": 2,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "product-development",
+      "id": 31,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "quantum-ready-data-architecture",
+      "id": 82,
+      "status": "draft",
+      "sections": 7,
+      "adapters": 7,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "remote-monitoring",
+      "id": 83,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "renesas",
+      "id": 97,
+      "status": "draft",
+      "sections": 5,
+      "adapters": 5,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "request-consultation",
+      "id": 47,
+      "status": "draft",
+      "sections": 3,
+      "adapters": 3,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "rtos",
+      "id": 84,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "services",
+      "id": 30,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "smart-infrastructure",
+      "id": 43,
+      "status": "draft",
+      "sections": 6,
+      "adapters": 6,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "snmp-alarm-gateway",
+      "id": 86,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "solutions",
+      "id": 99,
+      "status": "draft",
+      "sections": 2,
+      "adapters": 2,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "technologies",
+      "id": 89,
+      "status": "draft",
+      "sections": 3,
+      "adapters": 3,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "telecom",
+      "id": 44,
+      "status": "draft",
+      "sections": 4,
+      "adapters": 4,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "terms-and-conditions",
+      "id": 50,
+      "status": "draft",
+      "sections": 2,
+      "adapters": 2,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "texas-instruments",
+      "id": 90,
+      "status": "draft",
+      "sections": 7,
+      "adapters": 7,
+      "missing": 0,
+      "seo": true
+    },
+    {
+      "slug": "wireless-sensor-network",
+      "id": 92,
+      "status": "draft",
+      "sections": 6,
+      "adapters": 6,
+      "missing": 0,
+      "seo": true
+    }
+  ]
+}

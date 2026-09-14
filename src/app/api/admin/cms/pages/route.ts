@@ -43,7 +43,9 @@ export async function GET(request: NextRequest) {
   });
 
   const allowedSlugs = new Set(getExistingWebsiteSlugs());
-  const filtered = pages.filter((page) => allowedSlugs.has(page.slug));
+  const filtered = pages.filter(
+    (page) => allowedSlugs.has(page.slug) && page.publishable !== false
+  );
 
   return cmsOk({ pages: filtered.map(serializePage) });
 }

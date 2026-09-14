@@ -3,6 +3,7 @@ import { cmsError, cmsOk, requireCmsAccess } from "@/lib/api/cms-auth";
 import { ensureCmsDatabaseReady } from "@/lib/cms/db";
 import { validateSectionData } from "@/cms/sections/registry";
 import { requireCapability } from "@/lib/cms/guards";
+import { STRUCTURAL_SECTION_FIELDS } from "@/lib/cms/canonical/admin-type";
 import { serializePageSection } from "@/lib/cms/serializers";
 import { getDbModels } from "@/lib/db/models";
 
@@ -45,24 +46,53 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   const section = await PageSection.findOne({ where: { id: sectionId, pageId } });
   if (!section) return cmsError("Section not found.", 404);
 
+  if (
+    STRUCTURAL_SECTION_FIELDS.some((field) =>
+      Object.prototype.hasOwnProperty.call(body, field)
+    )
+  ) {
+    return cmsError("stableKey, model, template, and source are not editable.", 403);
+  }
+
+  if (section.model === "UTILITY") {
+    return cmsError("UTILITY sections are developer-controlled and not editable.", 403);
+  }
+
   if (body.data !== undefined) {
     if (typeof body.data !== "object" || body.data === null) {
       return cmsError("Invalid section data.");
     }
-    let nextData = body.data as Record<string, unknown>;
+    const prior = (section.data ?? {}) as Record<string, unknown>;
+    const incoming = { ...(body.data as Record<string, unknown>) };
+    for (const field of STRUCTURAL_SECTION_FIELDS) {
+      delete incoming[field];
+    }
+    delete incoming._migration;
+
+    const policy = (section.editorPolicy ?? {}) as { editable?: string[] };
+    const editable = new Set(policy.editable ?? []);
+    let nextData: Record<string, unknown> = { ...prior };
+    if (editable.size > 0) {
+      for (const key of editable) {
+        if (key in incoming) nextData[key] = incoming[key];
+      }
+    } else {
+      nextData = { ...prior, ...incoming };
+    }
+
     if (
       section.type === "hero" &&
-      section.data &&
-      typeof section.data === "object" &&
-      (section.data as Record<string, unknown>).lockedVariant
+      prior.lockedVariant
     ) {
-      nextData = {
-        ...nextData,
-        variant: (section.data as Record<string, unknown>).variant,
-        lockedVariant: true,
-      };
+      nextData.variant = prior.variant;
+      nextData.lockedVariant = true;
     }
-    section.data = validateSectionData(section.type, nextData);
+    const validated = validateSectionData(section.type, nextData);
+    section.data = {
+      ...validated,
+      _cmsEdited: true as const,
+      ...(prior._migration ? { _migration: prior._migration } : {}),
+    };
   }
 
   if (body.isVisible !== undefined) {
