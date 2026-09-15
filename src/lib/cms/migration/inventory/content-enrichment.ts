@@ -4,7 +4,12 @@ import { companyContact } from "@/config/company";
 import { getPageContent, type PageContentKey } from "@/config/page-content";
 import { siteContent } from "@/config/site-content";
 import { caseStudies, caseStudyConfidentialityNote } from "@/data/case-studies";
-import { PRIVACY_POLICY_SECTIONS, TERMS_SECTIONS } from "@/lib/cms/migration/data/legal-content";
+import {
+  PRIVACY_POLICY_INTRO,
+  PRIVACY_POLICY_SECTIONS,
+  PRIVACY_POLICY_TOC,
+  TERMS_SECTIONS,
+} from "@/lib/cms/migration/data/legal-content";
 type BaseContent = {
   componentKey?: string;
   sourceFile?: string;
@@ -130,9 +135,11 @@ function legalSectionsToBlocks(
     heading: string;
     paragraphs?: readonly string[];
     bullets?: readonly string[];
+    [key: string]: unknown;
   }>
 ) {
   return sections.map((section) => ({
+    ...section,
     heading: section.heading,
     paragraphs: [...(section.paragraphs ?? [])],
     bullets: [...(section.bullets ?? [])],
@@ -355,6 +362,9 @@ export function enrichSectionContent(
     return {
       ...merged,
       title: "Privacy Policy",
+      body: PRIVACY_POLICY_INTRO,
+      tocHeading: "Contents",
+      toc: [...PRIVACY_POLICY_TOC],
       sections: legalSectionsToBlocks(PRIVACY_POLICY_SECTIONS),
     };
   }

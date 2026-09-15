@@ -53,8 +53,36 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
       <FormField label="Title">
         <input className={inputClassName} value={String(data.title ?? "")} onChange={(e) => update("title", e.target.value)} />
       </FormField>
+      <FormField label="Title accent">
+        <input
+          className={inputClassName}
+          value={String(data.titleAccent ?? "")}
+          onChange={(e) => update("titleAccent", e.target.value)}
+        />
+      </FormField>
+      <FormField label="Title accent class">
+        <input
+          className={inputClassName}
+          value={String(data.titleAccentClassName ?? "")}
+          onChange={(e) => update("titleAccentClassName", e.target.value)}
+        />
+      </FormField>
+      <FormField label="Eyebrow icon">
+        <input
+          className={inputClassName}
+          value={String(data.eyebrowIcon ?? "")}
+          onChange={(e) => update("eyebrowIcon", e.target.value)}
+        />
+      </FormField>
       <FormField label="Heading">
         <input className={inputClassName} value={String(data.heading ?? "")} onChange={(e) => update("heading", e.target.value)} />
+      </FormField>
+      <FormField label="Contents heading">
+        <input
+          className={inputClassName}
+          value={String(data.tocHeading ?? "")}
+          onChange={(e) => update("tocHeading", e.target.value)}
+        />
       </FormField>
       <FormField label="Eyebrow">
         <input className={inputClassName} value={String(data.eyebrow ?? "")} onChange={(e) => update("eyebrow", e.target.value)} />
@@ -90,6 +118,24 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
             className={textareaClassName}
             value={String(data.supportingText ?? "")}
             onChange={(e) => update("supportingText", e.target.value)}
+          />
+        </FormField>
+      </div>
+      <div className="md:col-span-2">
+        <FormField label="Supporting copy">
+          <textarea
+            className={textareaClassName}
+            value={String(data.supportingCopy ?? "")}
+            onChange={(e) => update("supportingCopy", e.target.value)}
+          />
+        </FormField>
+      </div>
+      <div className="md:col-span-2">
+        <FormField label="Summary">
+          <textarea
+            className={textareaClassName}
+            value={String(data.summary ?? "")}
+            onChange={(e) => update("summary", e.target.value)}
           />
         </FormField>
       </div>
@@ -236,6 +282,68 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
                         ? {
                             ...item,
                             items: e.target.value.split("\n").map((line) => line.trim()).filter(Boolean),
+                          }
+                        : item
+                    );
+                    update("cards", next);
+                  }}
+                />
+              </FormField>
+              <FormField label="Label">
+                <input
+                  className={inputClassName}
+                  value={String(card.label ?? "")}
+                  onChange={(e) => {
+                    const next = cards.map((item, i) =>
+                      i === index ? { ...item, label: e.target.value } : item
+                    );
+                    update("cards", next);
+                  }}
+                />
+              </FormField>
+              <FormField label="Badges (one per line)">
+                <textarea
+                  className={textareaClassName}
+                  value={Array.isArray(card.badges) ? card.badges.map(String).join("\n") : ""}
+                  onChange={(e) => {
+                    const next = cards.map((item, i) =>
+                      i === index
+                        ? {
+                            ...item,
+                            badges: e.target.value.split("\n").map((line) => line.trim()).filter(Boolean),
+                          }
+                        : item
+                    );
+                    update("cards", next);
+                  }}
+                />
+              </FormField>
+              <FormField label="Metrics (one per line, value | label)">
+                <textarea
+                  className={textareaClassName}
+                  value={
+                    Array.isArray(card.metrics)
+                      ? card.metrics
+                          .map((entry) => {
+                            const metric = asRecord(entry);
+                            return [metric.value, metric.label].filter(Boolean).join(" | ");
+                          })
+                          .join("\n")
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const next = cards.map((item, i) =>
+                      i === index
+                        ? {
+                            ...item,
+                            metrics: e.target.value
+                              .split("\n")
+                              .map((line) => line.trim())
+                              .filter(Boolean)
+                              .map((line) => {
+                                const [value, ...rest] = line.split("|").map((part) => part.trim());
+                                return { value: value ?? "", label: rest.join(" | ") };
+                              }),
                           }
                         : item
                     );
@@ -621,6 +729,403 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
           ))}
         </div>
       ) : null}
+      {Array.isArray(data.highlights) ? (
+        <div className="md:col-span-2 space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium">Highlights</p>
+            <button
+              type="button"
+              className="rounded-lg border px-3 py-1 text-xs"
+              onClick={() =>
+                update("highlights", [
+                  ...(Array.isArray(data.highlights) ? data.highlights.map(asRecord) : []),
+                  { title: "", body: "", icon: "" },
+                ])
+              }
+            >
+              Add highlight
+            </button>
+          </div>
+          {(Array.isArray(data.highlights) ? data.highlights.map(asRecord) : []).map((item, index) => (
+            <div key={`highlight-${index}`} className="space-y-3 rounded-xl border border-outline-variant/30 p-4">
+              <FormField label="Title">
+                <input
+                  className={inputClassName}
+                  value={String(item.title ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "highlights",
+                      (Array.isArray(data.highlights) ? data.highlights.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, title: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Icon">
+                <input
+                  className={inputClassName}
+                  value={String(item.icon ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "highlights",
+                      (Array.isArray(data.highlights) ? data.highlights.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, icon: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Body">
+                <textarea
+                  className={textareaClassName}
+                  value={String(item.body ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "highlights",
+                      (Array.isArray(data.highlights) ? data.highlights.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, body: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <button
+                type="button"
+                className="text-left text-xs text-error"
+                onClick={() =>
+                  update(
+                    "highlights",
+                    (Array.isArray(data.highlights) ? data.highlights : []).filter((_, i) => i !== index)
+                  )
+                }
+              >
+                Remove highlight
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : null}
+      {(["links", "toc", "staticLinks"] as const).map((field) =>
+        Array.isArray(data[field]) ? (
+          <div key={field} className="md:col-span-2 space-y-4">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium">
+                {field === "toc" ? "Contents" : field === "staticLinks" ? "Static links" : "Links"}
+              </p>
+              <button
+                type="button"
+                className="rounded-lg border px-3 py-1 text-xs"
+                onClick={() =>
+                  update(field, [
+                    ...(Array.isArray(data[field]) ? data[field].map(asRecord) : []),
+                    { label: "", href: "" },
+                  ])
+                }
+              >
+                Add link
+              </button>
+            </div>
+            {(Array.isArray(data[field]) ? data[field].map(asRecord) : []).map((item, index) => (
+              <div key={`${field}-${index}`} className="grid grid-cols-1 gap-3 rounded-xl border border-outline-variant/30 p-4 md:grid-cols-2">
+                <FormField label="Label">
+                  <input
+                    className={inputClassName}
+                    value={String(item.label ?? "")}
+                    onChange={(e) =>
+                      update(
+                        field,
+                        (Array.isArray(data[field]) ? data[field].map(asRecord) : []).map((entry, i) =>
+                          i === index ? { ...entry, label: e.target.value } : entry
+                        )
+                      )
+                    }
+                  />
+                </FormField>
+                <FormField label="URL">
+                  <input
+                    className={inputClassName}
+                    value={String(item.href ?? item.url ?? "")}
+                    onChange={(e) =>
+                      update(
+                        field,
+                        (Array.isArray(data[field]) ? data[field].map(asRecord) : []).map((entry, i) =>
+                          i === index ? { ...entry, href: e.target.value } : entry
+                        )
+                      )
+                    }
+                  />
+                </FormField>
+                <button
+                  type="button"
+                  className="text-left text-xs text-error"
+                  onClick={() =>
+                    update(
+                      field,
+                      (Array.isArray(data[field]) ? data[field] : []).filter((_, i) => i !== index)
+                    )
+                  }
+                >
+                  Remove link
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : null
+      )}
+      {Array.isArray(data.bullets) ? (
+        <div className="md:col-span-2 space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium">Bullets</p>
+            <button
+              type="button"
+              className="rounded-lg border px-3 py-1 text-xs"
+              onClick={() =>
+                update("bullets", [
+                  ...(Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []),
+                  { value: "", label: "", title: "", body: "" },
+                ])
+              }
+            >
+              Add bullet
+            </button>
+          </div>
+          {(Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((item, index) => (
+            <div key={`bullet-${index}`} className="grid grid-cols-1 gap-3 rounded-xl border border-outline-variant/30 p-4 md:grid-cols-2">
+              <FormField label="Value">
+                <input
+                  className={inputClassName}
+                  value={String(item.value ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "bullets",
+                      (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, value: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Label">
+                <input
+                  className={inputClassName}
+                  value={String(item.label ?? item.title ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "bullets",
+                      (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, label: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Title">
+                <input
+                  className={inputClassName}
+                  value={String(item.title ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "bullets",
+                      (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, title: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Body">
+                <textarea
+                  className={textareaClassName}
+                  value={String(item.body ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "bullets",
+                      (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, body: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <button
+                type="button"
+                className="text-left text-xs text-error"
+                onClick={() =>
+                  update(
+                    "bullets",
+                    (Array.isArray(data.bullets) ? data.bullets : []).filter((_, i) => i !== index)
+                  )
+                }
+              >
+                Remove bullet
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : null}
+      {Array.isArray(data.callouts) ? (
+        <div className="md:col-span-2 space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium">Callouts</p>
+            <button
+              type="button"
+              className="rounded-lg border px-3 py-1 text-xs"
+              onClick={() =>
+                update("callouts", [
+                  ...(Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []),
+                  { value: "", label: "", quote: "", author: "" },
+                ])
+              }
+            >
+              Add callout
+            </button>
+          </div>
+          {(Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((item, index) => (
+            <div key={`callout-${index}`} className="grid grid-cols-1 gap-3 rounded-xl border border-outline-variant/30 p-4 md:grid-cols-2">
+              <FormField label="Value">
+                <input
+                  className={inputClassName}
+                  value={String(item.value ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "callouts",
+                      (Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, value: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Label">
+                <input
+                  className={inputClassName}
+                  value={String(item.label ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "callouts",
+                      (Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, label: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Quote">
+                <textarea
+                  className={textareaClassName}
+                  value={String(item.quote ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "callouts",
+                      (Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, quote: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Author">
+                <input
+                  className={inputClassName}
+                  value={String(item.author ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "callouts",
+                      (Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, author: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <button
+                type="button"
+                className="text-left text-xs text-error"
+                onClick={() =>
+                  update(
+                    "callouts",
+                    (Array.isArray(data.callouts) ? data.callouts : []).filter((_, i) => i !== index)
+                  )
+                }
+              >
+                Remove callout
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : null}
+      {Array.isArray(data.addresses) || data.email != null ? (
+        <div className="md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <FormField label="Legal name">
+            <input
+              className={inputClassName}
+              value={String(data.legalName ?? "")}
+              onChange={(e) => update("legalName", e.target.value)}
+            />
+          </FormField>
+          <FormField label="Email">
+            <input
+              className={inputClassName}
+              value={String(data.email ?? "")}
+              onChange={(e) => update("email", e.target.value)}
+            />
+          </FormField>
+          <FormField label="Registered office label">
+            <input
+              className={inputClassName}
+              value={String(data.registeredOfficeLabel ?? "")}
+              onChange={(e) => update("registeredOfficeLabel", e.target.value)}
+            />
+          </FormField>
+          <FormField label="GSTIN label">
+            <input
+              className={inputClassName}
+              value={String(data.gstinLabel ?? "")}
+              onChange={(e) => update("gstinLabel", e.target.value)}
+            />
+          </FormField>
+          <FormField label="Contact heading">
+            <input
+              className={inputClassName}
+              value={String(data.contactHeading ?? "")}
+              onChange={(e) => update("contactHeading", e.target.value)}
+            />
+          </FormField>
+          <FormField label="Confidentiality heading">
+            <input
+              className={inputClassName}
+              value={String(data.confidentialityHeading ?? "")}
+              onChange={(e) => update("confidentialityHeading", e.target.value)}
+            />
+          </FormField>
+          <FormField label="Enquiry title">
+            <input
+              className={inputClassName}
+              value={String(data.enquiryTitle ?? "")}
+              onChange={(e) => update("enquiryTitle", e.target.value)}
+            />
+          </FormField>
+          <div className="md:col-span-2">
+            <FormField label="Enquiry copy">
+              <textarea
+                className={textareaClassName}
+                value={String(data.enquiryBody ?? "")}
+                onChange={(e) => update("enquiryBody", e.target.value)}
+              />
+            </FormField>
+          </div>
+        </div>
+      ) : null}
+      <div className="md:col-span-2">
+        <FormField label="Footnote">
+          <textarea
+            className={textareaClassName}
+            value={String(data.footnote ?? "")}
+            onChange={(e) => update("footnote", e.target.value)}
+          />
+        </FormField>
+      </div>
       <div className="md:col-span-2">
         <FormField label="Additional Text (one per line)">
           <textarea

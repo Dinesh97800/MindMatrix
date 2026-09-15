@@ -19,6 +19,32 @@ const SPECIAL_TEMPLATES: Record<string, string> = {
   "ai.secondary-capability": "ai-secondary-capability",
   "connectivity.rf-design": "connectivity-rf-design",
   "connectivity.deployments": "connectivity-deployments",
+  "ev-infrastructure.challenges": "ev-infrastructure-challenges",
+  "ev-infrastructure.solutions": "ev-infrastructure-solutions",
+  "ev-infrastructure.case-study": "ev-infrastructure-case-study",
+  "ev-infrastructure.sustainability": "ev-infrastructure-sustainability",
+  "oil-gas.challenges": "oil-gas-challenges",
+  "oil-gas.solutions": "oil-gas-solutions",
+  "oil-gas.stack-marquee": "oil-gas-stack-marquee",
+  "oil-gas.quantum-ready": "oil-gas-quantum-ready",
+  "oil-gas.hardening": "oil-gas-hardening",
+  "smart-infrastructure.challenges": "smart-infrastructure-challenges",
+  "smart-infrastructure.solutions": "smart-infrastructure-solutions",
+  "smart-infrastructure.expertise": "smart-infrastructure-expertise",
+  "smart-infrastructure.ev-grid": "smart-infrastructure-ev-grid",
+  "smart-infrastructure.modernization": "smart-infrastructure-modernization",
+  "contact-us.locations": "contact-us-locations",
+  "contact-us.project-inquiry": "contact-us-inquiry",
+  "consultation.enquiry": "consultation-enquiry",
+  "consultation.office-map": "consultation-office",
+  "consultation.technical-faq": "consultation-faq",
+  "consultation.supporting-links": "consultation-links",
+  "request-consultation.trust-copy": "request-consultation-trust",
+  "request-consultation.form": "request-consultation-form",
+  "request-consultation.responsibility": "request-consultation-responsibility",
+  "privacy-policy.legal-document": "privacy-policy-document",
+  "legal.toc": "privacy-policy-toc",
+  "terms.legal-document": "terms-document",
   "case-studies.projects": "case-study-listing",
   "shared.why-choose-us": "why-choose-us",
 };
@@ -41,10 +67,13 @@ const COMPONENT_ADAPTERS: Record<string, string> = {
   ApprovedFaqList: "faq",
   FaqItem1Section: "faq",
   SelectedProjectExperienceSection: "case-study-listing",
+  ExplosiveEnvironmentsSection: "oil-gas-challenges",
+  SmallAccentSection: "oil-gas-solutions",
+  AtmosphericBgElementSection: "oil-gas-hardening",
   ProgressLineSection: "process",
   RepeatedLogosForContinuousLoopSection: "logos",
   SideNavigationSection: "article",
-  TermsContentSection: "article",
+  TermsContentSection: "terms-document",
   ConsultationFormSection: "form",
   FiltersSection: "listing",
 };
@@ -90,6 +119,32 @@ export const PREVIEW_ADAPTER_IDS = [
   "ai-secondary-capability",
   "connectivity-rf-design",
   "connectivity-deployments",
+  "ev-infrastructure-challenges",
+  "ev-infrastructure-solutions",
+  "ev-infrastructure-case-study",
+  "ev-infrastructure-sustainability",
+  "oil-gas-challenges",
+  "oil-gas-solutions",
+  "oil-gas-stack-marquee",
+  "oil-gas-quantum-ready",
+  "oil-gas-hardening",
+  "smart-infrastructure-challenges",
+  "smart-infrastructure-solutions",
+  "smart-infrastructure-expertise",
+  "smart-infrastructure-ev-grid",
+  "smart-infrastructure-modernization",
+  "contact-us-locations",
+  "contact-us-inquiry",
+  "consultation-enquiry",
+  "consultation-office",
+  "consultation-faq",
+  "consultation-links",
+  "request-consultation-trust",
+  "request-consultation-form",
+  "request-consultation-responsibility",
+  "privacy-policy-document",
+  "privacy-policy-toc",
+  "terms-document",
   "cards",
   "approved-cta",
   "cta",
@@ -176,6 +231,55 @@ export function previewReactTemplate(adapterId: string | null): string {
       return "src/components/pages/connectivity/sections/Section.tsx";
     case "connectivity-deployments":
       return "src/components/pages/connectivity/sections/App1Section.tsx";
+    case "ev-infrastructure-challenges":
+      return "src/components/pages/ev-infrastructure/sections/ThermalCardSection.tsx";
+    case "ev-infrastructure-solutions":
+      return "src/components/pages/ev-infrastructure/sections/Solution1Section.tsx";
+    case "ev-infrastructure-case-study":
+      return "src/components/pages/ev-infrastructure/sections/Section.tsx";
+    case "ev-infrastructure-sustainability":
+      return "src/components/pages/ev-infrastructure/sections/Block2Section.tsx";
+    case "oil-gas-challenges":
+      return "src/components/pages/oil-and-gas/sections/ExplosiveEnvironmentsSection.tsx";
+    case "oil-gas-solutions":
+      return "src/components/pages/oil-and-gas/sections/SmallAccentSection.tsx";
+    case "oil-gas-stack-marquee":
+      return "src/components/pages/oil-and-gas/sections/Section.tsx";
+    case "oil-gas-quantum-ready":
+      return "src/components/pages/oil-and-gas/sections/Block2Section.tsx";
+    case "oil-gas-hardening":
+      return "src/components/pages/oil-and-gas/sections/AtmosphericBgElementSection.tsx";
+    case "smart-infrastructure-challenges":
+      return "src/components/pages/smart-infrastructure/sections/Challenge1Section.tsx";
+    case "smart-infrastructure-solutions":
+      return "src/components/pages/smart-infrastructure/sections/Solution1Section.tsx";
+    case "smart-infrastructure-expertise":
+      return "src/components/pages/smart-infrastructure/sections/Section.tsx";
+    case "smart-infrastructure-ev-grid":
+      return "src/components/pages/smart-infrastructure/sections/Block2Section.tsx";
+    case "smart-infrastructure-modernization":
+      return "src/components/pages/smart-infrastructure/sections/Block3Section.tsx";
+    case "contact-us-locations":
+    case "contact-us-inquiry":
+      return "src/components/pages/contact-us/sections/LeftSideOfficeLocationsSection.tsx";
+    case "consultation-enquiry":
+      return "src/components/pages/contact-us-and-engineering-consultation/sections/ConsultationFormSection.tsx";
+    case "consultation-office":
+      return "src/components/pages/contact-us-and-engineering-consultation/sections/InteractiveMapPlaceholderSection.tsx";
+    case "consultation-faq":
+      return "src/components/pages/contact-us-and-engineering-consultation/sections/FaqItem1Section.tsx";
+    case "consultation-links":
+      return "src/components/pages/contact-us-and-engineering-consultation/sections/Section.tsx";
+    case "request-consultation-trust":
+    case "request-consultation-form":
+      return "src/components/pages/request-consultation/sections/LeftColumnHighTrustContentSection.tsx";
+    case "request-consultation-responsibility":
+      return "src/components/pages/request-consultation/sections/Section.tsx";
+    case "privacy-policy-document":
+    case "privacy-policy-toc":
+      return "src/components/pages/privacy-policy/sections/SideNavigationSection.tsx";
+    case "terms-document":
+      return "src/components/pages/terms-and-conditions/sections/TermsContentSection.tsx";
     case "cta":
       return "src/components/pages/services/sections/Block2Section.tsx";
     case "process":

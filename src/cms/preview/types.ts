@@ -3,6 +3,12 @@ export type PreviewDataOrigin = "admin-edited" | "migrated-seed";
 export type PreviewAction = {
   label: string;
   href: string;
+  variant?: string;
+};
+
+export type PreviewMetric = {
+  value: string;
+  label: string;
 };
 
 export type PreviewCard = {
@@ -15,6 +21,8 @@ export type PreviewCard = {
   imageUrl?: string;
   imageAlt?: string;
   items?: string[];
+  badges?: string[];
+  metrics?: PreviewMetric[];
 };
 
 export type PreviewEntity = {

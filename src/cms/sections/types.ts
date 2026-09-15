@@ -4,7 +4,10 @@ export type HeroSectionData = {
   variant: HeroVariant;
   eyebrow?: string;
   title?: string;
+  titleAccent?: string;
+  titleAccentClassName?: string;
   description?: string;
+  summary?: string;
   imageId?: number | null;
   imageUrl?: string;
   imageAlt?: string;

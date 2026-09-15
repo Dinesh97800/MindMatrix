@@ -28,12 +28,28 @@ export function asActions(data: Record<string, unknown>): PreviewAction[] {
           const label = firstString(record.label, record.text);
           const href = firstString(record.href, record.url);
           if (!label || !href) return null;
-          return { label, href };
+          const variant = asString(record.variant);
+          return { label, href, ...(variant ? { variant } : {}) };
         })
         .filter((item): item is PreviewAction => Boolean(item))
     : [];
 
   if (fromArray.length) return fromArray;
+
+  const fromLinks = Array.isArray(data.links)
+    ? data.links
+        .map((item) => {
+          const record = asRecord(item);
+          const label = firstString(record.label, record.text);
+          const href = firstString(record.href, record.url);
+          if (!label || !href) return null;
+          const variant = asString(record.variant);
+          return { label, href, ...(variant ? { variant } : {}) };
+        })
+        .filter((item): item is PreviewAction => Boolean(item))
+    : [];
+
+  if (fromLinks.length) return fromLinks;
 
   const primaryLabel = firstString(data.ctaText, data.buttonText);
   const primaryHref = firstString(data.ctaUrl, data.buttonUrl);
@@ -88,16 +104,37 @@ export function asCards(data: Record<string, unknown>): PreviewCard[] {
             )
             .filter((entry): entry is string => Boolean(entry))
         : [];
+      const badges = Array.isArray(record.badges)
+        ? record.badges.map((entry) => String(entry).trim()).filter(Boolean)
+        : [];
+      const metrics = Array.isArray(record.metrics)
+        ? record.metrics
+            .map((entry) => {
+              const metric = asRecord(entry);
+              const value = firstString(metric.value, metric.stat);
+              const label = firstString(metric.label, metric.title);
+              if (!value && !label) return null;
+              return { value: value ?? "", label: label ?? "" };
+            })
+            .filter((item): item is { value: string; label: string } => Boolean(item))
+        : [];
+      const protocolLabel = asString(record.label);
       return {
         title,
         body: body && body !== title ? body : undefined,
         href: firstString(record.href, record.url, link.href, link.url),
-        label: firstString(link.label, record.ctaLabel),
+        label: firstString(
+          link.label,
+          record.ctaLabel,
+          protocolLabel && protocolLabel !== title ? protocolLabel : undefined
+        ),
         eyebrow: asString(record.eyebrow),
         icon: asString(record.icon),
         imageUrl: firstString(media.source, record.imageUrl, record.image),
         imageAlt: firstString(record.mediaAlt, record.imageAlt, media.alt),
         items: listItems.length ? listItems : undefined,
+        badges: badges.length ? badges : undefined,
+        metrics: metrics.length ? metrics : undefined,
       };
     })
     .filter((item): item is PreviewCard => Boolean(item));

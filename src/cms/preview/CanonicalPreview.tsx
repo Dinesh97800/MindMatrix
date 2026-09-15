@@ -21,8 +21,37 @@ import {
   ConnectivityDeploymentsAdapter,
   ConnectivityRfDesignAdapter,
   ContactAdapter,
+  ContactUsInquiryAdapter,
+  ContactUsLocationsAdapter,
+  ContactUsPagePreview,
+  ConsultationEnquiryAdapter,
+  ConsultationFaqAdapter,
+  ConsultationLinksAdapter,
+  ConsultationOfficeAdapter,
+  RequestConsultationFormAdapter,
+  RequestConsultationPagePreview,
+  RequestConsultationResponsibilityAdapter,
+  RequestConsultationTrustAdapter,
+  PrivacyPolicyDocumentAdapter,
+  PrivacyPolicyPagePreview,
+  PrivacyPolicyTocAdapter,
+  TermsDocumentAdapter,
   ContentAdapter,
   CtaAdapter,
+  EvInfrastructureCaseStudyAdapter,
+  EvInfrastructureChallengesAdapter,
+  EvInfrastructureSolutionsAdapter,
+  EvInfrastructureSustainabilityAdapter,
+  OilGasChallengesAdapter,
+  OilGasHardeningAdapter,
+  OilGasQuantumReadyAdapter,
+  OilGasSolutionsAdapter,
+  OilGasStackMarqueeAdapter,
+  SmartInfrastructureChallengesAdapter,
+  SmartInfrastructureEvGridAdapter,
+  SmartInfrastructureExpertiseAdapter,
+  SmartInfrastructureModernizationAdapter,
+  SmartInfrastructureSolutionsAdapter,
   FaqAdapter,
   FormAdapter,
   HeroAdapter,
@@ -60,6 +89,32 @@ const ADAPTERS: Record<
   "careers-jobs": CareersJobsAdapter,
   "connectivity-rf-design": ConnectivityRfDesignAdapter,
   "connectivity-deployments": ConnectivityDeploymentsAdapter,
+  "ev-infrastructure-challenges": EvInfrastructureChallengesAdapter,
+  "ev-infrastructure-solutions": EvInfrastructureSolutionsAdapter,
+  "ev-infrastructure-case-study": EvInfrastructureCaseStudyAdapter,
+  "ev-infrastructure-sustainability": EvInfrastructureSustainabilityAdapter,
+  "oil-gas-challenges": OilGasChallengesAdapter,
+  "oil-gas-solutions": OilGasSolutionsAdapter,
+  "oil-gas-stack-marquee": OilGasStackMarqueeAdapter,
+  "oil-gas-quantum-ready": OilGasQuantumReadyAdapter,
+  "oil-gas-hardening": OilGasHardeningAdapter,
+  "smart-infrastructure-challenges": SmartInfrastructureChallengesAdapter,
+  "smart-infrastructure-solutions": SmartInfrastructureSolutionsAdapter,
+  "smart-infrastructure-expertise": SmartInfrastructureExpertiseAdapter,
+  "smart-infrastructure-ev-grid": SmartInfrastructureEvGridAdapter,
+  "smart-infrastructure-modernization": SmartInfrastructureModernizationAdapter,
+  "contact-us-locations": ContactUsLocationsAdapter,
+  "contact-us-inquiry": ContactUsInquiryAdapter,
+  "consultation-enquiry": ConsultationEnquiryAdapter,
+  "consultation-office": ConsultationOfficeAdapter,
+  "consultation-faq": ConsultationFaqAdapter,
+  "consultation-links": ConsultationLinksAdapter,
+  "request-consultation-trust": RequestConsultationTrustAdapter,
+  "request-consultation-form": RequestConsultationFormAdapter,
+  "request-consultation-responsibility": RequestConsultationResponsibilityAdapter,
+  "privacy-policy-document": PrivacyPolicyDocumentAdapter,
+  "privacy-policy-toc": PrivacyPolicyTocAdapter,
+  "terms-document": TermsDocumentAdapter,
   "home-hero": HomeHeroAdapter,
   "home-industries": HomeIndustriesAdapter,
   "logo-marquee": LogoMarqueeAdapter,
@@ -169,11 +224,61 @@ export function CanonicalPagePreview({
   sections: PreviewSectionPayload[];
   showOrigin: boolean;
 }) {
+  const locations = sections.find((section) => section.adapterId === "contact-us-locations");
+  const inquiry = sections.find((section) => section.adapterId === "contact-us-inquiry");
+  const contactGrouped =
+    locations && inquiry ? new Set([locations.id, inquiry.id]) : null;
+  const trust = sections.find((section) => section.adapterId === "request-consultation-trust");
+  const form = sections.find((section) => section.adapterId === "request-consultation-form");
+  const requestGrouped = trust && form ? new Set([trust.id, form.id]) : null;
+  const privacyDocument = sections.find((section) => section.adapterId === "privacy-policy-document");
+  const privacyToc = sections.find((section) => section.adapterId === "privacy-policy-toc");
+  const privacyGrouped =
+    privacyDocument && privacyToc ? new Set([privacyDocument.id, privacyToc.id]) : null;
+
   return (
     <main>
-      {sections.map((section) => (
-        <CanonicalSectionPreview key={section.id} section={section} showOrigin={showOrigin} />
-      ))}
+      {sections.map((section) => {
+        if (contactGrouped && locations && inquiry && section.id === locations.id) {
+          return (
+            <SectionBoundary key={`${locations.id}-${inquiry.id}`} section={locations}>
+              <div>
+                {showOrigin ? <OriginChip section={locations} /> : null}
+                {showOrigin ? <OriginChip section={inquiry} /> : null}
+                <ContactUsPagePreview locations={locations} inquiry={inquiry} />
+              </div>
+            </SectionBoundary>
+          );
+        }
+        if (requestGrouped && trust && form && section.id === trust.id) {
+          return (
+            <SectionBoundary key={`${trust.id}-${form.id}`} section={trust}>
+              <div>
+                {showOrigin ? <OriginChip section={trust} /> : null}
+                {showOrigin ? <OriginChip section={form} /> : null}
+                <RequestConsultationPagePreview trust={trust} form={form} />
+              </div>
+            </SectionBoundary>
+          );
+        }
+        if (privacyGrouped && privacyDocument && privacyToc && section.id === privacyDocument.id) {
+          return (
+            <SectionBoundary key={`${privacyDocument.id}-${privacyToc.id}`} section={privacyDocument}>
+              <div>
+                {showOrigin ? <OriginChip section={privacyDocument} /> : null}
+                {showOrigin ? <OriginChip section={privacyToc} /> : null}
+                <PrivacyPolicyPagePreview document={privacyDocument} toc={privacyToc} />
+              </div>
+            </SectionBoundary>
+          );
+        }
+        if (contactGrouped?.has(section.id) || requestGrouped?.has(section.id) || privacyGrouped?.has(section.id)) {
+          return null;
+        }
+        return (
+          <CanonicalSectionPreview key={section.id} section={section} showOrigin={showOrigin} />
+        );
+      })}
     </main>
   );
 }

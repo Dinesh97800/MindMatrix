@@ -71,11 +71,24 @@ export function HeroEditor({
           className={inputClassName}
         />
       </FormField>
+      <FormField label="Title accent">
+        <input
+          value={data.titleAccent ?? ""}
+          onChange={(e) => update("titleAccent", e.target.value)}
+          className={inputClassName}
+        />
+      </FormField>
       <div className="md:col-span-2">
         <FormField label="Description">
           <textarea
-            value={data.description ?? ""}
-            onChange={(e) => update("description", e.target.value)}
+            value={data.summary ?? data.description ?? ""}
+            onChange={(e) =>
+              onChange({
+                ...data,
+                summary: e.target.value,
+                description: e.target.value,
+              })
+            }
             className={textareaClassName}
           />
         </FormField>

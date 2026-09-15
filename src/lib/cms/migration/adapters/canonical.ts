@@ -5,7 +5,9 @@ import { PAGE_SEO } from "@/config/page-seo";
 import { siteContent } from "@/config/site-content";
 import { caseStudies } from "@/data/case-studies";
 import {
+  PRIVACY_POLICY_INTRO,
   PRIVACY_POLICY_SECTIONS,
+  PRIVACY_POLICY_TOC,
   TERMS_SECTIONS,
 } from "@/lib/cms/migration/data/legal-content";
 import type {
@@ -49,9 +51,16 @@ function heroContent(route: AuditedRoutePlan): ResolvedContent | null {
     status: "MAPPED",
     sourceKind: "structured-config",
     content: {
+      variant: hero?.variant ?? "split",
+      ...(hero?.tone ? { tone: hero.tone } : {}),
       eyebrow: hero?.eyebrow ?? fallback?.eyebrow ?? "",
       title: hero?.titleLines?.join("\n") ?? hero?.title ?? fallback?.title ?? "",
+      ...(hero?.titleAccent ? { titleAccent: hero.titleAccent } : {}),
+      ...(hero?.titleAccentClassName ? { titleAccentClassName: hero.titleAccentClassName } : {}),
       summary: hero?.description ?? fallback?.description ?? "",
+      ...(hero?.supportingText ? { supportingText: hero.supportingText } : {}),
+      ...(hero?.overlay ? { overlay: hero.overlay } : {}),
+      ...(hero?.imagePosition ? { imagePosition: hero.imagePosition } : {}),
       media: hero?.image ? { source: hero.image } : undefined,
       mediaAlt: hero?.imageAlt ?? fallback?.title ?? "",
       actions: actions(hero?.ctas ?? []),
@@ -278,6 +287,9 @@ function knownContent(
         sourceKind: "structured-data",
         content: {
           title: "Privacy Policy",
+          body: PRIVACY_POLICY_INTRO,
+          tocHeading: "Contents",
+          toc: PRIVACY_POLICY_TOC,
           sections: PRIVACY_POLICY_SECTIONS,
         },
       };
