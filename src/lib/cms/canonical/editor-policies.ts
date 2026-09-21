@@ -5,15 +5,15 @@ const LOCKED = ["stableKey", "model", "template", "source", "decorations"] as co
 export function editorPolicyFor(model: CanonicalModel): CanonicalEditorPolicy {
   switch (model) {
     case "HERO":
-      return { editable: ["eyebrow", "title", "titleAccent", "titleAccentClassName", "summary", "media", "mediaAlt", "actions", "variant", "tone", "overlay"], locked: LOCKED };
+      return { editable: ["eyebrow", "title", "titleAccent", "titleAccentClassName", "summary", "supportingText", "eyebrowIcon", "media", "mediaAlt", "actions", "callouts", "variant", "tone", "overlay"], locked: LOCKED };
     case "CONTENT":
       return { editable: ["eyebrow", "title", "titleAccent", "titleAccentClassName", "eyebrowIcon", "body", "paragraphs", "items", "links", "cards", "featured", "bullets", "callouts"], locked: LOCKED };
     case "CARDS":
-      return { editable: ["eyebrow", "heading", "introduction", "body", "cards"], locked: LOCKED, minItems: 1, maxItems: 24 };
+      return { editable: ["eyebrow", "heading", "introduction", "supportingText", "body", "cards", "quote", "actions"], locked: LOCKED, minItems: 1, maxItems: 24 };
     case "MEDIA":
-      return { editable: ["eyebrow", "heading", "body", "supportingText", "media", "mediaAlt", "items", "cards", "actions", "callouts"], locked: LOCKED };
+      return { editable: ["eyebrow", "heading", "body", "supportingText", "media", "mediaAlt", "items", "cards", "actions", "callouts", "bullets"], locked: LOCKED };
     case "METRICS":
-      return { editable: ["heading", "items"], locked: LOCKED, minItems: 1, maxItems: 12 };
+      return { editable: ["heading", "introduction", "items"], locked: LOCKED, minItems: 1, maxItems: 12 };
     case "PROCESS":
       return { editable: ["heading", "introduction", "steps"], locked: LOCKED, minItems: 1, maxItems: 16 };
     case "ARCH":
@@ -21,13 +21,13 @@ export function editorPolicyFor(model: CanonicalModel): CanonicalEditorPolicy {
     case "TABLE":
       return { editable: ["heading", "introduction", "columns", "rows", "notes"], locked: LOCKED };
     case "LOGOS":
-      return { editable: ["heading", "items"], locked: LOCKED, minItems: 1, maxItems: 32 };
+      return { editable: ["heading", "body", "items"], locked: LOCKED, minItems: 1, maxItems: 32 };
     case "CTA":
-      return { editable: ["eyebrow", "title", "body", "actions", "media", "highlights", "footnote"], locked: LOCKED };
+      return { editable: ["eyebrow", "title", "body", "actions", "media", "highlights", "footnote", "watermark", "callouts"], locked: LOCKED };
     case "FAQ":
       return { editable: ["heading", "introduction", "items"], locked: LOCKED, minItems: 1, maxItems: 40 };
     case "LISTING":
-      return { editable: ["heading", "introduction", "filters", "jobs", "emptyState"], locked: [...LOCKED, "entityType", "query"] };
+      return { editable: ["heading", "introduction", "filters", "jobs", "emptyState", "footnote", "cards"], locked: [...LOCKED, "entityType", "query"] };
     case "ARTICLE":
       return { editable: ["title", "author", "dates", "leadMedia", "body", "sections", "references", "toc", "tocHeading"], locked: LOCKED };
     case "FORM":

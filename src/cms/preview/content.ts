@@ -104,9 +104,14 @@ export function asCards(data: Record<string, unknown>): PreviewCard[] {
             )
             .filter((entry): entry is string => Boolean(entry))
         : [];
+      const singularBadge = firstString(record.badge);
       const badges = Array.isArray(record.badges)
         ? record.badges.map((entry) => String(entry).trim()).filter(Boolean)
-        : [];
+        : Array.isArray(record.tags)
+          ? record.tags.map((entry) => String(entry).trim()).filter(Boolean)
+          : singularBadge
+            ? [singularBadge]
+            : [];
       const metrics = Array.isArray(record.metrics)
         ? record.metrics
             .map((entry) => {
@@ -115,6 +120,17 @@ export function asCards(data: Record<string, unknown>): PreviewCard[] {
               const label = firstString(metric.label, metric.title);
               if (!value && !label) return null;
               return { value: value ?? "", label: label ?? "" };
+            })
+            .filter((item): item is { value: string; label: string } => Boolean(item))
+        : [];
+      const rows = Array.isArray(record.rows)
+        ? record.rows
+            .map((entry) => {
+              const row = asRecord(entry);
+              const label = firstString(row.label, row.title, row.key);
+              const value = firstString(row.value, row.body, row.stat);
+              if (!label && !value) return null;
+              return { label: label ?? "", value: value ?? "" };
             })
             .filter((item): item is { value: string; label: string } => Boolean(item))
         : [];
@@ -128,13 +144,14 @@ export function asCards(data: Record<string, unknown>): PreviewCard[] {
           record.ctaLabel,
           protocolLabel && protocolLabel !== title ? protocolLabel : undefined
         ),
-        eyebrow: asString(record.eyebrow),
+        eyebrow: firstString(record.eyebrow, record.category),
         icon: asString(record.icon),
         imageUrl: firstString(media.source, record.imageUrl, record.image),
         imageAlt: firstString(record.mediaAlt, record.imageAlt, media.alt),
         items: listItems.length ? listItems : undefined,
         badges: badges.length ? badges : undefined,
         metrics: metrics.length ? metrics : undefined,
+        rows: rows.length ? rows : undefined,
       };
     })
     .filter((item): item is PreviewCard => Boolean(item));

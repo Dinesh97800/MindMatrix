@@ -8,6 +8,7 @@ export type HeroSectionData = {
   titleAccentClassName?: string;
   description?: string;
   summary?: string;
+  supportingText?: string;
   imageId?: number | null;
   imageUrl?: string;
   imageAlt?: string;
@@ -16,7 +17,10 @@ export type HeroSectionData = {
   ctaText?: string;
   ctaUrl?: string;
   alignment?: "left" | "center" | "right";
-  overlay?: boolean;
+  overlay?: boolean | string;
+  tone?: "light" | "dark";
+  eyebrowIcon?: string;
+  callouts?: Array<{ title?: string; body?: string; icon?: string }>;
   /** When true, variant cannot be changed in admin UI. */
   lockedVariant?: boolean;
 };

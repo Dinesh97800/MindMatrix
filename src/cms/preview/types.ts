@@ -23,6 +23,7 @@ export type PreviewCard = {
   items?: string[];
   badges?: string[];
   metrics?: PreviewMetric[];
+  rows?: PreviewMetric[];
 };
 
 export type PreviewEntity = {

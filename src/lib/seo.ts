@@ -39,6 +39,9 @@ export function buildRootMetadata(): Metadata {
       icon: [{ url: "/favicon.png", type: "image/png" }],
       apple: [{ url: "/favicon.png", type: "image/png" }],
     },
+    verification: {
+      google: "z3-CeNVAqD9VZq7ZHgI2GJ4kQtuxdIxIlbcP1fn-6i0",
+    },
     robots: IS_PRELAUNCH
       ? {
           index: false,

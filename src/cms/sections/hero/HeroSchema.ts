@@ -21,6 +21,7 @@ export function validateHeroData(data: Record<string, unknown>): Record<string, 
       typeof data.titleAccentClassName === "string" ? data.titleAccentClassName : "",
     description: typeof data.description === "string" ? data.description : "",
     summary: typeof data.summary === "string" ? data.summary : "",
+    supportingText: typeof data.supportingText === "string" ? data.supportingText : "",
     imageId: typeof data.imageId === "number" ? data.imageId : null,
     imageUrl: typeof data.imageUrl === "string" ? data.imageUrl : undefined,
     imageAlt: typeof data.imageAlt === "string" ? data.imageAlt : "",
@@ -35,6 +36,7 @@ export function validateHeroData(data: Record<string, unknown>): Record<string, 
         ? data.alignment
         : "left",
     overlay: typeof data.overlay === "string" ? data.overlay : Boolean(data.overlay),
+    eyebrowIcon: typeof data.eyebrowIcon === "string" ? data.eyebrowIcon : "",
     lockedVariant: Boolean(data.lockedVariant),
   };
 }

@@ -57,10 +57,27 @@ export function HeroEditor({
           ))}
         </select>
       </FormField>
+      <FormField label="Tone">
+        <select
+          value={data.tone === "light" ? "light" : "dark"}
+          onChange={(e) => update("tone", e.target.value as HeroSectionData["tone"])}
+          className={selectClassName}
+        >
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </FormField>
       <FormField label="Eyebrow">
         <input
           value={data.eyebrow ?? ""}
           onChange={(e) => update("eyebrow", e.target.value)}
+          className={inputClassName}
+        />
+      </FormField>
+      <FormField label="Eyebrow icon">
+        <input
+          value={data.eyebrowIcon ?? ""}
+          onChange={(e) => update("eyebrowIcon", e.target.value)}
           className={inputClassName}
         />
       </FormField>
@@ -90,6 +107,15 @@ export function HeroEditor({
               })
             }
             className={textareaClassName}
+          />
+        </FormField>
+      </div>
+      <div className="md:col-span-2">
+        <FormField label="Supporting text">
+          <input
+            value={data.supportingText ?? ""}
+            onChange={(e) => update("supportingText", e.target.value)}
+            className={inputClassName}
           />
         </FormField>
       </div>
@@ -172,6 +198,48 @@ export function HeroEditor({
             Preview CTA link
           </Link>
         </div>
+      ) : null}
+      {Array.isArray(data.callouts) ? (
+        <>
+          <FormField label="Highlight title">
+            <input
+              value={data.callouts[0]?.title ?? ""}
+              onChange={(e) =>
+                update("callouts", [
+                  { ...data.callouts?.[0], title: e.target.value },
+                  ...(data.callouts?.slice(1) ?? []),
+                ])
+              }
+              className={inputClassName}
+            />
+          </FormField>
+          <FormField label="Highlight icon">
+            <input
+              value={data.callouts[0]?.icon ?? ""}
+              onChange={(e) =>
+                update("callouts", [
+                  { ...data.callouts?.[0], icon: e.target.value },
+                  ...(data.callouts?.slice(1) ?? []),
+                ])
+              }
+              className={inputClassName}
+            />
+          </FormField>
+          <div className="md:col-span-2">
+            <FormField label="Highlight body">
+              <input
+                value={data.callouts[0]?.body ?? ""}
+                onChange={(e) =>
+                  update("callouts", [
+                    { ...data.callouts?.[0], body: e.target.value },
+                    ...(data.callouts?.slice(1) ?? []),
+                  ])
+                }
+                className={inputClassName}
+              />
+            </FormField>
+          </div>
+        </>
       ) : null}
     </div>
   );

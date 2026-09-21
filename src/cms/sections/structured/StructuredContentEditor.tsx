@@ -26,6 +26,8 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
     ? data.paragraphs.map((item) => String(item ?? ""))
     : [];
   const cards = Array.isArray(data.cards) ? data.cards.map(asRecord) : [];
+  const nodes = Array.isArray(data.nodes) ? data.nodes.map(asRecord) : [];
+  const annotations = Array.isArray(data.annotations) ? data.annotations.map(asRecord) : [];
   const actions = Array.isArray(data.actions) ? data.actions.map(asRecord) : [];
   const itemsAreObjects =
     Array.isArray(data.items) && data.items.some((item) => item && typeof item === "object");
@@ -127,6 +129,15 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
             className={textareaClassName}
             value={String(data.supportingCopy ?? "")}
             onChange={(e) => update("supportingCopy", e.target.value)}
+          />
+        </FormField>
+      </div>
+      <div className="md:col-span-2">
+        <FormField label="Quote">
+          <textarea
+            className={textareaClassName}
+            value={String(data.quote ?? "")}
+            onChange={(e) => update("quote", e.target.value)}
           />
         </FormField>
       </div>
@@ -351,10 +362,210 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
                   }}
                 />
               </FormField>
+              <FormField label="Rows (one per line, label | value)">
+                <textarea
+                  className={textareaClassName}
+                  value={
+                    Array.isArray(card.rows)
+                      ? card.rows
+                          .map((entry) => {
+                            const row = asRecord(entry);
+                            return [row.label, row.value].filter(Boolean).join(" | ");
+                          })
+                          .join("\n")
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const next = cards.map((item, i) =>
+                      i === index
+                        ? {
+                            ...item,
+                            rows: e.target.value
+                              .split("\n")
+                              .map((line) => line.trim())
+                              .filter(Boolean)
+                              .map((line) => {
+                                const [label, ...rest] = line.split("|").map((part) => part.trim());
+                                return { label: label ?? "", value: rest.join(" | ") };
+                              }),
+                          }
+                        : item
+                    );
+                    update("cards", next);
+                  }}
+                />
+              </FormField>
             </div>
           ))
         )}
       </div>
+      {Array.isArray(data.nodes) ? (
+        <div className="md:col-span-2 space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium">Nodes</p>
+            <button
+              type="button"
+              className="rounded-lg border px-3 py-1 text-xs"
+              onClick={() =>
+                update("nodes", [...nodes, { id: "", label: "", description: "", icon: "", annotation: "" }])
+              }
+            >
+              Add node
+            </button>
+          </div>
+          {nodes.length === 0 ? (
+            <p className="text-sm text-on-surface-variant">No nodes yet.</p>
+          ) : (
+            nodes.map((node, index) => (
+              <div key={`node-${index}`} className="space-y-3 rounded-xl border border-outline-variant/30 p-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium">Node {index + 1}</p>
+                  <button
+                    type="button"
+                    className="text-xs text-error"
+                    onClick={() => update("nodes", nodes.filter((_, i) => i !== index))}
+                  >
+                    Remove node
+                  </button>
+                </div>
+                <FormField label="Label">
+                  <input
+                    className={inputClassName}
+                    value={String(node.label ?? node.title ?? "")}
+                    onChange={(e) => {
+                      const next = nodes.map((item, i) =>
+                        i === index ? { ...item, label: e.target.value } : item
+                      );
+                      update("nodes", next);
+                    }}
+                  />
+                </FormField>
+                <FormField label="Icon">
+                  <input
+                    className={inputClassName}
+                    value={String(node.icon ?? "")}
+                    onChange={(e) => {
+                      const next = nodes.map((item, i) =>
+                        i === index ? { ...item, icon: e.target.value } : item
+                      );
+                      update("nodes", next);
+                    }}
+                  />
+                </FormField>
+                <FormField label="Description">
+                  <textarea
+                    className={textareaClassName}
+                    value={String(node.description ?? node.body ?? "")}
+                    onChange={(e) => {
+                      const next = nodes.map((item, i) =>
+                        i === index ? { ...item, description: e.target.value } : item
+                      );
+                      update("nodes", next);
+                    }}
+                  />
+                </FormField>
+                <FormField label="Eyebrow">
+                  <input
+                    className={inputClassName}
+                    value={String(node.eyebrow ?? "")}
+                    onChange={(e) => {
+                      const next = nodes.map((item, i) =>
+                        i === index ? { ...item, eyebrow: e.target.value } : item
+                      );
+                      update("nodes", next);
+                    }}
+                  />
+                </FormField>
+                <FormField label="Annotation">
+                  <input
+                    className={inputClassName}
+                    value={String(node.annotation ?? "")}
+                    onChange={(e) => {
+                      const next = nodes.map((item, i) =>
+                        i === index ? { ...item, annotation: e.target.value } : item
+                      );
+                      update("nodes", next);
+                    }}
+                  />
+                </FormField>
+                <FormField label="Badges (one per line)">
+                  <textarea
+                    className={textareaClassName}
+                    value={Array.isArray(node.badges) ? node.badges.map(String).join("\n") : ""}
+                    onChange={(e) => {
+                      const next = nodes.map((item, i) =>
+                        i === index
+                          ? {
+                              ...item,
+                              badges: e.target.value
+                                .split("\n")
+                                .map((line) => line.trim())
+                                .filter(Boolean),
+                            }
+                          : item
+                      );
+                      update("nodes", next);
+                    }}
+                  />
+                </FormField>
+              </div>
+            ))
+          )}
+        </div>
+      ) : null}
+      {Array.isArray(data.annotations) ? (
+        <div className="md:col-span-2 space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium">Annotations</p>
+            <button
+              type="button"
+              className="rounded-lg border px-3 py-1 text-xs"
+              onClick={() => update("annotations", [...annotations, { label: "", value: "" }])}
+            >
+              Add annotation
+            </button>
+          </div>
+          {annotations.length === 0 ? (
+            <p className="text-sm text-on-surface-variant">No annotations yet.</p>
+          ) : (
+            annotations.map((item, index) => (
+              <div key={`annotation-${index}`} className="grid grid-cols-1 gap-3 rounded-xl border border-outline-variant/30 p-4 md:grid-cols-2">
+                <FormField label="Label">
+                  <input
+                    className={inputClassName}
+                    value={String(item.label ?? "")}
+                    onChange={(e) =>
+                      update(
+                        "annotations",
+                        annotations.map((entry, i) => (i === index ? { ...entry, label: e.target.value } : entry))
+                      )
+                    }
+                  />
+                </FormField>
+                <FormField label="Value">
+                  <input
+                    className={inputClassName}
+                    value={String(item.value ?? "")}
+                    onChange={(e) =>
+                      update(
+                        "annotations",
+                        annotations.map((entry, i) => (i === index ? { ...entry, value: e.target.value } : entry))
+                      )
+                    }
+                  />
+                </FormField>
+                <button
+                  type="button"
+                  className="text-left text-xs text-error"
+                  onClick={() => update("annotations", annotations.filter((_, i) => i !== index))}
+                >
+                  Remove annotation
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+      ) : null}
       <div className="md:col-span-2 space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium">Actions</p>
@@ -655,6 +866,80 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
                     }
                   />
                 </FormField>
+                <FormField label="Label">
+                  <input
+                    className={inputClassName}
+                    value={String(item.label ?? "")}
+                    onChange={(e) =>
+                      update(
+                        "items",
+                        objectItems.map((entry, i) => (i === index ? { ...entry, label: e.target.value } : entry))
+                      )
+                    }
+                  />
+                </FormField>
+                <FormField label="Value">
+                  <input
+                    className={inputClassName}
+                    value={String(item.value ?? "")}
+                    onChange={(e) =>
+                      update(
+                        "items",
+                        objectItems.map((entry, i) => (i === index ? { ...entry, value: e.target.value } : entry))
+                      )
+                    }
+                  />
+                </FormField>
+                <FormField label="Progress">
+                  <input
+                    className={inputClassName}
+                    value={item.progress == null ? "" : String(item.progress)}
+                    onChange={(e) =>
+                      update(
+                        "items",
+                        objectItems.map((entry, i) =>
+                          i === index
+                            ? {
+                                ...entry,
+                                progress: e.target.value === "" ? "" : Number(e.target.value),
+                              }
+                            : entry
+                        )
+                      )
+                    }
+                  />
+                </FormField>
+                <FormField label="Category">
+                  <input
+                    className={inputClassName}
+                    value={String(item.category ?? "")}
+                    onChange={(e) =>
+                      update(
+                        "items",
+                        objectItems.map((entry, i) => (i === index ? { ...entry, category: e.target.value } : entry))
+                      )
+                    }
+                  />
+                </FormField>
+                <FormField label="Tags (one per line)">
+                  <textarea
+                    className={textareaClassName}
+                    value={Array.isArray(item.tags) ? item.tags.map(String).join("\n") : ""}
+                    onChange={(e) =>
+                      update(
+                        "items",
+                        objectItems.map((entry, i) =>
+                          i === index
+                            ? {
+                                ...entry,
+                                tags: e.target.value.split("\n").map((line) => line.trim()).filter(Boolean),
+                              }
+                            : entry
+                        )
+                      )
+                    }
+                  />
+                </FormField>
               </div>
             ))}
           </div>
@@ -934,6 +1219,20 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
                   }
                 />
               </FormField>
+              <FormField label="Icon" helpText="Material Symbols name, for example verified_user or thermostat.">
+                <input
+                  className={inputClassName}
+                  value={String(item.icon ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "bullets",
+                      (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, icon: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
               <FormField label="Body">
                 <textarea
                   className={textareaClassName}
@@ -943,6 +1242,90 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
                       "bullets",
                       (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
                         i === index ? { ...entry, body: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Eyebrow">
+                <input
+                  className={inputClassName}
+                  value={String(item.eyebrow ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "bullets",
+                      (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, eyebrow: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Image URL">
+                <input
+                  className={inputClassName}
+                  value={String(asRecord(item.media).source ?? item.imageUrl ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "bullets",
+                      (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
+                        i === index
+                          ? { ...entry, media: { ...asRecord(entry.media), source: e.target.value } }
+                          : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Image alt">
+                <input
+                  className={inputClassName}
+                  value={String(asRecord(item.media).alt ?? item.imageAlt ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "bullets",
+                      (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
+                        i === index
+                          ? { ...entry, media: { ...asRecord(entry.media), alt: e.target.value } }
+                          : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Badges (one per line)">
+                <textarea
+                  className={textareaClassName}
+                  value={Array.isArray(item.badges) ? item.badges.map(String).join("\n") : ""}
+                  onChange={(e) =>
+                    update(
+                      "bullets",
+                      (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
+                        i === index
+                          ? {
+                              ...entry,
+                              badges: e.target.value.split("\n").map((line) => line.trim()).filter(Boolean),
+                            }
+                          : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="List items (one per line)">
+                <textarea
+                  className={textareaClassName}
+                  value={Array.isArray(item.items) ? item.items.map(String).join("\n") : ""}
+                  onChange={(e) =>
+                    update(
+                      "bullets",
+                      (Array.isArray(data.bullets) ? data.bullets.map(asRecord) : []).map((entry, i) =>
+                        i === index
+                          ? {
+                              ...entry,
+                              items: e.target.value.split("\n").map((line) => line.trim()).filter(Boolean),
+                            }
+                          : entry
                       )
                     )
                   }
@@ -1039,6 +1422,95 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
                   }
                 />
               </FormField>
+              <FormField label="Title">
+                <input
+                  className={inputClassName}
+                  value={String(item.title ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "callouts",
+                      (Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, title: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Eyebrow">
+                <input
+                  className={inputClassName}
+                  value={String(item.eyebrow ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "callouts",
+                      (Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, eyebrow: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Icon">
+                <input
+                  className={inputClassName}
+                  value={String(item.icon ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "callouts",
+                      (Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, icon: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Body">
+                <textarea
+                  className={textareaClassName}
+                  value={String(item.body ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "callouts",
+                      (Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, body: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Media URL">
+                <input
+                  className={inputClassName}
+                  value={String(asRecord(item.media).source ?? item.imageUrl ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "callouts",
+                      (Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((entry, i) =>
+                        i === index
+                          ? {
+                              ...entry,
+                              media: { ...asRecord(entry.media), source: e.target.value },
+                            }
+                          : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
+              <FormField label="Media alt">
+                <input
+                  className={inputClassName}
+                  value={String(item.mediaAlt ?? asRecord(item.media).alt ?? "")}
+                  onChange={(e) =>
+                    update(
+                      "callouts",
+                      (Array.isArray(data.callouts) ? data.callouts.map(asRecord) : []).map((entry, i) =>
+                        i === index ? { ...entry, mediaAlt: e.target.value } : entry
+                      )
+                    )
+                  }
+                />
+              </FormField>
               <button
                 type="button"
                 className="text-left text-xs text-error"
@@ -1117,6 +1589,15 @@ export function StructuredContentEditor({ data, onChange, readOnlyKeys = ["compo
           </div>
         </div>
       ) : null}
+      <div className="md:col-span-2">
+        <FormField label="Watermark">
+          <input
+            className={inputClassName}
+            value={String(data.watermark ?? "")}
+            onChange={(e) => update("watermark", e.target.value)}
+          />
+        </FormField>
+      </div>
       <div className="md:col-span-2">
         <FormField label="Footnote">
           <textarea

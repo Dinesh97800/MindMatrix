@@ -1845,6 +1845,16 @@ export function FaqAdapter({ section }: { section: PreviewSectionPayload }) {
 }
 
 export function CaseStudyListingAdapter({ section }: { section: PreviewSectionPayload }) {
+  const fieldLabels: Record<string, string> = {
+    requirement: "Customer requirement",
+    responsibility: "MMIS responsibility",
+    technology: "Technology",
+    challenge: "Engineering challenge",
+    solution: "Solution",
+    result: "Result / status",
+  };
+  const footnote = firstString(section.data.footnote);
+
   return (
     <section className="space-y-stack-lg px-margin-mobile py-stack-lg md:px-margin-desktop">
       <div className="max-w-3xl">
@@ -1857,7 +1867,9 @@ export function CaseStudyListingAdapter({ section }: { section: PreviewSectionPa
         )}
         {bodyOf(section.data) ? (
           <p className="font-body-lg text-on-surface-variant">{bodyOf(section.data)}</p>
-        ) : null}
+        ) : (
+          <MissingOptional label="introduction" />
+        )}
       </div>
       {section.entities.length === 0 ? (
         <p className="text-sm text-on-surface-variant">
@@ -1874,20 +1886,29 @@ export function CaseStudyListingAdapter({ section }: { section: PreviewSectionPa
               {!entity.resolved ? (
                 <p className="text-sm text-error">Unresolved case study: {entity.slug}</p>
               ) : (
-                Object.entries(entity.fields).map(([label, value]) =>
-                  value ? (
-                    <div key={label}>
-                      <h3 className="mb-1 font-label-sm text-label-sm uppercase tracking-wide text-on-surface-variant">
-                        {label}
-                      </h3>
-                      <p className="text-on-surface-variant">{value}</p>
-                    </div>
-                  ) : null
-                )
+                <div className="space-y-3 text-sm md:text-base">
+                  {Object.entries(entity.fields).map(([label, value]) =>
+                    value ? (
+                      <div key={label}>
+                        <h3 className="mb-1 font-label-sm text-label-sm uppercase tracking-wide text-on-surface-variant">
+                          {fieldLabels[label] ?? label}
+                        </h3>
+                        <p className="text-on-surface-variant">{value}</p>
+                      </div>
+                    ) : null
+                  )}
+                </div>
               )}
             </article>
           ))}
         </div>
+      )}
+      {footnote ? (
+        <p className="border-l-2 border-primary/30 pl-4 text-sm italic text-on-surface-variant">
+          {footnote}
+        </p>
+      ) : (
+        <MissingOptional label="footnote" />
       )}
     </section>
   );
@@ -2419,7 +2440,34 @@ function labeledActions(section: PreviewSectionPayload) {
 }
 
 function decodeMojibake(value?: string) {
-  return (value ?? "").replace(/Â°/g, "°").replace(/Â±/g, "±").replace(/Âµ/g, "µ");
+  return (value ?? "")
+    .replace(/Â®/g, "®")
+    .replace(/Â°/g, "°")
+    .replace(/Â²/g, "²")
+    .replace(/Â±/g, "±")
+    .replace(/Âµ/g, "µ")
+    .replace(/â€”/g, "—")
+    .replace(/â€"/g, "—");
+}
+
+function labeledEntries(value: unknown) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => {
+      if (typeof item === "string") {
+        const title = decodeMojibake(item);
+        return title ? { title } : null;
+      }
+      const record = asRecord(item);
+      const title = decodeMojibake(firstString(record.title, record.label, record.value));
+      if (!title) return null;
+      return {
+        title,
+        icon: firstString(record.icon),
+        body: decodeMojibake(firstString(record.body)) || undefined,
+      };
+    })
+    .filter((item): item is { title: string; icon?: string; body?: string } => Boolean(item));
 }
 
 export function OilGasChallengesAdapter({ section }: { section: PreviewSectionPayload }) {
@@ -4151,6 +4199,5339 @@ export function TermsDocumentAdapter({
   );
 }
 
+export function BessChallengesAdapter({ section }: { section: PreviewSectionPayload }) {
+  return (
+    <section className="bg-surface-container-lowest py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg">
+          {eyebrowOf(section.data) ? (
+            <p className="mb-2 font-label-sm text-label-sm uppercase tracking-widest text-primary">
+              {eyebrowOf(section.data)}
+            </p>
+          ) : (
+            <MissingOptional label="eyebrow" />
+          )}
+          {headingOf(section.data) ? (
+            <h2 className="font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+        </div>
+        {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-3">
+          {section.cards.map((card) => (
+            <div
+              key={card.title}
+              className="border-l-2 border-primary bg-white p-stack-md transition-colors hover:bg-surface-container"
+            >
+              {card.icon ? (
+                <span className="material-symbols-outlined mb-4 text-4xl">{card.icon}</span>
+              ) : null}
+              <h3 className="mb-2 font-headline-md text-headline-md">{card.title}</h3>
+              {card.body ? (
+                <p className="font-body-md text-body-md text-on-surface-variant">{card.body}</p>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function BessHardwareSoftwareAdapter({
+  section,
+}: {
+  section: PreviewSectionPayload;
+}) {
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const control = callouts[0];
+  const hub = callouts[1];
+  const grid = callouts[2];
+  const solutions = Array.isArray(section.data.bullets)
+    ? section.data.bullets.map(asRecord)
+    : section.cards.map((card) => ({ title: card.title, body: card.body }));
+
+  return (
+    <section className="overflow-hidden py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="grid grid-cols-1 items-center gap-stack-lg lg:grid-cols-2">
+          <div className="order-2 lg:order-1">
+            <div className="bento-grid h-[600px]">
+              <div className="relative col-span-7 row-span-4 flex flex-col justify-end overflow-hidden border-outline-variant/20 p-stack-md glass-panel group">
+                {section.media.url ? (
+                  <StitchImage
+                    src={section.media.url}
+                    alt={section.media.alt ?? firstString(control?.title) ?? ""}
+                    className="absolute inset-0 z-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                ) : (
+                  <div className="absolute inset-0 z-0 p-4">
+                    <MissingMedia message={section.media.missing ?? "control-layer image not resolved"} />
+                  </div>
+                )}
+                <div className="relative z-10 bg-white/90 p-4">
+                  {firstString(control?.eyebrow) ? (
+                    <p className="font-label-sm text-label-sm font-bold">{firstString(control?.eyebrow)}</p>
+                  ) : (
+                    <MissingOptional label="control eyebrow" />
+                  )}
+                  {firstString(control?.title) ? (
+                    <p className="font-body-md text-body-md">{firstString(control?.title)}</p>
+                  ) : (
+                    <MissingOptional label="control title" />
+                  )}
+                </div>
+              </div>
+              <div className="col-span-5 row-span-2 flex flex-col items-center justify-center bg-primary p-stack-md text-on-primary">
+                <span className="material-symbols-outlined mb-2 text-5xl">
+                  {firstString(hub?.icon) ?? "hub"}
+                </span>
+                {firstString(hub?.title) ? (
+                  <p className="font-label-sm text-label-sm uppercase tracking-tighter">
+                    {firstString(hub?.title)}
+                  </p>
+                ) : (
+                  <MissingOptional label="hub title" />
+                )}
+              </div>
+              <div className="col-span-5 row-span-2 flex flex-col justify-center border border-outline-variant bg-surface-container p-stack-md">
+                {firstString(grid?.title) ? (
+                  <h4 className="mb-2 font-headline-md text-headline-md leading-tight">
+                    {firstString(grid?.title)}
+                  </h4>
+                ) : (
+                  <MissingOptional label="grid title" />
+                )}
+                {firstString(grid?.body) ? (
+                  <p className="font-label-sm text-label-sm text-on-surface-variant">
+                    {firstString(grid?.body)}
+                  </p>
+                ) : (
+                  <MissingOptional label="grid body" />
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="order-1 lg:order-2">
+            {eyebrowOf(section.data) ? (
+              <p className="mb-2 font-label-sm text-label-sm uppercase tracking-widest text-primary">
+                {eyebrowOf(section.data)}
+              </p>
+            ) : (
+              <MissingOptional label="eyebrow" />
+            )}
+            {headingOf(section.data) ? (
+              <h2 className="mb-stack-md font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {solutions.length ? (
+              <ul className="space-y-stack-md">
+                {solutions.map((item, index) => {
+                  const title = firstString(item.title);
+                  const body = firstString(item.body);
+                  return (
+                    <li key={title ?? index} className="flex gap-4">
+                      <span className="flex h-6 w-6 items-center justify-center bg-primary-container text-xs text-on-primary-container">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        {title ? (
+                          <h4 className="font-headline-md text-body-lg font-bold">{title}</h4>
+                        ) : (
+                          <MissingOptional label="solution title" />
+                        )}
+                        {body ? (
+                          <p className="font-body-md text-body-md text-on-surface-variant">{body}</p>
+                        ) : null}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <MissingOptional label="solutions" />
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function BessArsenalAdapter({ section }: { section: PreviewSectionPayload }) {
+  const items = Array.isArray(section.data.items)
+    ? section.data.items.map(asRecord)
+    : section.cards.map((card) => ({
+        category: card.eyebrow,
+        label: card.title,
+        description: card.body,
+      }));
+
+  return (
+    <section className="bg-primary-container py-stack-lg text-on-primary-container">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg text-center">
+          {headingOf(section.data) ? (
+            <h2 className="font-headline-lg text-headline-lg text-white">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          <div className="mx-auto mt-4 h-1 w-24 bg-white/20" />
+        </div>
+        {items.length === 0 ? <MissingOptional label="arsenal items" /> : null}
+        <div className="grid grid-cols-2 gap-gutter md:grid-cols-4">
+          {items.map((item, index) => {
+            const category = firstString(item.category, item.eyebrow);
+            const label = firstString(item.label, item.title);
+            const description = firstString(item.description, item.body);
+            return (
+              <div
+                key={label ?? index}
+                className="p-stack-md text-center transition-all hover:bg-white/5 border border-white/10"
+              >
+                {category ? (
+                  <p className="mb-2 font-label-sm text-label-sm text-white/60">{category}</p>
+                ) : (
+                  <MissingOptional label="category" />
+                )}
+                {label ? (
+                  <h5 className="font-headline-md text-headline-md text-white">{label}</h5>
+                ) : (
+                  <MissingOptional label="label" />
+                )}
+                {description ? (
+                  <p className="font-label-sm text-label-sm text-white/40">{description}</p>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function BessCaseStudyAdapter({ section }: { section: PreviewSectionPayload }) {
+  const metrics = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord).filter((item) => firstString(item.value))
+    : [];
+  const action = section.actions[0];
+
+  return (
+    <section className="relative py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="grid grid-cols-1 items-center gap-gutter lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <div className="group relative">
+              {section.media.url ? (
+                <StitchImage
+                  src={section.media.url}
+                  alt={section.media.alt ?? ""}
+                  className="aspect-video w-full object-cover"
+                />
+              ) : (
+                <MissingMedia message={section.media.missing ?? "case study image not resolved"} />
+              )}
+              {eyebrowOf(section.data) ? (
+                <div className="absolute left-4 top-4 bg-primary px-4 py-2 font-label-sm text-label-sm text-on-primary">
+                  {eyebrowOf(section.data)}
+                </div>
+              ) : (
+                <MissingOptional label="eyebrow" />
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-stack-md lg:col-span-5">
+            {headingOf(section.data) ? (
+              <h3 className="font-headline-lg text-headline-lg">{headingOf(section.data)}</h3>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {bodyOf(section.data) ? (
+              <p className="font-body-md text-body-md text-on-surface-variant">{bodyOf(section.data)}</p>
+            ) : (
+              <MissingOptional label="body" />
+            )}
+            {metrics.length ? (
+              <div className="grid grid-cols-2 gap-4">
+                {metrics.map((metric) => (
+                  <div key={`${metric.value}-${metric.label}`} className="bg-surface-container p-4">
+                    <span className="font-display-lg text-3xl font-bold">{firstString(metric.value)}</span>
+                    <p className="font-label-sm text-xs uppercase opacity-60">{firstString(metric.label)}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <MissingOptional label="metrics" />
+            )}
+            {action ? (
+              <Link
+                href={action.href}
+                className="w-fit border border-primary px-8 py-4 font-label-sm text-label-sm text-primary transition-all hover:bg-primary hover:text-white"
+              >
+                {action.label}
+              </Link>
+            ) : (
+              <MissingOptional label="action" />
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function BessEngineeringCoreAdapter({
+  section,
+}: {
+  section: PreviewSectionPayload;
+}) {
+  return (
+    <section className="bg-surface py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop text-center">
+        {eyebrowOf(section.data) ? (
+          <p className="mb-2 font-label-sm text-label-sm uppercase tracking-widest text-primary">
+            {eyebrowOf(section.data)}
+          </p>
+        ) : (
+          <MissingOptional label="eyebrow" />
+        )}
+        {headingOf(section.data) ? (
+          <h2 className="mb-stack-lg font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+        ) : (
+          <MissingOptional label="heading" />
+        )}
+        {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+        <div className="grid grid-cols-1 gap-stack-lg md:grid-cols-2">
+          {section.cards.map((card) => (
+            <div key={card.title} className="tech-card relative overflow-hidden bg-white p-stack-lg text-left">
+              <div className="absolute right-0 top-0 z-0 -mr-8 -mt-8 h-24 w-24 rotate-45 bg-surface-container" />
+              <div className="relative z-10">
+                <h4 className="mb-4 font-headline-md text-headline-md">{card.title}</h4>
+                {card.body ? (
+                  <p className="mb-4 font-body-md text-body-md text-on-surface-variant">{card.body}</p>
+                ) : null}
+                {card.badges?.length ? (
+                  <div className="flex flex-wrap gap-2">
+                    {card.badges.map((badge) => (
+                      <span
+                        key={badge}
+                        className="rounded-full bg-surface-container-high px-3 py-1 font-label-sm text-[10px]"
+                      >
+                        {badge}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <MissingOptional label="tags" />
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function BessCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = section.actions;
+
+  return (
+    <section className="relative overflow-hidden py-stack-lg">
+      <div className="relative z-10 mx-auto max-w-container-max px-margin-desktop text-center">
+        <div className="mx-auto max-w-3xl">
+          {headingOf(section.data) ? (
+            <h2 className="mb-stack-md font-display-lg text-display-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="mb-stack-lg font-body-lg text-body-lg text-on-surface-variant">
+              {bodyOf(section.data)}
+            </p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+          <div className="flex flex-col justify-center gap-stack-md sm:flex-row">
+            {primary ? (
+              <Link
+                href={primary.href}
+                className="bg-primary px-12 py-5 font-label-sm text-label-sm text-on-primary transition-all hover:bg-primary/90"
+              >
+                {primary.label}
+              </Link>
+            ) : (
+              <MissingOptional label="primary action" />
+            )}
+            {secondary ? (
+              <Link
+                href={secondary.href}
+                className="border border-outline bg-transparent px-12 py-5 font-label-sm text-label-sm transition-all hover:border-primary"
+              >
+                {secondary.label}
+              </Link>
+            ) : (
+              <MissingOptional label="secondary action" />
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const BMS_SOX_BARS = [
+  "h-[60%] bg-primary/20",
+  "h-[75%] bg-primary/30 delay-75",
+  "h-[45%] bg-primary/10 delay-150",
+  "h-[90%] bg-primary/40 delay-200",
+  "h-[65%] bg-primary/25 delay-300",
+];
+
+export function BmsArchitectureAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [monitoring, balancing, sox, thermal] = section.cards;
+
+  return (
+    <section className="bg-surface py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-24 flex flex-col items-center text-center">
+          {headingOf(section.data) ? (
+            <h2 className="mb-6 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          <div className="mb-8 h-1 w-24 bg-primary" />
+          {bodyOf(section.data) ? (
+            <p className="max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+              {bodyOf(section.data)}
+            </p>
+          ) : (
+            <MissingOptional label="introduction" />
+          )}
+        </div>
+        <div className="grid grid-cols-12 gap-gutter">
+          {monitoring ? (
+            <div className="col-span-12 flex flex-col justify-between p-10 glass-card lg:col-span-4">
+              <div>
+                {monitoring.icon ? (
+                  <span className="material-symbols-outlined mb-6 text-4xl text-primary">
+                    {monitoring.icon}
+                  </span>
+                ) : null}
+                <h3 className="mb-4 font-headline-md text-headline-md">{monitoring.title}</h3>
+                {monitoring.body ? (
+                  <p className="font-body-md text-body-md text-on-surface-variant">{monitoring.body}</p>
+                ) : (
+                  <MissingOptional label="cell monitoring body" />
+                )}
+              </div>
+              {monitoring.label ? (
+                <div className="mt-12 flex cursor-pointer items-center gap-2 font-label-sm text-label-sm text-primary group">
+                  {monitoring.label}{" "}
+                  <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">
+                    north_east
+                  </span>
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <div className="col-span-12 lg:col-span-4">
+              <MissingOptional label="cell monitoring card" />
+            </div>
+          )}
+          {balancing ? (
+            <div className="relative col-span-12 overflow-hidden bg-primary-container p-10 text-on-primary-container group lg:col-span-8">
+              <div className="relative z-10">
+                <h3 className="mb-4 font-headline-md text-headline-md text-on-primary">
+                  {balancing.title}
+                </h3>
+                {balancing.body ? (
+                  <p className="mb-8 max-w-lg font-body-md text-body-md opacity-80">{balancing.body}</p>
+                ) : (
+                  <MissingOptional label="active balancing body" />
+                )}
+                {balancing.metrics?.length ? (
+                  <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+                    {balancing.metrics.map((metric) => (
+                      <div key={`${metric.value}-${metric.label}`} className="border border-outline-variant/20 p-4">
+                        <p className="mb-1 font-headline-md text-headline-md text-on-primary">{metric.value}</p>
+                        <p className="font-label-sm text-label-sm opacity-60">{metric.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <MissingOptional label="balancing metrics" />
+                )}
+              </div>
+              <div className="absolute top-0 right-0 h-full w-1/2 opacity-10 transition-opacity group-hover:opacity-20" />
+            </div>
+          ) : (
+            <div className="col-span-12 lg:col-span-8">
+              <MissingOptional label="active balancing card" />
+            </div>
+          )}
+          {sox ? (
+            <div className="col-span-12 p-10 glass-card group lg:col-span-6">
+              <h3 className="mb-4 font-headline-md text-headline-md">{sox.title}</h3>
+              {sox.body ? (
+                <p className="mb-6 font-body-md text-body-md text-on-surface-variant">{sox.body}</p>
+              ) : (
+                <MissingOptional label="SoX body" />
+              )}
+              <div className="flex h-48 w-full items-end gap-1 overflow-hidden bg-surface-container-low p-4">
+                {BMS_SOX_BARS.map((barClass) => (
+                  <div key={barClass} className={`w-full animate-pulse ${barClass}`} />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="col-span-12 lg:col-span-6">
+              <MissingOptional label="SoX card" />
+            </div>
+          )}
+          {thermal ? (
+            <div className="col-span-12 flex flex-col justify-between p-10 glass-card lg:col-span-6">
+              <div>
+                <h3 className="mb-4 font-headline-md text-headline-md">{thermal.title}</h3>
+                {thermal.body ? (
+                  <p className="font-body-md text-body-md text-on-surface-variant">{thermal.body}</p>
+                ) : (
+                  <MissingOptional label="thermal body" />
+                )}
+              </div>
+              {thermal.badges?.length ? (
+                <div className="mt-8 flex gap-4">
+                  {thermal.badges.map((badge, index) => (
+                    <div
+                      key={badge}
+                      className="flex items-center gap-2 rounded-full bg-surface-container-high px-3 py-1 font-label-sm text-label-sm"
+                    >
+                      <span className={`h-2 w-2 rounded-full ${index === 0 ? "bg-error" : "bg-primary"}`} />
+                      {badge}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <MissingOptional label="thermal badges" />
+              )}
+            </div>
+          ) : (
+            <div className="col-span-12 lg:col-span-6">
+              <MissingOptional label="thermal card" />
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function BmsSiliconAdapter({ section }: { section: PreviewSectionPayload }) {
+  const items = Array.isArray(section.data.items)
+    ? section.data.items
+        .map((item) =>
+          typeof item === "string"
+            ? item
+            : firstString(asRecord(item).label, asRecord(item).title) ?? ""
+        )
+        .filter(Boolean)
+    : section.cards.map((card) => card.title).filter(Boolean);
+
+  return (
+    <section className="bg-surface-container-lowest py-stack-md">
+      <div className="mx-auto max-w-container-max border-y border-outline-variant/10 px-margin-desktop py-12">
+        <div className="flex flex-wrap items-center justify-between gap-gutter opacity-60 transition-opacity hover:opacity-100">
+          {headingOf(section.data) ? (
+            <p className="mb-6 w-full text-center font-label-sm text-label-sm uppercase tracking-widest lg:mb-0 lg:w-auto lg:text-left">
+              {headingOf(section.data)}
+            </p>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {items.length ? (
+            <div className="mx-auto flex items-center gap-12 lg:mx-0">
+              {items.map((item) => (
+                <span key={item} className="font-headline-md text-headline-md tracking-tighter">
+                  {item}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <MissingOptional label="silicon platforms" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function BmsApplicationsAdapter({ section }: { section: PreviewSectionPayload }) {
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const [first, second] = callouts;
+  const firstImage = section.media.url;
+  const firstAlt = section.media.alt ?? firstString(first?.mediaAlt, first?.title) ?? "";
+  const secondMedia = asRecord(second?.media);
+  const secondImage = firstString(secondMedia.source, second?.imageUrl, second?.image);
+  const secondAlt = firstString(second?.mediaAlt, secondMedia.alt, second?.title) ?? "";
+  const studies = [
+    {
+      title: firstString(first?.title),
+      body: firstString(first?.body),
+      image: firstImage,
+      alt: firstAlt,
+      missing: section.media.missing ?? "BESS image not resolved",
+    },
+    {
+      title: firstString(second?.title),
+      body: firstString(second?.body),
+      image: secondImage,
+      alt: secondAlt,
+      missing: "automotive image not resolved",
+    },
+  ];
+
+  return (
+    <section className="relative overflow-hidden bg-surface py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-20 grid grid-cols-12 gap-gutter">
+          <div className="col-span-12 lg:col-span-6">
+            {headingOf(section.data) ? (
+              <h2 className="mb-4 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {bodyOf(section.data) ? (
+              <p className="font-body-lg text-body-lg text-on-surface-variant">{bodyOf(section.data)}</p>
+            ) : (
+              <MissingOptional label="body" />
+            )}
+          </div>
+        </div>
+        {callouts.length ? (
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+            {studies.map((study) => (
+              <div key={study.title ?? study.missing} className="group cursor-pointer">
+                <div className="relative mb-8 h-[400px] overflow-hidden">
+                  {study.image ? (
+                    <StitchImage
+                      src={study.image}
+                      alt={study.alt}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  ) : (
+                    <MissingMedia message={study.missing} />
+                  )}
+                  <div className="absolute inset-0 bg-primary/20 opacity-0 transition-opacity group-hover:opacity-100" />
+                </div>
+                {study.title ? (
+                  <h4 className="mb-2 font-headline-md text-headline-md">{study.title}</h4>
+                ) : (
+                  <MissingOptional label="application title" />
+                )}
+                {study.body ? (
+                  <p className="font-body-md text-body-md text-on-surface-variant">{study.body}</p>
+                ) : (
+                  <MissingOptional label="application body" />
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <MissingOptional label="application callouts" />
+        )}
+      </div>
+    </section>
+  );
+}
+
+export function BmsCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = section.actions;
+
+  return (
+    <section className="relative overflow-hidden bg-primary py-stack-lg text-on-primary">
+      <div className="relative z-10 mx-auto flex max-w-container-max flex-col items-center px-margin-desktop text-center">
+        {headingOf(section.data) ? (
+          <h2 className="mb-8 font-display-lg text-headline-lg-mobile tracking-tighter md:text-display-lg">
+            {headingOf(section.data)}
+          </h2>
+        ) : (
+          <MissingOptional label="title" />
+        )}
+        {bodyOf(section.data) ? (
+          <p className="mb-12 max-w-2xl font-body-lg text-body-lg opacity-80">{bodyOf(section.data)}</p>
+        ) : (
+          <MissingOptional label="body" />
+        )}
+        <div className="flex flex-col gap-gutter sm:flex-row">
+          {primary ? (
+            <Link
+              href={primary.href}
+              className="bg-on-primary px-12 py-6 font-label-sm text-label-sm font-bold text-primary transition-all hover:bg-on-primary-fixed-variant hover:text-on-primary active:scale-95"
+            >
+              {primary.label}
+            </Link>
+          ) : (
+            <MissingOptional label="primary action" />
+          )}
+          {secondary ? (
+            <Link
+              href={secondary.href}
+              className="border border-on-primary px-12 py-6 font-label-sm text-label-sm font-bold transition-all hover:bg-on-primary hover:text-primary active:scale-95"
+            >
+              {secondary.label}
+            </Link>
+          ) : (
+            <MissingOptional label="secondary action" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ErmBenefitsAdapter({ section }: { section: PreviewSectionPayload }) {
+  return (
+    <section className="bg-surface-container-lowest py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        {section.cards.length === 0 ? <MissingOptional label="benefit cards" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-3">
+          {section.cards.map((card) => (
+            <div key={card.title} className="space-y-stack-sm">
+              <div className="font-headline-md text-headline-md text-primary">{card.title}</div>
+              {card.body ? (
+                <p className="font-body-md text-body-md text-on-surface-variant">{card.body}</p>
+              ) : (
+                <MissingOptional label={`${card.title} body`} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ErmArchitectureAdapter({ section }: { section: PreviewSectionPayload }) {
+  const nodes = Array.isArray(section.data.nodes)
+    ? section.data.nodes.map(asRecord)
+    : [];
+  const [afe, processing, connectivity, verification] = nodes;
+
+  return (
+    <section className="bg-background py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-md">
+          {headingOf(section.data) ? (
+            <h2 className="font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+              {bodyOf(section.data)}
+            </p>
+          ) : (
+            <MissingOptional label="introduction" />
+          )}
+        </div>
+        {nodes.length === 0 ? <MissingOptional label="architecture nodes" /> : null}
+        <div className="bento-grid">
+          {afe ? (
+            <div className="col-span-12 flex flex-col justify-between rounded-xl border-outline-variant/30 p-8 glass-card technical-glow md:col-span-8">
+              <div className="space-y-4">
+                {firstString(afe.icon) ? (
+                  <span className="material-symbols-outlined text-4xl text-primary">
+                    {firstString(afe.icon)}
+                  </span>
+                ) : null}
+                <h3 className="font-headline-md text-headline-md">
+                  {firstString(afe.label, afe.title)}
+                </h3>
+                {firstString(afe.description, afe.body) ? (
+                  <p className="max-w-xl font-body-md text-body-md text-on-surface-variant">
+                    {firstString(afe.description, afe.body)}
+                  </p>
+                ) : (
+                  <MissingOptional label="front-end body" />
+                )}
+              </div>
+              {Array.isArray(afe.badges) && afe.badges.length ? (
+                <div className="mt-8 flex items-center gap-4">
+                  {afe.badges.map((badge) => (
+                    <span
+                      key={String(badge)}
+                      className="rounded bg-surface-container px-3 py-1 font-label-sm text-label-sm text-on-surface"
+                    >
+                      {String(badge)}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <MissingOptional label="front-end badges" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="analog front-end node" />
+          )}
+          {processing ? (
+            <div className="col-span-12 flex flex-col justify-between rounded-xl bg-primary-container p-8 technical-glow md:col-span-4">
+              <div className="space-y-4">
+                {firstString(processing.icon) ? (
+                  <span className="material-symbols-outlined text-4xl text-on-primary-container">
+                    {firstString(processing.icon)}
+                  </span>
+                ) : null}
+                <h3 className="font-headline-md text-headline-md text-on-primary">
+                  {firstString(processing.label, processing.title)}
+                </h3>
+                {firstString(processing.description, processing.body) ? (
+                  <p className="font-body-md text-body-md text-on-primary-container">
+                    {firstString(processing.description, processing.body)}
+                  </p>
+                ) : (
+                  <MissingOptional label="processing body" />
+                )}
+              </div>
+              {firstString(processing.annotation) ? (
+                <div className="mt-8 border-t border-on-primary-container/20 pt-4">
+                  {firstString(processing.eyebrow) ? (
+                    <div className="font-label-sm text-label-sm uppercase text-on-primary-container">
+                      {firstString(processing.eyebrow)}
+                    </div>
+                  ) : (
+                    <MissingOptional label="processing eyebrow" />
+                  )}
+                  <div className="font-headline-md text-headline-md text-on-primary">
+                    {firstString(processing.annotation)}
+                  </div>
+                </div>
+              ) : (
+                <MissingOptional label="processing annotation" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="processing node" />
+          )}
+          {connectivity ? (
+            <div className="col-span-12 rounded-xl bg-surface-container-highest p-8 technical-glow md:col-span-4">
+              <div className="space-y-4">
+                {firstString(connectivity.icon) ? (
+                  <span className="material-symbols-outlined text-4xl text-primary">
+                    {firstString(connectivity.icon)}
+                  </span>
+                ) : null}
+                <h3 className="font-headline-md text-headline-md">
+                  {firstString(connectivity.label, connectivity.title)}
+                </h3>
+                {firstString(connectivity.description, connectivity.body) ? (
+                  <p className="font-body-md text-body-md text-on-surface-variant">
+                    {firstString(connectivity.description, connectivity.body)}
+                  </p>
+                ) : (
+                  <MissingOptional label="connectivity body" />
+                )}
+              </div>
+            </div>
+          ) : (
+            <MissingOptional label="connectivity node" />
+          )}
+          {verification ? (
+            <div className="col-span-12 flex gap-stack-md rounded-xl border border-outline-variant/30 bg-surface-container-lowest p-8 technical-glow md:col-span-8">
+              <div className="w-2/3 space-y-4">
+                <h3 className="font-headline-md text-headline-md">
+                  {firstString(verification.label, verification.title)}
+                </h3>
+                {firstString(verification.description, verification.body) ? (
+                  <p className="font-body-md text-body-md text-on-surface-variant">
+                    {firstString(verification.description, verification.body)}
+                  </p>
+                ) : (
+                  <MissingOptional label="verification body" />
+                )}
+              </div>
+              <div className="flex w-1/3 items-center justify-center" />
+            </div>
+          ) : (
+            <MissingOptional label="verification node" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ErmApplicationsAdapter({ section }: { section: PreviewSectionPayload }) {
+  return (
+    <section className="bg-surface-container-low py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg text-center">
+          {headingOf(section.data) ? (
+            <h2 className="font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="font-body-lg text-body-lg text-on-surface-variant">{bodyOf(section.data)}</p>
+          ) : (
+            <MissingOptional label="introduction" />
+          )}
+        </div>
+        {section.cards.length === 0 ? <MissingOptional label="application cards" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-2">
+          {section.cards.map((card) => (
+            <div key={card.title} className="group relative aspect-[16/9] overflow-hidden rounded-xl">
+              {card.imageUrl ? (
+                <StitchImage
+                  src={card.imageUrl}
+                  alt={card.imageAlt ?? card.title}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              ) : (
+                <MissingMedia message={`${card.title} has no image`} />
+              )}
+              <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8">
+                <h4 className="font-headline-md text-headline-md text-white">{card.title}</h4>
+                {card.body ? (
+                  <p className="font-body-md text-body-md text-white/70">{card.body}</p>
+                ) : (
+                  <MissingOptional label={`${card.title} body`} />
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ErmOperationalAdapter({ section }: { section: PreviewSectionPayload }) {
+  const benefits = section.cards.filter((card) => !card.rows?.length);
+  const specs = section.cards.find((card) => card.rows?.length);
+
+  return (
+    <section className="bg-background py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="flex flex-col gap-stack-lg lg:flex-row">
+          <div className="w-full lg:w-1/2">
+            {headingOf(section.data) ? (
+              <h2 className="mb-8 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {benefits.length ? (
+              <ul className="space-y-6">
+                {benefits.map((card) => (
+                  <li key={card.title} className="flex gap-4">
+                    <span
+                      className="material-symbols-outlined text-primary"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      {card.icon ?? "check_circle"}
+                    </span>
+                    <div>
+                      <h5 className="mb-1 font-headline-md text-[18px]">{card.title}</h5>
+                      {card.body ? (
+                        <p className="font-body-md text-body-md text-on-surface-variant">{card.body}</p>
+                      ) : (
+                        <MissingOptional label={`${card.title} body`} />
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <MissingOptional label="operational benefits" />
+            )}
+          </div>
+          <div className="w-full rounded-xl border border-outline-variant/30 p-8 glass-card lg:w-1/2">
+            <div className="mb-4 font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">
+              {specs?.title ?? "Technical Specifications"}
+            </div>
+            {specs?.rows?.length ? (
+              <table className="w-full font-body-md text-body-md">
+                <tbody>
+                  {specs.rows.map((row, index) => (
+                    <tr
+                      key={`${row.label}-${row.value}`}
+                      className={index < specs.rows!.length - 1 ? "border-b border-outline-variant/20" : undefined}
+                    >
+                      <td className="py-4 font-semibold">{row.label}</td>
+                      <td className="py-4 text-right text-on-surface-variant">{row.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <MissingOptional label="specification rows" />
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ErmCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = section.actions;
+  const title = headingOf(section.data);
+  const splitAt = title?.indexOf("Your ") ?? -1;
+  const titleNode =
+    title && splitAt >= 0 ? (
+      <>
+        {title.slice(0, splitAt + 4)} <br />
+        {title.slice(splitAt + 5)}
+      </>
+    ) : (
+      title
+    );
+
+  return (
+    <section className="py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="relative overflow-hidden rounded-2xl bg-primary p-12 text-center text-on-primary shadow-2xl">
+          <div className="relative z-10 mx-auto max-w-2xl space-y-stack-md">
+            {titleNode ? (
+              <h2 className="font-display-lg text-headline-lg text-white">{titleNode}</h2>
+            ) : (
+              <MissingOptional label="title" />
+            )}
+            {bodyOf(section.data) ? (
+              <p className="font-body-lg text-body-lg text-on-primary-container">
+                {bodyOf(section.data)}
+              </p>
+            ) : (
+              <MissingOptional label="body" />
+            )}
+            <div className="flex justify-center gap-base">
+              {primary ? (
+                <Link
+                  href={primary.href}
+                  className="rounded-lg bg-white px-8 py-4 font-label-sm text-label-sm text-primary transition-all hover:bg-white/90"
+                >
+                  {primary.label}
+                </Link>
+              ) : (
+                <MissingOptional label="primary action" />
+              )}
+              {secondary ? (
+                <Link
+                  href={secondary.href}
+                  className="rounded-lg border border-white/20 px-8 py-4 font-label-sm text-label-sm text-white transition-all hover:bg-white/10"
+                >
+                  {secondary.label}
+                </Link>
+              ) : (
+                <MissingOptional label="secondary action" />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function CcoMetricsAdapter({ section }: { section: PreviewSectionPayload }) {
+  const items = Array.isArray(section.data.items)
+    ? section.data.items.map(asRecord)
+    : [];
+
+  return (
+    <section className="bg-primary-container py-stack-lg text-on-primary">
+      <div className="mx-auto grid max-w-container-max grid-cols-1 gap-gutter px-margin-desktop md:grid-cols-3">
+        {items.length === 0 ? <MissingOptional label="metrics" /> : null}
+        {items.map((item, index) => {
+          const progress = Number(item.progress);
+          const hasProgress = Number.isFinite(progress);
+          return (
+            <div key={`${firstString(item.label, item.value)}-${index}`} className="flex flex-col gap-2">
+              {firstString(item.label) ? (
+                <span className="font-label-sm text-label-sm uppercase text-on-primary-container/60">
+                  {firstString(item.label)}
+                </span>
+              ) : (
+                <MissingOptional label="metric label" />
+              )}
+              {firstString(item.value) ? (
+                <span className="font-display-lg text-headline-lg">{firstString(item.value)}</span>
+              ) : (
+                <MissingOptional label="metric value" />
+              )}
+              {hasProgress ? (
+                <div className="h-1 w-full overflow-hidden bg-primary-fixed-dim/20">
+                  <div
+                    className="h-full bg-on-primary-container"
+                    style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+                  />
+                </div>
+              ) : (
+                <MissingOptional label="metric progress" />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+export function CcoRisksAdapter({ section }: { section: PreviewSectionPayload }) {
+  const eyebrow = eyebrowOf(section.data);
+  const heading = headingOf(section.data);
+  const introduction = bodyOf(section.data);
+  const challengesEyebrow = asString(section.data.supportingText);
+  const quote = asString(section.data.quote);
+  const quoted =
+    quote && (quote.startsWith('"') || quote.startsWith("“")) ? quote : quote ? `"${quote}"` : undefined;
+
+  return (
+    <section className="bg-surface py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="grid grid-cols-12 gap-gutter">
+          <div className="group relative col-span-12 overflow-hidden border border-outline-variant/30 bg-surface-container-lowest p-stack-lg lg:col-span-8">
+            <div className="relative z-10">
+              {eyebrow ? (
+                <span className="mb-4 block font-label-sm text-label-sm text-primary">{eyebrow}</span>
+              ) : (
+                <MissingOptional label="problem eyebrow" />
+              )}
+              {heading ? (
+                <h2 className="mb-stack-md font-headline-lg text-headline-lg">{heading}</h2>
+              ) : (
+                <MissingOptional label="heading" />
+              )}
+              {introduction ? (
+                <p className="max-w-2xl font-body-lg text-body-lg text-on-surface-variant">{introduction}</p>
+              ) : (
+                <MissingOptional label="introduction" />
+              )}
+            </div>
+            <div className="absolute -bottom-20 -right-20 opacity-5 transition-transform duration-700 group-hover:scale-110">
+              <span className="material-symbols-outlined text-[300px]" style={{ fontVariationSettings: "'FILL' 0" }}>
+                warning
+              </span>
+            </div>
+          </div>
+          <div className="col-span-12 flex flex-col justify-between border border-primary bg-primary-container p-stack-lg text-on-primary lg:col-span-4">
+            <div>
+              {challengesEyebrow ? (
+                <span className="mb-4 block font-label-sm text-label-sm text-on-primary-container/60">
+                  {challengesEyebrow}
+                </span>
+              ) : (
+                <MissingOptional label="challenges eyebrow" />
+              )}
+              {section.cards.length === 0 ? <MissingOptional label="challenge cards" /> : null}
+              <ul className="space-y-stack-md">
+                {section.cards.map((card) => (
+                  <li key={card.title} className="flex items-start gap-4">
+                    {card.icon ? (
+                      <span
+                        className="material-symbols-outlined text-on-primary-container"
+                        style={{ fontVariationSettings: "'FILL' 1" }}
+                      >
+                        {card.icon}
+                      </span>
+                    ) : (
+                      <MissingOptional label={`${card.title} icon`} />
+                    )}
+                    <div>
+                      <p className="mb-1 font-label-sm text-label-sm font-bold uppercase">{card.title}</p>
+                      {card.body ? (
+                        <p className="font-body-md text-on-primary-container">{card.body}</p>
+                      ) : (
+                        <MissingOptional label={`${card.title} body`} />
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mt-stack-lg border-t border-on-primary-container/20 pt-stack-md">
+              {quoted ? (
+                <p className="font-label-sm text-label-sm italic opacity-70">{quoted}</p>
+              ) : (
+                <MissingOptional label="quote" />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function cardNamed(cards: PreviewSectionPayload["cards"], title: string) {
+  return cards.find((card) => card.title.toLowerCase() === title.toLowerCase());
+}
+
+export function CcoHardwareAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [action] = section.actions;
+  const hardware = cardNamed(section.cards, "Hardware") ?? section.cards[0];
+  const firmware = cardNamed(section.cards, "Firmware") ?? section.cards[1];
+  const connectivity = cardNamed(section.cards, "Connectivity") ?? section.cards[2];
+  const hardwareImage = hardware?.imageUrl ?? section.media.url;
+  const hardwareAlt = hardware?.imageAlt ?? section.media.alt ?? "";
+  const hardwareBadge = hardware?.badges?.[0];
+  const [microkernel, spaceA, spaceB] = firmware?.items ?? [];
+
+  return (
+    <section className="bg-surface-container py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg flex flex-col items-end justify-between md:flex-row">
+          <div className="max-w-xl">
+            {eyebrowOf(section.data) ? (
+              <span className="mb-4 block font-label-sm text-label-sm text-primary">
+                {eyebrowOf(section.data)}
+              </span>
+            ) : (
+              <MissingOptional label="eyebrow" />
+            )}
+            {headingOf(section.data) ? (
+              <h2 className="font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+          </div>
+          <div className="mt-stack-md md:mt-0">
+            {action ? (
+              <Link
+                href={action.href}
+                className="border border-primary px-6 py-2 font-label-sm text-label-sm transition-all hover:bg-primary hover:text-on-primary"
+              >
+                {action.label}
+              </Link>
+            ) : (
+              <MissingOptional label="schematics action" />
+            )}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-3">
+          {hardware ? (
+            <div className="glass-panel p-stack-md tech-glow transition-all duration-300">
+              <div className="group relative mb-stack-md aspect-square overflow-hidden bg-surface-container-highest">
+                {hardwareImage ? (
+                  <StitchImage
+                    src={hardwareImage}
+                    alt={hardwareAlt}
+                    className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
+                  />
+                ) : (
+                  <MissingMedia message={section.media.missing ?? "hardware image"} />
+                )}
+                {hardwareBadge ? (
+                  <div className="absolute right-4 top-4 bg-primary px-2 py-1 font-label-sm text-[10px] text-on-primary">
+                    {hardwareBadge}
+                  </div>
+                ) : (
+                  <MissingOptional label="hardware badge" />
+                )}
+              </div>
+              <h3 className="mb-2 font-headline-md text-headline-md">{hardware.title}</h3>
+              {hardware.body ? (
+                <p className="font-body-md text-on-surface-variant">{hardware.body}</p>
+              ) : (
+                <MissingOptional label="hardware body" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="hardware card" />
+          )}
+          {firmware ? (
+            <div className="glass-panel p-stack-md tech-glow transition-all duration-300">
+              <div className="relative mb-stack-md flex aspect-square items-center justify-center overflow-hidden bg-surface-container-highest p-stack-lg">
+                <div className="relative z-10 flex h-full w-full flex-col border border-primary/20 p-4">
+                  <div className="mb-2 flex h-1/3 w-full items-center justify-center border-b border-primary/20 bg-primary/10 font-label-sm text-[10px]">
+                    {microkernel ?? <MissingOptional label="microkernel label" />}
+                  </div>
+                  <div className="flex flex-1 gap-2">
+                    <div className="flex w-1/2 items-center justify-center border border-primary/10 bg-primary/5 font-label-sm text-[10px]">
+                      {spaceA ?? <MissingOptional label="space A label" />}
+                    </div>
+                    <div className="flex w-1/2 items-center justify-center border border-primary/10 bg-primary/5 font-label-sm text-[10px]">
+                      {spaceB ?? <MissingOptional label="space B label" />}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3 className="mb-2 font-headline-md text-headline-md">{firmware.title}</h3>
+              {firmware.body ? (
+                <p className="font-body-md text-on-surface-variant">{firmware.body}</p>
+              ) : (
+                <MissingOptional label="firmware body" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="firmware card" />
+          )}
+          {connectivity ? (
+            <div className="glass-panel p-stack-md tech-glow transition-all duration-300">
+              <div className="group mb-stack-md flex aspect-square flex-col overflow-hidden bg-surface-container-highest">
+                {connectivity.imageUrl ? (
+                  <div
+                    className="flex-1 bg-cover bg-center"
+                    role="img"
+                    aria-label={connectivity.imageAlt ?? ""}
+                    style={{ backgroundImage: `url('${connectivity.imageUrl}')` }}
+                  />
+                ) : (
+                  <MissingMedia message="connectivity image" />
+                )}
+                <div className="bg-primary p-4 text-on-primary">
+                  <div className="flex items-center justify-between">
+                    {connectivity.eyebrow ? (
+                      <span className="font-label-sm text-[10px]">{connectivity.eyebrow}</span>
+                    ) : (
+                      <MissingOptional label="sync status" />
+                    )}
+                    <div className="flex items-center gap-1">
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
+                      {connectivity.label ? (
+                        <span className="font-label-sm text-[10px]">{connectivity.label}</span>
+                      ) : (
+                        <MissingOptional label="live label" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3 className="mb-2 font-headline-md text-headline-md">{connectivity.title}</h3>
+              {connectivity.body ? (
+                <p className="font-body-md text-on-surface-variant">{connectivity.body}</p>
+              ) : (
+                <MissingOptional label="connectivity body" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="connectivity card" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function CcoStackAdapter({ section }: { section: PreviewSectionPayload }) {
+  const annotations = Array.isArray(section.data.annotations)
+    ? section.data.annotations.map(asRecord)
+    : [];
+  const nodes = Array.isArray(section.data.nodes) ? section.data.nodes.map(asRecord) : [];
+  const diagramLabel = asString(section.data.introduction);
+  const application = nodes[0];
+  const safety = nodes[1];
+  const microkernel = nodes[2];
+  const hal = nodes[3];
+
+  return (
+    <section className="border-y border-outline-variant/10 bg-surface py-stack-lg">
+      <div className="mx-auto grid max-w-container-max grid-cols-12 items-center gap-gutter px-margin-desktop">
+        <div className="col-span-12 lg:col-span-5">
+          {headingOf(section.data) ? (
+            <h2 className="mb-stack-md font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {annotations.length === 0 ? <MissingOptional label="stack annotations" /> : null}
+          <div className="space-y-stack-md">
+            {annotations.map((item, index) => (
+              <div
+                key={`${firstString(item.label, item.value)}-${index}`}
+                className="flex items-center justify-between border-b border-outline-variant/20 p-4"
+              >
+                {firstString(item.label) ? (
+                  <span className="font-label-sm text-label-sm">{firstString(item.label)}</span>
+                ) : (
+                  <MissingOptional label="annotation label" />
+                )}
+                {firstString(item.value) ? (
+                  <span className="font-headline-md text-headline-md">{firstString(item.value)}</span>
+                ) : (
+                  <MissingOptional label="annotation value" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="col-span-12 pl-0 lg:col-span-7 lg:pl-stack-lg">
+          <div className="relative bg-primary-container p-stack-lg">
+            <div className="absolute left-0 top-0 h-full w-1 bg-on-primary-container/20" />
+            {diagramLabel ? (
+              <span className="mb-4 block font-label-sm text-label-sm text-on-primary-container/60">
+                {diagramLabel}
+              </span>
+            ) : (
+              <MissingOptional label="diagram label" />
+            )}
+            <div className="flex h-64 items-center justify-center border border-on-primary-container/10 p-8">
+              <div className="flex w-full flex-col gap-4">
+                <div className="flex h-24 gap-4">
+                  <div className="flex flex-1 items-center justify-center border border-on-primary-container/30 font-label-sm text-label-sm">
+                    {firstString(application?.label, application?.title) ?? (
+                      <MissingOptional label="application node" />
+                    )}
+                  </div>
+                  <div className="flex flex-1 items-center justify-center border border-on-primary-container/30 font-label-sm text-label-sm">
+                    {firstString(safety?.label, safety?.title) ?? <MissingOptional label="safety node" />}
+                  </div>
+                </div>
+                <div className="h-1 bg-on-primary-container/50" />
+                <div className="flex h-20 items-center justify-center border border-on-primary-container/30 bg-on-primary-container/5 font-headline-md text-headline-md">
+                  {firstString(microkernel?.label, microkernel?.title) ?? (
+                    <MissingOptional label="microkernel node" />
+                  )}
+                </div>
+                <div className="flex h-12 items-center justify-center border border-dashed border-on-primary-container/30 font-label-sm text-label-sm">
+                  {firstString(hal?.label, hal?.title) ?? <MissingOptional label="HAL node" />}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function CcoCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = section.actions;
+  const title = headingOf(section.data) ?? "";
+  const split = title.match(/^(.*? your)\s+(.+)$/i);
+  const watermark = asString(section.data.watermark);
+
+  return (
+    <section className="relative overflow-hidden bg-background py-stack-lg">
+      <div className="relative z-10 mx-auto max-w-container-max px-margin-desktop text-center">
+        {title ? (
+          <h2 className="mb-stack-md font-display-lg text-headline-lg md:text-display-lg">
+            {split ? (
+              <>
+                {split[1]}
+                <br />
+                {split[2]}
+              </>
+            ) : (
+              title
+            )}
+          </h2>
+        ) : (
+          <MissingOptional label="title" />
+        )}
+        <div className="mt-stack-lg flex flex-col justify-center gap-stack-md md:flex-row">
+          {primary ? (
+            <Link
+              href={primary.href}
+              className="bg-primary px-10 py-4 font-label-sm text-label-sm text-on-primary transition-all hover:scale-[1.02]"
+            >
+              {primary.label}
+            </Link>
+          ) : (
+            <MissingOptional label="primary action" />
+          )}
+          {secondary ? (
+            <Link
+              href={secondary.href}
+              className="border border-outline px-10 py-4 font-label-sm text-label-sm transition-all hover:bg-surface-container"
+            >
+              {secondary.label}
+            </Link>
+          ) : (
+            <MissingOptional label="secondary action" />
+          )}
+        </div>
+      </div>
+      <div className="pointer-events-none absolute left-0 top-0 flex h-full w-full justify-center opacity-[0.03]">
+        {watermark ? (
+          <span className="select-none text-[400px] font-bold">{watermark}</span>
+        ) : (
+          <MissingOptional label="watermark" />
+        )}
+      </div>
+    </section>
+  );
+}
+
+export function CcoRelatedAdapter({ section }: { section: PreviewSectionPayload }) {
+  const navHref = section.actions[0]?.href ?? section.cards[0]?.href;
+
+  return (
+    <section className="border-t border-outline-variant/10 py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg flex items-center justify-between">
+          {headingOf(section.data) ? (
+            <h3 className="font-headline-md text-headline-md">{headingOf(section.data)}</h3>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          <div className="flex gap-2">
+            {navHref ? (
+              <>
+                <Link
+                  href={navHref}
+                  className="border border-outline-variant p-2 transition-colors hover:bg-surface-container"
+                >
+                  <span className="material-symbols-outlined">chevron_left</span>
+                </Link>
+                <Link
+                  href={navHref}
+                  className="border border-outline-variant p-2 transition-colors hover:bg-surface-container"
+                >
+                  <span className="material-symbols-outlined">chevron_right</span>
+                </Link>
+              </>
+            ) : (
+              <MissingOptional label="related navigation" />
+            )}
+          </div>
+        </div>
+        {section.cards.length === 0 ? <MissingOptional label="related project cards" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-2">
+          {section.cards.map((card) => (
+            <div key={card.title} className="group cursor-pointer">
+              <div className="mb-4 h-48 overflow-hidden">
+                {card.imageUrl ? (
+                  <StitchImage
+                    src={card.imageUrl}
+                    alt={card.imageAlt ?? ""}
+                    className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <MissingMedia message={`${card.title} image`} />
+                )}
+              </div>
+              <h4 className="mb-1 font-headline-md text-headline-md">{card.title}</h4>
+              {card.body ? (
+                <p className="font-body-md text-on-surface-variant">{card.body}</p>
+              ) : (
+                <MissingOptional label={`${card.title} body`} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EmChallengesAdapter({ section }: { section: PreviewSectionPayload }) {
+  const featured = section.cards.find((card) => card.metrics?.length) ?? section.cards[2];
+  const rest = section.cards.filter((card) => card !== featured);
+  const [peak, carbon] = rest;
+
+  return (
+    <section className="bg-surface-container-low py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-md">
+          {eyebrowOf(section.data) ? (
+            <p className="mb-2 font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary">
+              {eyebrowOf(section.data)}
+            </p>
+          ) : (
+            <MissingOptional label="eyebrow" />
+          )}
+          {headingOf(section.data) ? (
+            <h2 className="max-w-2xl font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+        </div>
+        <div className="grid grid-cols-12 gap-gutter">
+          {peak ? (
+            <div className="group relative col-span-12 overflow-hidden border border-outline-variant/20 bg-white p-10 transition-all hover:border-primary technical-glow md:col-span-8">
+              <div className="flex h-full flex-col justify-between gap-12">
+                <div>
+                  {peak.icon ? (
+                    <span className="material-symbols-outlined mb-6 text-4xl text-primary">{peak.icon}</span>
+                  ) : (
+                    <MissingOptional label="peak icon" />
+                  )}
+                  <h3 className="mb-4 font-headline-md text-headline-md">{peak.title}</h3>
+                  {peak.body ? (
+                    <p className="max-w-md font-body-md text-body-md text-on-surface-variant">{peak.body}</p>
+                  ) : (
+                    <MissingOptional label="peak body" />
+                  )}
+                </div>
+                {peak.badges?.length ? (
+                  <div className="flex items-center gap-4">
+                    {peak.badges.map((badge) => (
+                      <span
+                        key={badge}
+                        className="bg-surface-container px-3 py-1 font-label-sm text-label-sm text-on-surface"
+                      >
+                        {badge}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <MissingOptional label="peak badges" />
+                )}
+              </div>
+              <div className="absolute bottom-0 right-0 opacity-10 transition-opacity group-hover:opacity-20">
+                <span className="material-symbols-outlined translate-x-1/4 translate-y-1/4 text-[120px]">speed</span>
+              </div>
+            </div>
+          ) : (
+            <MissingOptional label="peak shaving card" />
+          )}
+          {carbon ? (
+            <div className="col-span-12 flex flex-col justify-center border border-outline-variant/20 bg-white p-10 md:col-span-4">
+              <h3 className="mb-4 font-headline-md text-headline-md">{carbon.title}</h3>
+              {carbon.body ? (
+                <p className="font-body-md text-body-md text-on-surface-variant">{carbon.body}</p>
+              ) : (
+                <MissingOptional label="carbon body" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="carbon reporting card" />
+          )}
+          {featured ? (
+            <div className="col-span-12 flex flex-col items-center justify-between gap-8 bg-primary p-12 text-on-primary lg:flex-row">
+              <div className="max-w-xl">
+                <h3 className="mb-4 font-headline-md text-headline-md">{featured.title}</h3>
+                {featured.body ? (
+                  <p className="font-body-md text-body-md opacity-70">{featured.body}</p>
+                ) : (
+                  <MissingOptional label="featured body" />
+                )}
+              </div>
+              {featured.metrics?.length ? (
+                <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+                  {featured.metrics.map((metric) => (
+                    <div key={`${metric.value}-${metric.label}`} className="text-center">
+                      <div className="font-display-lg text-headline-lg text-secondary-fixed">{metric.value}</div>
+                      <div className="font-label-sm text-label-sm opacity-50">{metric.label}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <MissingOptional label="featured metrics" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="featured challenge" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EmHardwareAdapter({ section }: { section: PreviewSectionPayload }) {
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const badge = firstString(callouts[0]?.label, callouts[0]?.title);
+
+  return (
+    <section className="py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="grid grid-cols-12 items-center gap-gutter">
+          <div className="col-span-12 space-y-stack-md lg:col-span-5">
+            {eyebrowOf(section.data) ? (
+              <p className="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary">
+                {eyebrowOf(section.data)}
+              </p>
+            ) : (
+              <MissingOptional label="eyebrow" />
+            )}
+            {headingOf(section.data) ? (
+              <h2 className="font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {section.cards.length === 0 ? <MissingOptional label="framework items" /> : null}
+            <div className="space-y-8">
+              {section.cards.map((card) => (
+                <div key={card.title} className="flex gap-6">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center bg-primary text-on-primary">
+                    {card.icon ? (
+                      <span className="material-symbols-outlined">{card.icon}</span>
+                    ) : (
+                      <MissingOptional label={`${card.title} icon`} />
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="mb-2 font-label-sm text-label-sm font-bold">{card.title}</h4>
+                    {card.body ? (
+                      <p className="text-on-surface-variant">{card.body}</p>
+                    ) : (
+                      <MissingOptional label={`${card.title} body`} />
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="col-span-12 lg:col-span-7">
+            <div className="relative aspect-video overflow-hidden bg-surface-container">
+              {section.media.url ? (
+                <StitchImage
+                  src={section.media.url}
+                  alt={section.media.alt ?? ""}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <MissingMedia message={section.media.missing ?? "hardware image"} />
+              )}
+              <div className="absolute inset-0 bg-primary/10 mix-blend-multiply" />
+              <div className="absolute left-8 top-8">
+                {badge ? (
+                  <div className="glass-card border border-white/20 px-4 py-2">
+                    <span className="font-mono font-label-sm text-label-sm text-primary">{badge}</span>
+                  </div>
+                ) : (
+                  <MissingOptional label="hardware badge" />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EmTechAdapter({ section }: { section: PreviewSectionPayload }) {
+  const nodes = Array.isArray(section.data.nodes)
+    ? section.data.nodes.map(asRecord)
+    : [];
+
+  return (
+    <section className="border-y border-outline-variant/10 py-stack-md">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        {nodes.length === 0 ? <MissingOptional label="technology nodes" /> : null}
+        <div className="flex flex-wrap items-center justify-between gap-8 opacity-40 grayscale transition-all duration-700 hover:grayscale-0">
+          {nodes.map((node) => {
+            const label = firstString(node.label, node.title);
+            const icon = firstString(node.icon);
+            return (
+              <div key={firstString(node.id, label)} className="flex items-center gap-3">
+                {icon ? (
+                  <span className="material-symbols-outlined text-4xl">{icon}</span>
+                ) : (
+                  <MissingOptional label={`${label} icon`} />
+                )}
+                {label ? (
+                  <span className="font-display-lg text-headline-md">{label}</span>
+                ) : (
+                  <MissingOptional label="technology label" />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EmCaseAdapter({ section }: { section: PreviewSectionPayload }) {
+  const action = section.actions[0];
+
+  return (
+    <section className="py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="group relative cursor-pointer overflow-hidden bg-primary text-on-primary">
+          <div className="absolute inset-0 opacity-40 transition-transform duration-1000 group-hover:scale-105">
+            {section.media.url ? (
+              <StitchImage
+                src={section.media.url}
+                alt={section.media.alt ?? ""}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <MissingMedia message={section.media.missing ?? "case study image"} />
+            )}
+          </div>
+          <div className="relative z-10 grid grid-cols-12 gap-gutter p-margin-desktop">
+            <div className="col-span-12 space-y-stack-md lg:col-span-6">
+              {eyebrowOf(section.data) ? (
+                <span className="inline-block bg-secondary px-3 py-1 font-label-sm text-label-sm text-on-secondary">
+                  {eyebrowOf(section.data)}
+                </span>
+              ) : (
+                <MissingOptional label="eyebrow" />
+              )}
+              {headingOf(section.data) ? (
+                <h2 className="font-display-lg text-headline-lg leading-none">{headingOf(section.data)}</h2>
+              ) : (
+                <MissingOptional label="heading" />
+              )}
+              {bodyOf(section.data) ? (
+                <p className="font-body-lg text-body-lg opacity-80">{bodyOf(section.data)}</p>
+              ) : (
+                <MissingOptional label="body" />
+              )}
+              {action ? (
+                <Link
+                  href={action.href}
+                  className="flex items-center gap-2 font-label-sm text-label-sm transition-all group-hover:gap-4"
+                >
+                  {action.label}
+                  <span className="material-symbols-outlined">north_east</span>
+                </Link>
+              ) : (
+                <MissingOptional label="action" />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EmCapabilitiesAdapter({ section }: { section: PreviewSectionPayload }) {
+  return (
+    <section className="bg-surface py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        {section.cards.length === 0 ? <MissingOptional label="capability cards" /> : null}
+        <div className="grid grid-cols-1 gap-stack-lg md:grid-cols-2">
+          {section.cards.map((card) => (
+            <div key={card.title} className="space-y-4">
+              <h3 className="border-b border-outline-variant/30 pb-4 font-headline-md text-headline-md">
+                {card.title}
+              </h3>
+              {card.body ? (
+                <p className="font-body-md text-on-surface-variant">{card.body}</p>
+              ) : (
+                <MissingOptional label={`${card.title} body`} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EmCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = section.actions;
+
+  return (
+    <section className="py-stack-lg">
+      <div className="mx-auto max-w-container-max bg-primary-container p-stack-lg px-margin-desktop text-center text-on-primary-container">
+        <div className="mx-auto max-w-2xl space-y-stack-md">
+          {headingOf(section.data) ? (
+            <h2 className="font-display-lg text-display-lg leading-tight">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="text-body-lg opacity-70">{bodyOf(section.data)}</p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+          <div className="flex flex-col justify-center gap-4 pt-8 sm:flex-row">
+            {primary ? (
+              <Link
+                href={primary.href}
+                className="bg-surface px-10 py-5 font-label-sm text-label-sm text-primary transition-all hover:bg-secondary-container"
+              >
+                {primary.label}
+              </Link>
+            ) : (
+              <MissingOptional label="primary action" />
+            )}
+            {secondary ? (
+              <Link
+                href={secondary.href}
+                className="border border-white/20 px-10 py-5 font-label-sm text-label-sm text-white transition-all hover:bg-white/10"
+              >
+                {secondary.label}
+              </Link>
+            ) : (
+              <MissingOptional label="secondary action" />
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EnvChallengesAdapter({ section }: { section: PreviewSectionPayload }) {
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      <div className="grid grid-cols-1 gap-gutter md:grid-cols-12">
+        <div className="mb-stack-md md:col-span-12">
+          {headingOf(section.data) ? (
+            <h2 className="font-headline-lg text-headline-lg text-primary">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          <div className="mt-4 h-1 w-24 bg-primary" />
+        </div>
+        {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+        {section.cards.map((card) => (
+          <div
+            key={card.title}
+            className="technical-glow group flex flex-col justify-between border border-outline-variant/20 bg-white p-8 transition-all duration-300 md:col-span-4"
+          >
+            <div>
+              {card.icon ? (
+                <span className="material-symbols-outlined mb-6 text-4xl text-primary">{card.icon}</span>
+              ) : (
+                <MissingOptional label="icon" />
+              )}
+              <h3 className="mb-4 font-headline-md text-headline-md text-primary">{card.title}</h3>
+              {card.body ? (
+                <p className="font-body-md text-body-md text-on-surface-variant">{card.body}</p>
+              ) : (
+                <MissingOptional label="body" />
+              )}
+            </div>
+            <div className="mt-8 text-primary transition-transform group-hover:translate-x-2">
+              <span className="material-symbols-outlined">arrow_forward</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function envProgressWidth(value?: string): string | undefined {
+  if (!value) return undefined;
+  const match = value.match(/(\d+(?:\.\d+)?)\s*%/);
+  return match ? `${match[1]}%` : undefined;
+}
+
+export function EnvInfrastructureAdapter({ section }: { section: PreviewSectionPayload }) {
+  const nodes = Array.isArray(section.data.nodes) ? section.data.nodes.map(asRecord) : [];
+  const probes = nodes.filter((node) => firstString(node.description));
+  const architecture = nodes.filter(
+    (node) => firstString(node.annotation) && !firstString(node.description)
+  );
+  const annotations = Array.isArray(section.data.annotations)
+    ? section.data.annotations.map(asRecord)
+    : [];
+  const integrity = annotations[0];
+  const integrityLabel = firstString(integrity?.label);
+  const integrityWidth = envProgressWidth(firstString(integrity?.value));
+
+  return (
+    <section className="overflow-hidden bg-surface-container py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="flex flex-col items-center gap-gutter lg:flex-row">
+          <div className="space-y-stack-md lg:w-1/2">
+            {headingOf(section.data) ? (
+              <h2 className="font-headline-lg text-headline-lg text-primary">
+                {headingOf(section.data)}
+              </h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {firstString(section.data.introduction, section.data.body) ? (
+              <p className="font-body-lg text-body-lg text-on-surface-variant">
+                {firstString(section.data.introduction, section.data.body)}
+              </p>
+            ) : (
+              <MissingOptional label="introduction" />
+            )}
+            {probes.length === 0 ? <MissingOptional label="probe nodes" /> : null}
+            <ul className="space-y-4">
+              {probes.map((node, index) => (
+                <li
+                  key={firstString(node.id, node.label) ?? index}
+                  className={`flex items-start gap-4 border-l-4 bg-white p-4 ${
+                    index === 0 ? "border-primary" : "border-outline-variant"
+                  }`}
+                >
+                  {firstString(node.icon) ? (
+                    <span className="material-symbols-outlined mt-1">{firstString(node.icon)}</span>
+                  ) : (
+                    <MissingOptional label="probe icon" />
+                  )}
+                  <div>
+                    {firstString(node.label, node.title) ? (
+                      <h4 className="font-headline-md text-[18px] font-bold">
+                        {firstString(node.label, node.title)}
+                      </h4>
+                    ) : (
+                      <MissingOptional label="probe label" />
+                    )}
+                    {firstString(node.description) ? (
+                      <p className="text-label-sm text-on-surface-variant">
+                        {firstString(node.description)}
+                      </p>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="relative lg:w-1/2">
+            <div className="relative flex aspect-square items-center justify-center bg-primary-container p-8">
+              <div className="glass-card flex h-full w-full flex-col p-12 text-on-primary">
+                <h4 className="mb-8 font-label-sm uppercase tracking-widest opacity-60">
+                  System Architecture
+                </h4>
+                {architecture.length === 0 ? <MissingOptional label="architecture nodes" /> : null}
+                <div className="flex-1 space-y-8">
+                  {architecture.map((node, index) => (
+                    <div
+                      key={firstString(node.id, node.label) ?? index}
+                      className="flex justify-between border-b border-white/10 pb-4"
+                    >
+                      {firstString(node.label, node.title) ? (
+                        <span className="font-label-sm">{firstString(node.label, node.title)}</span>
+                      ) : (
+                        <MissingOptional label="architecture label" />
+                      )}
+                      {firstString(node.annotation) ? (
+                        <span className="font-label-sm text-secondary-fixed">
+                          {firstString(node.annotation)}
+                        </span>
+                      ) : (
+                        <MissingOptional label="architecture annotation" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 bg-primary p-6">
+                  {integrityLabel ? (
+                    <p className="mb-2 font-label-sm uppercase tracking-tighter">{integrityLabel}</p>
+                  ) : (
+                    <MissingOptional label="integrity label" />
+                  )}
+                  <div className="h-1 w-full bg-white/20">
+                    {integrityWidth ? (
+                      <div className="h-full bg-secondary-fixed" style={{ width: integrityWidth }} />
+                    ) : (
+                      <MissingOptional label="integrity value" />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EnvCaseAdapter({ section }: { section: PreviewSectionPayload }) {
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const metrics = callouts.filter((item) => firstString(item.value));
+  const expertise = callouts.filter((item) => firstString(item.title));
+  const [action] = section.actions;
+
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      <div className="grid grid-cols-1 gap-stack-lg md:grid-cols-2">
+        <div>
+          {eyebrowOf(section.data) ? (
+            <span className="font-label-sm uppercase tracking-widest text-on-primary-container">
+              {eyebrowOf(section.data)}
+            </span>
+          ) : (
+            <MissingOptional label="eyebrow" />
+          )}
+          {headingOf(section.data) ? (
+            <h2 className="mb-6 mt-4 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {section.media.url ? (
+            <div
+              className="mb-6 aspect-video w-full border border-outline-variant bg-cover bg-center"
+              role="img"
+              aria-label={section.media.alt ?? ""}
+              style={{ backgroundImage: `url('${section.media.url}')` }}
+            />
+          ) : (
+            <MissingMedia message={section.media.missing ?? "case study image not resolved"} />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="mb-6 font-body-md text-body-md text-on-surface-variant">
+              {bodyOf(section.data)}
+            </p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+          {metrics.length === 0 ? <MissingOptional label="metrics" /> : null}
+          <div className="grid grid-cols-3 gap-4 border-t border-outline-variant/30 pt-6">
+            {metrics.map((item, index) => (
+              <div key={`${firstString(item.label)}-${index}`}>
+                <p className="text-headline-md font-bold text-primary">{firstString(item.value)}</p>
+                {firstString(item.label) ? (
+                  <p className="text-label-sm text-on-surface-variant">{firstString(item.label)}</p>
+                ) : (
+                  <MissingOptional label="metric label" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col bg-primary-container p-12 text-on-primary">
+          <h3 className="mb-8 font-headline-lg text-headline-lg">Technical Expertise</h3>
+          {expertise.length === 0 ? <MissingOptional label="expertise items" /> : null}
+          <div className="flex-1 space-y-10">
+            {expertise.map((item, index) => (
+              <div key={`${firstString(item.title)}-${index}`} className="flex gap-6">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-white/20">
+                  {firstString(item.icon) ? (
+                    <span className="material-symbols-outlined">{firstString(item.icon)}</span>
+                  ) : (
+                    <MissingOptional label="expertise icon" />
+                  )}
+                </div>
+                <div>
+                  <h4 className="mb-2 font-headline-md text-headline-md">{firstString(item.title)}</h4>
+                  {firstString(item.body) ? (
+                    <p className="font-body-md text-on-primary-container">{firstString(item.body)}</p>
+                  ) : (
+                    <MissingOptional label="expertise body" />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          {action ? (
+            <Link
+              href={action.href}
+              className="mt-12 w-full bg-white py-4 font-label-sm text-label-sm uppercase tracking-widest text-primary transition-colors hover:bg-secondary-fixed"
+            >
+              {action.label}
+            </Link>
+          ) : (
+            <MissingOptional label="action" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EnvCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary] = section.actions;
+
+  return (
+    <section className="relative overflow-hidden bg-surface py-24">
+      <div className="relative z-10 mx-auto max-w-container-max px-margin-desktop text-center">
+        {headingOf(section.data) ? (
+          <h2 className="mb-8 font-display-lg text-display-lg text-primary">
+            {headingOf(section.data)}
+          </h2>
+        ) : (
+          <MissingOptional label="title" />
+        )}
+        {bodyOf(section.data) ? (
+          <p className="mx-auto mb-12 max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+            {bodyOf(section.data)}
+          </p>
+        ) : (
+          <MissingOptional label="body" />
+        )}
+        {primary ? (
+          <Link
+            href={primary.href}
+            className="technical-glow bg-primary px-12 py-5 font-label-sm text-label-sm text-on-primary transition-all duration-300 hover:scale-105"
+          >
+            {primary.label}
+          </Link>
+        ) : (
+          <MissingOptional label="action" />
+        )}
+      </div>
+      <div className="absolute left-1/2 top-1/2 -z-0 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-fixed/30 blur-[120px]" />
+    </section>
+  );
+}
+
+export function IcArchitectureAdapter({ section }: { section: PreviewSectionPayload }) {
+  const records = Array.isArray(section.data.cards) ? section.data.cards.map(asRecord) : [];
+  const [core, galvanic, cycle, safety] = records;
+  const coreImage = firstString(asRecord(core?.media).source, core?.imageUrl);
+  const coreAlt = firstString(core?.mediaAlt, asRecord(core?.media).alt) ?? "";
+  const cycleValue = firstString(cycle?.value);
+  const safetyValue = firstString(safety?.value);
+
+  return (
+    <section className="bg-surface-container-lowest py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg text-center">
+          {headingOf(section.data) ? (
+            <h2 className="mb-stack-sm font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {firstString(section.data.introduction, section.data.body) ? (
+            <p className="mx-auto max-w-2xl font-body-md text-body-md text-on-surface-variant">
+              {firstString(section.data.introduction, section.data.body)}
+            </p>
+          ) : (
+            <MissingOptional label="introduction" />
+          )}
+        </div>
+        <div className="grid h-auto grid-cols-1 grid-rows-2 gap-gutter md:h-[600px] md:grid-cols-12">
+          {core ? (
+            <div className="glass-card flex flex-col justify-between rounded-xl p-stack-lg md:col-span-7">
+              <div>
+                {firstString(core.icon) ? (
+                  <span className="material-symbols-outlined mb-stack-sm text-primary">
+                    {firstString(core.icon)}
+                  </span>
+                ) : (
+                  <MissingOptional label="core icon" />
+                )}
+                {firstString(core.title) ? (
+                  <h3 className="mb-stack-sm font-headline-md text-headline-md">
+                    {firstString(core.title)}
+                  </h3>
+                ) : (
+                  <MissingOptional label="core title" />
+                )}
+                {firstString(core.body) ? (
+                  <p className="font-body-md text-body-md text-on-surface-variant">
+                    {firstString(core.body)}
+                  </p>
+                ) : (
+                  <MissingOptional label="core body" />
+                )}
+              </div>
+              <div className="mt-stack-lg h-48 overflow-hidden rounded-lg border border-outline-variant/30">
+                {coreImage ? (
+                  <StitchImage
+                    src={coreImage}
+                    alt={coreAlt}
+                    className="h-full w-full object-cover opacity-80"
+                  />
+                ) : (
+                  <MissingMedia message="processing core image not resolved" />
+                )}
+              </div>
+            </div>
+          ) : (
+            <MissingOptional label="processing core card" />
+          )}
+          {galvanic ? (
+            <div className="glass-card flex flex-col rounded-xl p-stack-lg md:col-span-5">
+              {firstString(galvanic.icon) ? (
+                <span className="material-symbols-outlined mb-stack-sm text-primary">
+                  {firstString(galvanic.icon)}
+                </span>
+              ) : (
+                <MissingOptional label="galvanic icon" />
+              )}
+              {firstString(galvanic.title) ? (
+                <h3 className="mb-stack-sm font-headline-md text-headline-md">
+                  {firstString(galvanic.title)}
+                </h3>
+              ) : (
+                <MissingOptional label="galvanic title" />
+              )}
+              {firstString(galvanic.body) ? (
+                <p className="font-body-md text-body-md text-on-surface-variant">
+                  {firstString(galvanic.body)}
+                </p>
+              ) : (
+                <MissingOptional label="galvanic body" />
+              )}
+              <div className="mt-auto flex gap-2 pt-stack-md">
+                <div className="h-1 w-full overflow-hidden rounded-full bg-primary/20">
+                  <div className="h-full w-3/4 bg-primary" />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <MissingOptional label="galvanic card" />
+          )}
+          {cycle ? (
+            <div className="glass-card rounded-xl p-stack-lg md:col-span-4">
+              {firstString(cycle.title) ? (
+                <h4 className="mb-base font-label-sm text-label-sm uppercase text-on-surface-variant">
+                  {firstString(cycle.title)}
+                </h4>
+              ) : (
+                <MissingOptional label="cycle label" />
+              )}
+              {cycleValue ? (
+                <p className="text-[48px] font-display-lg font-semibold text-primary">{cycleValue}</p>
+              ) : (
+                <MissingOptional label="cycle value" />
+              )}
+              {firstString(cycle.body) ? (
+                <p className="font-body-md text-body-md text-on-surface-variant">
+                  {firstString(cycle.body)}
+                </p>
+              ) : (
+                <MissingOptional label="cycle body" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="cycle time card" />
+          )}
+          {safety ? (
+            <div className="glass-card flex items-center gap-gutter rounded-xl p-stack-lg md:col-span-8">
+              <div className="flex-1">
+                {firstString(safety.title) ? (
+                  <h3 className="mb-base font-headline-md text-headline-md">{firstString(safety.title)}</h3>
+                ) : (
+                  <MissingOptional label="safety title" />
+                )}
+                {firstString(safety.body) ? (
+                  <p className="font-body-md text-body-md text-on-surface-variant">
+                    {firstString(safety.body)}
+                  </p>
+                ) : (
+                  <MissingOptional label="safety body" />
+                )}
+              </div>
+              <div className="flex h-32 w-32 flex-shrink-0 items-center justify-center rounded-full border-2 border-primary/10">
+                {safetyValue ? (
+                  <span className="font-display-lg text-primary">{safetyValue}</span>
+                ) : (
+                  <MissingOptional label="safety value" />
+                )}
+              </div>
+            </div>
+          ) : (
+            <MissingOptional label="safety card" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function IcConnectivityAdapter({ section }: { section: PreviewSectionPayload }) {
+  const items = Array.isArray(section.data.items) ? section.data.items.map(asRecord) : [];
+  const protocols = items.filter((item) => !firstString(item.description, item.body));
+  const applications = items.filter((item) => firstString(item.description, item.body));
+
+  return (
+    <section className="py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg flex flex-col items-end justify-between gap-stack-md md:flex-row">
+          <div className="max-w-xl">
+            {headingOf(section.data) ? (
+              <h2 className="mb-stack-sm font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {firstString(section.data.introduction, section.data.body) ? (
+              <p className="font-body-md text-body-md text-on-surface-variant">
+                {firstString(section.data.introduction, section.data.body)}
+              </p>
+            ) : (
+              <MissingOptional label="introduction" />
+            )}
+          </div>
+          <div className="flex gap-stack-sm">
+            {protocols.length === 0 ? <MissingOptional label="protocols" /> : null}
+            {protocols.map((item, index) => (
+              <span
+                key={`${firstString(item.label)}-${index}`}
+                className="rounded border border-outline-variant px-stack-md py-stack-sm font-label-sm text-label-sm"
+              >
+                {firstString(item.label, item.title)}
+              </span>
+            ))}
+          </div>
+        </div>
+        {applications.length === 0 ? <MissingOptional label="applications" /> : null}
+        <div className="grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:grid-cols-4">
+          {applications.map((item, index) => (
+            <div
+              key={`${firstString(item.label)}-${index}`}
+              className="border-l border-outline-variant p-stack-md transition-colors hover:border-primary"
+            >
+              {firstString(item.label, item.title) ? (
+                <h4 className="mb-base font-headline-md text-headline-md">
+                  {firstString(item.label, item.title)}
+                </h4>
+              ) : (
+                <MissingOptional label="application title" />
+              )}
+              {firstString(item.description, item.body) ? (
+                <p className="font-body-md text-body-md text-on-surface-variant">
+                  {firstString(item.description, item.body)}
+                </p>
+              ) : (
+                <MissingOptional label="application body" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function IcCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const actions = labeledActions(section);
+  const [primary, secondary] = actions;
+
+  return (
+    <section className="py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="relative overflow-hidden rounded-3xl bg-primary-container p-stack-lg text-on-primary-container">
+          <div className="pointer-events-none absolute inset-0 technical-grid opacity-10" />
+          <div className="relative z-10 grid items-center gap-stack-lg md:grid-cols-2">
+            <div>
+              {eyebrowOf(section.data) ? (
+                <h2 className="mb-stack-sm font-headline-lg text-headline-lg text-on-surface-variant/20">
+                  {eyebrowOf(section.data)}
+                </h2>
+              ) : (
+                <MissingOptional label="eyebrow" />
+              )}
+              {headingOf(section.data) ? (
+                <p className="mb-stack-md font-display-lg text-headline-lg text-white">
+                  {headingOf(section.data)}
+                </p>
+              ) : (
+                <MissingOptional label="title" />
+              )}
+              <div className="flex gap-stack-sm">
+                {primary ? (
+                  primary.href ? (
+                    <Link
+                      href={primary.href}
+                      className="rounded-lg bg-surface-container-lowest px-stack-lg py-stack-sm font-label-sm text-label-sm text-primary transition-transform hover:scale-105"
+                    >
+                      {primary.label}
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      className="rounded-lg bg-surface-container-lowest px-stack-lg py-stack-sm font-label-sm text-label-sm text-primary transition-transform hover:scale-105"
+                    >
+                      {primary.label}
+                    </button>
+                  )
+                ) : (
+                  <MissingOptional label="primary action" />
+                )}
+                {secondary ? (
+                  secondary.href ? (
+                    <Link
+                      href={secondary.href}
+                      className="rounded-lg border border-on-primary-container/30 px-stack-lg py-stack-sm font-label-sm text-label-sm text-white transition-colors hover:bg-white/10"
+                    >
+                      {secondary.label}
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      className="rounded-lg border border-on-primary-container/30 px-stack-lg py-stack-sm font-label-sm text-label-sm text-white transition-colors hover:bg-white/10"
+                    >
+                      {secondary.label}
+                    </button>
+                  )
+                ) : (
+                  <MissingOptional label="secondary action" />
+                )}
+              </div>
+            </div>
+            <div className="hidden md:block">
+              <div className="glass-card aspect-video overflow-hidden rounded-xl border-white/10 p-stack-sm">
+                {section.media.url ? (
+                  <StitchImage
+                    src={section.media.url}
+                    alt={section.media.alt ?? ""}
+                    className="h-full w-full rounded-lg object-cover"
+                  />
+                ) : (
+                  <MissingMedia message={section.media.missing ?? "upgrade image not resolved"} />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function splitStat(value?: string): { amount: string; unit: string } | undefined {
+  if (!value) return undefined;
+  const match = value.match(/^(-?[\d.]+)(.*)$/);
+  if (!match) return { amount: value, unit: "" };
+  return { amount: match[1], unit: match[2] };
+}
+
+function mediaEntries(data: Record<string, unknown>): { url: string; alt?: string }[] {
+  if (Array.isArray(data.media)) {
+    return data.media
+      .map((item) => {
+        const record = asRecord(item);
+        const url = firstString(record.source, record.url, record.imageUrl);
+        if (!url) return null;
+        return { url, alt: firstString(record.alt, record.mediaAlt) };
+      })
+      .filter((item): item is { url: string; alt?: string } => Boolean(item));
+  }
+  const single = asRecord(data.media);
+  const url = firstString(single.source, single.url, data.imageUrl);
+  return url ? [{ url, alt: firstString(data.mediaAlt, data.imageAlt, single.alt) }] : [];
+}
+
+export function EspCapabilitiesAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [dual, core, power, rf, peripherals] = section.cards;
+
+  return (
+    <section className="bg-surface-container-low py-stack-lg">
+      <div className="container mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg">
+          {headingOf(section.data) ? (
+            <h2 className="mb-2 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          <div className="h-1 w-24 bg-primary" />
+        </div>
+        {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-3 lg:grid-cols-4">
+          {dual ? (
+            <div className="technical-glow flex flex-col justify-between border border-outline-variant/10 bg-surface-container-highest p-stack-md transition-all md:col-span-2 lg:col-span-2">
+              <div>
+                {dual.icon ? (
+                  <span className="material-symbols-outlined mb-4 text-4xl text-primary">{dual.icon}</span>
+                ) : (
+                  <MissingOptional label="dual icon" />
+                )}
+                <h3 className="mb-2 font-headline-md text-headline-md">{dual.title}</h3>
+                {dual.body ? (
+                  <p className="font-body-md text-on-surface-variant">{dual.body}</p>
+                ) : (
+                  <MissingOptional label="dual body" />
+                )}
+              </div>
+              {dual.badges?.length ? (
+                <div className="mt-8 flex gap-4">
+                  {dual.badges.map((badge) => (
+                    <span
+                      key={badge}
+                      className="rounded border border-outline-variant/30 bg-surface px-2 py-1 font-label-sm text-[10px] uppercase"
+                    >
+                      {badge}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <MissingOptional label="dual badges" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="dual connectivity card" />
+          )}
+          {core ? (
+            <div className="technical-glow border border-outline-variant/10 bg-surface-container-highest p-stack-md transition-all">
+              {core.icon ? (
+                <span className="material-symbols-outlined mb-4 text-4xl text-primary">{core.icon}</span>
+              ) : (
+                <MissingOptional label="core icon" />
+              )}
+              <h3 className="mb-2 font-headline-md text-headline-md">{core.title}</h3>
+              {core.body ? (
+                <p className="font-body-md text-on-surface-variant">{core.body}</p>
+              ) : (
+                <MissingOptional label="core body" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="dual-core card" />
+          )}
+          {power ? (
+            <div className="technical-glow border border-outline-variant/10 bg-surface-container-highest p-stack-md transition-all">
+              {power.icon ? (
+                <span className="material-symbols-outlined mb-4 text-4xl text-primary">{power.icon}</span>
+              ) : (
+                <MissingOptional label="power icon" />
+              )}
+              <h3 className="mb-2 font-headline-md text-headline-md">{power.title}</h3>
+              {power.body ? (
+                <p className="font-body-md text-on-surface-variant">{power.body}</p>
+              ) : (
+                <MissingOptional label="power body" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="ultra-low power card" />
+          )}
+          {rf ? (
+            <div className="flex flex-col justify-between bg-primary p-stack-md text-on-primary lg:col-span-2">
+              <div>
+                <h3 className="mb-4 font-headline-md text-headline-md">{rf.title}</h3>
+                {rf.body ? (
+                  <p className="mb-6 font-body-md opacity-80">{rf.body}</p>
+                ) : (
+                  <MissingOptional label="rf body" />
+                )}
+              </div>
+              {rf.metrics?.length ? (
+                <div className="flex items-center gap-4">
+                  {rf.metrics.map((metric, index) => (
+                    <div key={`${metric.label}-${index}`} className="flex items-center gap-4">
+                      {index > 0 ? <div className="h-8 w-px bg-on-primary/20" /> : null}
+                      <div className="flex flex-col">
+                        <span className="font-label-sm text-[10px] uppercase opacity-60">{metric.label}</span>
+                        <span className="font-headline-md">{metric.value}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <MissingOptional label="rf metrics" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="rf card" />
+          )}
+          {peripherals ? (
+            <div className="relative overflow-hidden border border-outline-variant/10 bg-surface-container-highest p-stack-md group md:col-span-2 lg:col-span-2">
+              <div className="relative z-10">
+                <h3 className="mb-2 font-headline-md text-headline-md">{peripherals.title}</h3>
+                {peripherals.body ? (
+                  <p className="mb-4 font-body-md text-on-surface-variant">{peripherals.body}</p>
+                ) : (
+                  <MissingOptional label="peripherals body" />
+                )}
+                {peripherals.items?.length ? (
+                  <ul className="grid grid-cols-2 gap-2 font-label-sm text-label-sm">
+                    {peripherals.items.map((item) => (
+                      <li key={item} className="flex items-center gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <MissingOptional label="peripheral items" />
+                )}
+              </div>
+            </div>
+          ) : (
+            <MissingOptional label="peripherals card" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EspCoreAdapter({ section }: { section: PreviewSectionPayload }) {
+  const bullets = Array.isArray(section.data.bullets)
+    ? section.data.bullets.map(asRecord)
+    : section.cards.map((card) => ({ title: card.title, body: card.body }));
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const overlay = callouts[0];
+  const overlayEyebrow = firstString(overlay?.eyebrow);
+  const overlayTitle = firstString(overlay?.title);
+
+  return (
+    <section className="border-y border-outline-variant/20 py-stack-lg">
+      <div className="container mx-auto grid max-w-container-max grid-cols-12 gap-gutter px-margin-desktop">
+        <div className="col-span-12 lg:col-span-5">
+          {headingOf(section.data) ? (
+            <h2 className="mb-stack-md font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {bullets.length === 0 ? <MissingOptional label="bullets" /> : null}
+          <div className="space-y-stack-md">
+            {bullets.map((item, index) => (
+              <div
+                key={`${firstString(item.title)}-${index}`}
+                className="flex gap-stack-sm bg-surface p-4 transition-colors hover:bg-surface-container"
+              >
+                <span className="font-headline-md text-primary/30">{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  {firstString(item.title) ? (
+                    <h4 className="mb-1 font-label-sm text-label-sm font-bold">{firstString(item.title)}</h4>
+                  ) : (
+                    <MissingOptional label="bullet title" />
+                  )}
+                  {firstString(item.body) ? (
+                    <p className="font-body-md text-on-surface-variant">{firstString(item.body)}</p>
+                  ) : (
+                    <MissingOptional label="bullet body" />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="relative col-span-12 lg:col-span-7">
+          <div className="rounded-xl bg-primary-container p-base">
+            <div className="relative aspect-video overflow-hidden rounded-lg">
+              {section.media.url ? (
+                <StitchImage
+                  src={section.media.url}
+                  alt={section.media.alt ?? ""}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <MissingMedia message={section.media.missing ?? "SoC visualization not resolved"} />
+              )}
+              <div className="absolute inset-0 flex items-end bg-gradient-to-t from-primary/60 to-transparent p-stack-md">
+                <div className="text-on-primary">
+                  {overlayEyebrow ? (
+                    <p className="mb-2 font-label-sm text-[10px] uppercase tracking-widest opacity-80">
+                      {overlayEyebrow}
+                    </p>
+                  ) : (
+                    <MissingOptional label="diagram eyebrow" />
+                  )}
+                  {overlayTitle ? (
+                    <h5 className="font-headline-md text-headline-md">{overlayTitle}</h5>
+                  ) : (
+                    <MissingOptional label="diagram title" />
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EspDeploymentAdapter({ section }: { section: PreviewSectionPayload }) {
+  const items = Array.isArray(section.data.items) ? section.data.items.map(asRecord) : [];
+
+  return (
+    <section className="py-stack-lg">
+      <div className="container mx-auto max-w-container-max px-margin-desktop">
+        <div className="mx-auto mb-stack-lg max-w-2xl text-center">
+          {headingOf(section.data) ? (
+            <h2 className="mb-4 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="font-body-md text-on-surface-variant">{bodyOf(section.data)}</p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+        </div>
+        {items.length === 0 ? <MissingOptional label="metrics" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-4">
+          {items.map((item, index) => {
+            const stat = splitStat(firstString(item.value));
+            return (
+              <div
+                key={`${firstString(item.label)}-${index}`}
+                className="border-l-2 border-primary bg-surface-container-low p-stack-md"
+              >
+                {stat ? (
+                  <div className="mb-2 text-[48px] font-display-lg text-primary">
+                    {stat.amount}
+                    {stat.unit ? <span className="text-[24px]">{stat.unit}</span> : null}
+                  </div>
+                ) : (
+                  <MissingOptional label="metric value" />
+                )}
+                {firstString(item.label) ? (
+                  <p className="font-label-sm text-label-sm font-bold uppercase text-secondary">
+                    {firstString(item.label)}
+                  </p>
+                ) : (
+                  <MissingOptional label="metric label" />
+                )}
+                {firstString(item.description, item.body) ? (
+                  <p className="mt-2 font-body-md text-on-surface-variant">
+                    {firstString(item.description, item.body)}
+                  </p>
+                ) : (
+                  <MissingOptional label="metric body" />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EspApplicationsAdapter({ section }: { section: PreviewSectionPayload }) {
+  const images = mediaEntries(section.data);
+  const [factory, home] = images;
+
+  return (
+    <section className="overflow-hidden bg-primary-container py-stack-lg text-on-primary">
+      <div className="container relative mx-auto max-w-container-max px-margin-desktop">
+        <div className="grid grid-cols-12 items-center gap-gutter">
+          <div className="col-span-12 lg:col-span-4">
+            {headingOf(section.data) ? (
+              <h2 className="mb-6 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+            <div className="space-y-stack-sm">
+              {section.cards.map((card, index) => {
+                const className =
+                  index === 0
+                    ? "w-full border-l-4 border-on-primary bg-on-primary/10 p-4 text-left transition-all"
+                    : "w-full border-l-4 border-transparent p-4 text-left transition-all hover:bg-on-primary/5";
+                const inner = (
+                  <>
+                    <h4 className="font-label-sm text-label-sm font-bold uppercase">{card.title}</h4>
+                    {card.body ? <p className="text-sm opacity-70">{card.body}</p> : null}
+                  </>
+                );
+                return card.href ? (
+                  <Link key={card.title} href={card.href} className={className}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <div key={card.title} className={className}>
+                    {inner}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="col-span-12 lg:col-span-8">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="relative aspect-square overflow-hidden rounded-xl shadow-xl">
+                {factory?.url ? (
+                  <StitchImage
+                    src={factory.url}
+                    alt={factory.alt ?? ""}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <MissingMedia message="factory application image not resolved" />
+                )}
+              </div>
+              <div className="relative mt-stack-md aspect-[3/4] overflow-hidden rounded-xl shadow-xl">
+                {home?.url ? (
+                  <StitchImage src={home.url} alt={home.alt ?? ""} className="h-full w-full object-cover" />
+                ) : (
+                  <MissingMedia message="home application image not resolved" />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function EspCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = section.actions;
+
+  return (
+    <section className="relative py-stack-lg text-center">
+      <div className="container relative z-10 mx-auto max-w-container-max px-margin-desktop">
+        {headingOf(section.data) ? (
+          <h2 className="mb-6 font-display-lg text-display-lg">{headingOf(section.data)}</h2>
+        ) : (
+          <MissingOptional label="title" />
+        )}
+        {bodyOf(section.data) ? (
+          <p className="mx-auto mb-stack-md max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+            {bodyOf(section.data)}
+          </p>
+        ) : (
+          <MissingOptional label="body" />
+        )}
+        <div className="flex justify-center gap-stack-sm">
+          {primary ? (
+            <Link
+              href={primary.href}
+              className="bg-primary px-10 py-5 font-label-sm text-label-sm uppercase tracking-widest text-on-primary transition-all hover:bg-secondary"
+            >
+              {primary.label}
+            </Link>
+          ) : (
+            <MissingOptional label="primary action" />
+          )}
+          {secondary ? (
+            <Link
+              href={secondary.href}
+              className="border border-outline px-10 py-5 font-label-sm text-label-sm uppercase tracking-widest transition-all hover:bg-surface-container"
+            >
+              {secondary.label}
+            </Link>
+          ) : (
+            <MissingOptional label="secondary action" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function McFamiliesAdapter({ section }: { section: PreviewSectionPayload }) {
+  const heading = decodeMojibake(headingOf(section.data));
+  const introduction = decodeMojibake(firstString(section.data.introduction, section.data.body));
+
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      <div className="mb-16">
+        {heading ? (
+          <h2 className="mb-4 font-headline-lg text-headline-lg text-primary">{heading}</h2>
+        ) : (
+          <MissingOptional label="heading" />
+        )}
+        {introduction ? (
+          <p className="max-w-xl text-on-surface-variant">{introduction}</p>
+        ) : (
+          <MissingOptional label="introduction" />
+        )}
+      </div>
+      {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+      <div className="grid grid-cols-12 gap-gutter">
+        {section.cards.map((card, index) => (
+          <div
+            key={`${card.title}-${index}`}
+            className="technical-glow col-span-12 rounded-xl border border-outline-variant/30 bg-white p-8 transition-all md:col-span-4"
+          >
+            <div className="mb-12 flex items-start justify-between">
+              <span className="font-display-lg text-3xl text-primary/20">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              {card.icon ? (
+                <span className="material-symbols-outlined text-4xl text-primary">{card.icon}</span>
+              ) : (
+                <MissingOptional label="card icon" />
+              )}
+            </div>
+            {card.title ? (
+              <h3 className="mb-4 font-headline-md text-headline-md">{decodeMojibake(card.title)}</h3>
+            ) : (
+              <MissingOptional label="card title" />
+            )}
+            {card.body ? (
+              <p className="mb-6 text-on-surface-variant">{decodeMojibake(card.body)}</p>
+            ) : (
+              <MissingOptional label="card body" />
+            )}
+            {card.items?.length ? (
+              <ul className="space-y-3 font-label-sm text-label-sm text-on-surface-variant">
+                {card.items.map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    {decodeMojibake(item)}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <MissingOptional label="card items" />
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function McMixedAdapter({ section }: { section: PreviewSectionPayload }) {
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const metrics = callouts.filter((item) => firstString(item.value));
+  const overlay = callouts.find((item) => !firstString(item.value) && firstString(item.label, item.title));
+
+  return (
+    <section className="overflow-hidden bg-primary-container py-24 text-white">
+      <div className="mx-auto grid max-w-container-max grid-cols-12 items-center gap-gutter px-margin-desktop">
+        <div className="col-span-12 md:col-span-6">
+          {eyebrowOf(section.data) ? (
+            <span className="mb-4 block font-label-sm text-label-sm tracking-[0.2em] text-on-primary-container">
+              {eyebrowOf(section.data)}
+            </span>
+          ) : (
+            <MissingOptional label="eyebrow" />
+          )}
+          {headingOf(section.data) ? (
+            <h2 className="mb-8 font-display-lg text-headline-lg leading-tight">
+              {headingOf(section.data)}
+            </h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="mb-8 font-body-lg text-body-lg text-on-primary-container">
+              {bodyOf(section.data)}
+            </p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+          {metrics.length === 0 ? <MissingOptional label="metrics" /> : null}
+          <div className="grid grid-cols-2 gap-8">
+            {metrics.map((item, index) => (
+              <div key={`${firstString(item.label)}-${index}`}>
+                <div className="mb-2 font-display-lg text-3xl text-white">{firstString(item.value)}</div>
+                {firstString(item.label) ? (
+                  <p className="font-label-sm text-label-sm text-on-primary-container">
+                    {firstString(item.label)}
+                  </p>
+                ) : (
+                  <MissingOptional label="metric label" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="relative col-span-12 h-[400px] md:col-span-6">
+          <div className="absolute inset-0 overflow-hidden rounded-2xl border border-outline/20">
+            {section.media.url ? (
+              <StitchImage
+                src={section.media.url}
+                alt={section.media.alt ?? ""}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <MissingMedia message={section.media.missing ?? "mixed-signal image not resolved"} />
+            )}
+          </div>
+          <div className="glass-panel absolute -bottom-6 -left-6 max-w-xs rounded-xl p-6">
+            {firstString(overlay?.label, overlay?.title) ? (
+              <p className="mb-2 font-label-sm text-label-sm text-white">
+                {firstString(overlay?.label, overlay?.title)}
+              </p>
+            ) : (
+              <MissingOptional label="oscilloscope overlay" />
+            )}
+            <div className="flex h-12 w-full items-end gap-1 bg-primary px-2 py-1">
+              <div className="h-4 w-1 animate-pulse bg-on-primary-container" />
+              <div className="h-8 w-1 animate-pulse delay-75 bg-on-primary-container" />
+              <div className="h-6 w-1 animate-pulse delay-150 bg-on-primary-container" />
+              <div className="h-10 w-1 animate-pulse bg-on-primary-container" />
+              <div className="h-5 w-1 animate-pulse delay-75 bg-on-primary-container" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function McRuggednessAdapter({ section }: { section: PreviewSectionPayload }) {
+  const heading = decodeMojibake(headingOf(section.data));
+  const body = decodeMojibake(bodyOf(section.data));
+  const bullets = labeledEntries(section.data.bullets);
+  const cards = section.cards.length
+    ? section.cards
+    : labeledEntries(section.data.items).map((item) => ({
+        title: item.title,
+        body: item.body,
+        icon: item.icon,
+      }));
+
+  return (
+    <section className="mx-auto max-w-container-max border-b border-outline-variant/10 px-margin-desktop py-stack-lg">
+      <div className="grid grid-cols-12 gap-gutter">
+        <div className="col-span-12 border-r border-outline-variant/20 pr-gutter md:col-span-4">
+          {heading ? (
+            <h2 className="mb-8 font-headline-lg text-headline-lg">{heading}</h2>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {body ? (
+            <p className="mb-12 text-on-surface-variant">{body}</p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+          {bullets.length === 0 ? <MissingOptional label="pills" /> : null}
+          <div className="flex flex-col gap-4">
+            {bullets.map((item, index) => (
+              <div
+                key={`${item.title}-${index}`}
+                className="flex items-center gap-4 rounded-lg bg-surface-container-low p-4"
+              >
+                {item.icon ? (
+                  <span className="material-symbols-outlined text-primary">{item.icon}</span>
+                ) : (
+                  <MissingOptional label="pill icon" />
+                )}
+                <span className="font-label-sm text-label-sm">{item.title}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="col-span-12 md:col-span-8">
+          {cards.length === 0 ? <MissingOptional label="cards" /> : null}
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {cards.map((card, index) => (
+              <div key={`${card.title}-${index}`} className="rounded-xl border border-outline-variant/20 p-6">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded bg-primary-fixed">
+                  {card.icon ? (
+                    <span className="material-symbols-outlined text-primary">{card.icon}</span>
+                  ) : (
+                    <MissingOptional label="card icon" />
+                  )}
+                </div>
+                {card.title ? (
+                  <h4 className="mb-2 font-headline-md text-headline-md">{decodeMojibake(card.title)}</h4>
+                ) : (
+                  <MissingOptional label="card title" />
+                )}
+                {card.body ? (
+                  <p className="font-body-md text-on-surface-variant">{decodeMojibake(card.body)}</p>
+                ) : (
+                  <MissingOptional label="card body" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function McImpactAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [action] = labeledActions(section);
+
+  return (
+    <section className="bg-surface py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-16 flex items-end justify-between">
+          <div>
+            {eyebrowOf(section.data) ? (
+              <span className="mb-2 block font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">
+                {eyebrowOf(section.data)}
+              </span>
+            ) : (
+              <MissingOptional label="eyebrow" />
+            )}
+            {headingOf(section.data) ? (
+              <h2 className="font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+          </div>
+          {action?.href ? (
+            <Link
+              href={action.href}
+              className="flex items-center gap-2 border-b border-primary pb-1 font-label-sm text-label-sm text-primary"
+            >
+              {action.label} <span className="material-symbols-outlined text-sm">open_in_new</span>
+            </Link>
+          ) : (
+            <MissingOptional label="case studies action" />
+          )}
+        </div>
+        {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-3">
+          {section.cards.map((card) => (
+            <div key={card.title} className="group cursor-pointer">
+              <div className="relative mb-6 h-64 overflow-hidden rounded-xl">
+                <div className="absolute inset-0 z-10 bg-primary/20 transition-colors duration-500 group-hover:bg-primary/0" />
+                {card.imageUrl ? (
+                  <StitchImage
+                    src={card.imageUrl}
+                    alt={card.imageAlt ?? ""}
+                    className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0"
+                  />
+                ) : (
+                  <MissingMedia message={`${card.title} image not resolved`} />
+                )}
+              </div>
+              {card.title ? (
+                <h4 className="mb-2 font-headline-md text-headline-md">{card.title}</h4>
+              ) : (
+                <MissingOptional label="card title" />
+              )}
+              {card.body ? (
+                <p className="text-on-surface-variant">{card.body}</p>
+              ) : (
+                <MissingOptional label="card body" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function McCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = labeledActions(section);
+
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-24 text-center">
+      <div className="mx-auto max-w-2xl">
+        {headingOf(section.data) ? (
+          <h2 className="mb-8 font-display-lg text-headline-lg">{headingOf(section.data)}</h2>
+        ) : (
+          <MissingOptional label="title" />
+        )}
+        {bodyOf(section.data) ? (
+          <p className="mb-12 text-body-lg text-on-surface-variant">{bodyOf(section.data)}</p>
+        ) : (
+          <MissingOptional label="body" />
+        )}
+        <div className="flex flex-wrap justify-center gap-6">
+          {primary?.href ? (
+            <Link
+              href={primary.href}
+              className="rounded-lg bg-primary px-10 py-4 font-label-sm text-label-sm text-on-primary transition-transform hover:scale-105"
+            >
+              {primary.label}
+            </Link>
+          ) : (
+            <MissingOptional label="primary action" />
+          )}
+          {secondary?.href ? (
+            <Link
+              href={secondary.href}
+              className="rounded-lg border border-outline bg-white px-10 py-4 font-label-sm text-label-sm transition-colors hover:bg-surface-container"
+            >
+              {secondary.label}
+            </Link>
+          ) : (
+            <MissingOptional label="secondary action" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function NdBenefitsAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [power, security, proto, dual, direction] = section.cards;
+  const lowerCards = [proto, dual, direction];
+
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+      <div className="grid grid-cols-12 gap-gutter">
+        {power ? (
+          <div className="relative col-span-12 overflow-hidden rounded-xl border border-outline-variant bg-surface-container-lowest p-8 lg:col-span-8">
+            <div className="relative z-10">
+              {power.icon ? (
+                <span className="material-symbols-outlined mb-4 text-4xl text-innovation-cyan">
+                  {power.icon}
+                </span>
+              ) : (
+                <MissingOptional label="power icon" />
+              )}
+              {power.title ? (
+                <h3 className="mb-4 font-headline-lg text-headline-lg">{power.title}</h3>
+              ) : (
+                <MissingOptional label="power title" />
+              )}
+              {power.body ? (
+                <p className="mb-8 max-w-lg font-body-md text-body-md text-on-surface-variant">
+                  {power.body}
+                </p>
+              ) : (
+                <MissingOptional label="power body" />
+              )}
+              {power.metrics?.length ? (
+                <div className="flex gap-stack-lg border-t border-outline-variant pt-8">
+                  {power.metrics.map((metric) => (
+                    <div key={metric.label}>
+                      <div className="font-headline-md text-headline-md text-primary">
+                        {decodeMojibake(metric.value)}
+                      </div>
+                      {metric.label ? (
+                        <div className="font-label-sm text-label-sm text-on-surface-variant">
+                          {metric.label}
+                        </div>
+                      ) : (
+                        <MissingOptional label="metric label" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <MissingOptional label="power metrics" />
+              )}
+            </div>
+          </div>
+        ) : (
+          <MissingOptional label="power card" />
+        )}
+        {security ? (
+          <div className="col-span-12 flex flex-col justify-between rounded-xl bg-primary-container p-8 text-on-primary-container lg:col-span-4">
+            <div>
+              {security.icon ? (
+                <span className="material-symbols-outlined mb-4 text-4xl text-innovation-cyan">
+                  {security.icon}
+                </span>
+              ) : (
+                <MissingOptional label="security icon" />
+              )}
+              {security.title ? (
+                <h3 className="mb-2 font-headline-md text-headline-md">{security.title}</h3>
+              ) : (
+                <MissingOptional label="security title" />
+              )}
+              {security.body ? (
+                <p className="font-body-md text-body-md text-on-primary-container/70">{security.body}</p>
+              ) : (
+                <MissingOptional label="security body" />
+              )}
+            </div>
+            {security.label ? (
+              <div className="mt-8 flex items-center gap-2 font-label-sm text-label-sm text-innovation-cyan">
+                {security.label} <span className="material-symbols-outlined">chevron_right</span>
+              </div>
+            ) : (
+              <MissingOptional label="security action" />
+            )}
+          </div>
+        ) : (
+          <MissingOptional label="security card" />
+        )}
+        {lowerCards.map((card, index) =>
+          card ? (
+            <div
+              key={`${card.title}-${index}`}
+              className="col-span-12 rounded-xl border border-outline-variant bg-surface p-8 transition-colors hover:border-innovation-cyan md:col-span-4"
+            >
+              {card.icon ? (
+                <span
+                  className="material-symbols-outlined mb-4 text-primary"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  {card.icon}
+                </span>
+              ) : (
+                <MissingOptional label="card icon" />
+              )}
+              {card.title ? (
+                <h4 className="mb-2 font-headline-md text-headline-md">{card.title}</h4>
+              ) : (
+                <MissingOptional label="card title" />
+              )}
+              {card.body ? (
+                <p className="text-on-surface-variant">{card.body}</p>
+              ) : (
+                <MissingOptional label="card body" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional key={`missing-lower-${index}`} label="feature card" />
+          )
+        )}
+      </div>
+    </section>
+  );
+}
+
+export function NdStackAdapter({ section }: { section: PreviewSectionPayload }) {
+  const bullets = labeledEntries(section.data.bullets);
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const overlay = firstString(callouts[0]?.label, callouts[0]?.title);
+
+  return (
+    <section className="bg-surface-container-low py-stack-lg">
+      <div className="mx-auto grid max-w-container-max grid-cols-12 items-center gap-gutter px-margin-desktop">
+        <div className="col-span-12 lg:col-span-5">
+          {eyebrowOf(section.data) ? (
+            <div className="mb-4 inline-block rounded bg-primary px-3 py-1 font-label-sm text-label-sm text-on-primary">
+              {eyebrowOf(section.data)}
+            </div>
+          ) : (
+            <MissingOptional label="eyebrow" />
+          )}
+          {headingOf(section.data) ? (
+            <h2 className="mb-6 font-headline-lg text-headline-lg leading-tight">
+              {headingOf(section.data)}
+            </h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {bullets.length === 0 ? <MissingOptional label="bullets" /> : null}
+          <div className="space-y-6">
+            {bullets.map((item, index) => (
+              <div key={`${item.title}-${index}`} className="flex gap-4">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-surface-container-highest">
+                  {item.icon ? (
+                    <span className="material-symbols-outlined text-primary">{item.icon}</span>
+                  ) : (
+                    <MissingOptional label="bullet icon" />
+                  )}
+                </div>
+                <div>
+                  <h5 className="mb-1 font-bold">{item.title}</h5>
+                  {item.body ? (
+                    <p className="text-sm text-on-surface-variant">{item.body}</p>
+                  ) : (
+                    <MissingOptional label="bullet body" />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="relative col-span-12 lg:col-span-7">
+          <div className="glass-panel overflow-hidden rounded-2xl border border-outline-variant p-6 shadow-xl">
+            <div className="mb-6 flex items-center justify-between">
+              <div className="flex gap-2">
+                <div className="h-3 w-3 rounded-full bg-red-400" />
+                <div className="h-3 w-3 rounded-full bg-amber-400" />
+                <div className="h-3 w-3 rounded-full bg-emerald-400" />
+              </div>
+              {overlay ? (
+                <div className="font-label-sm text-label-sm uppercase tracking-tighter opacity-50">
+                  {overlay}
+                </div>
+              ) : (
+                <MissingOptional label="viewer overlay" />
+              )}
+            </div>
+            <div className="relative aspect-video overflow-hidden rounded-lg bg-primary-container">
+              {section.media.url ? (
+                <StitchImage
+                  src={section.media.url}
+                  alt={section.media.alt ?? ""}
+                  className="h-full w-full object-cover opacity-80"
+                />
+              ) : (
+                <MissingMedia message={section.media.missing ?? "stack visualization not resolved"} />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-primary-container via-transparent to-transparent" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function NdDeploymentsAdapter({ section }: { section: PreviewSectionPayload }) {
+  return (
+    <section className="overflow-hidden py-stack-lg">
+      <div className="mx-auto mb-stack-md max-w-container-max px-margin-desktop">
+        {headingOf(section.data) ? (
+          <h2 className="font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+        ) : (
+          <MissingOptional label="heading" />
+        )}
+      </div>
+      {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+      <div className="no-scrollbar flex snap-x gap-6 overflow-x-auto px-margin-desktop pb-8">
+        {section.cards.map((card) => (
+          <div
+            key={card.title}
+            className="group min-w-[400px] snap-start overflow-hidden rounded-xl border border-outline-variant bg-surface transition-all hover:border-innovation-cyan"
+          >
+            <div className="h-64 overflow-hidden">
+              {card.imageUrl ? (
+                <StitchImage
+                  src={card.imageUrl}
+                  alt={card.imageAlt ?? ""}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              ) : (
+                <MissingMedia message={`${card.title} image not resolved`} />
+              )}
+            </div>
+            <div className="p-8">
+              {card.title ? (
+                <h4 className="mb-2 font-headline-md text-headline-md">{card.title}</h4>
+              ) : (
+                <MissingOptional label="card title" />
+              )}
+              {card.body ? (
+                <p className="mb-4 text-sm text-on-surface-variant">{card.body}</p>
+              ) : (
+                <MissingOptional label="card body" />
+              )}
+              {card.badges?.length ? (
+                <div className="flex flex-wrap gap-2">
+                  {card.badges.map((badge) => (
+                    <span
+                      key={badge}
+                      className="rounded-full bg-surface-container-high px-3 py-1 text-[10px] font-bold uppercase tracking-widest"
+                    >
+                      {badge}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <MissingOptional label="card badges" />
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function NdCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const highlights = labeledEntries(section.data.highlights);
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const metric = callouts[0];
+  const [action] = labeledActions(section);
+  const buttonClassName =
+    "rounded-lg bg-innovation-cyan px-10 py-5 font-bold text-primary transition-all hover:brightness-110";
+
+  return (
+    <section className="bg-primary py-stack-lg text-on-primary">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="grid grid-cols-1 items-center gap-stack-lg md:grid-cols-2">
+          <div>
+            {headingOf(section.data) ? (
+              <h2 className="mb-6 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="title" />
+            )}
+            {highlights.length === 0 ? <MissingOptional label="highlights" /> : null}
+            <ul className="mb-stack-lg space-y-4">
+              {highlights.map((item) => (
+                <li key={item.title} className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-innovation-cyan">check_circle</span>
+                  <span className="font-body-md">{item.title}</span>
+                </li>
+              ))}
+            </ul>
+            {action ? (
+              action.href ? (
+                <Link href={action.href} className={buttonClassName}>
+                  {action.label}
+                </Link>
+              ) : (
+                <button type="button" className={buttonClassName}>
+                  {action.label}
+                </button>
+              )
+            ) : (
+              <MissingOptional label="primary action" />
+            )}
+          </div>
+          <div className="relative">
+            <div className="absolute -inset-1 rounded-2xl bg-innovation-cyan/20 blur-xl" />
+            <div className="relative rounded-2xl border border-white/10 bg-primary-container p-8">
+              {firstString(metric?.value) ? (
+                <div className="mb-4 font-display-lg text-6xl text-innovation-cyan">
+                  {firstString(metric?.value)}
+                </div>
+              ) : (
+                <MissingOptional label="metric value" />
+              )}
+              {firstString(metric?.label) ? (
+                <p className="font-headline-md text-on-primary-container">{firstString(metric?.label)}</p>
+              ) : (
+                <MissingOptional label="metric label" />
+              )}
+              <div className="mt-8 border-t border-white/10 pt-8">
+                {firstString(metric?.description, metric?.body) ? (
+                  <p className="text-sm opacity-60">{firstString(metric?.description, metric?.body)}</p>
+                ) : (
+                  <MissingOptional label="metric footnote" />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function NxpExpertiseAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [ml, safety, realtime, linux] = section.cards;
+
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      <div className="mb-12">
+        {headingOf(section.data) ? (
+          <h2 className="font-headline-lg text-headline-lg text-primary">{headingOf(section.data)}</h2>
+        ) : (
+          <MissingOptional label="heading" />
+        )}
+        <div className="mt-4 h-1 w-24 bg-primary" />
+      </div>
+      {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+      <div className="grid grid-cols-12 gap-gutter">
+        {ml ? (
+          <div className="technical-glow relative col-span-12 overflow-hidden rounded-2xl border border-outline-variant bg-white p-8 md:col-span-8">
+            <div className="flex h-full flex-col justify-between">
+              <div>
+                {ml.icon ? (
+                  <span className="material-symbols-outlined mb-6 text-4xl text-primary">{ml.icon}</span>
+                ) : (
+                  <MissingOptional label="ml icon" />
+                )}
+                {ml.title ? (
+                  <h3 className="mb-4 font-headline-md text-headline-md text-primary">{ml.title}</h3>
+                ) : (
+                  <MissingOptional label="ml title" />
+                )}
+                {ml.body ? (
+                  <p className="max-w-lg font-body-md text-on-surface-variant">{ml.body}</p>
+                ) : (
+                  <MissingOptional label="ml body" />
+                )}
+              </div>
+              {ml.badges?.length ? (
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {ml.badges.map((badge) => (
+                    <span
+                      key={badge}
+                      className="rounded-full bg-surface-container px-3 py-1 font-label-sm text-label-sm text-on-surface-variant"
+                    >
+                      {badge}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <MissingOptional label="ml badges" />
+              )}
+            </div>
+          </div>
+        ) : (
+          <MissingOptional label="ml card" />
+        )}
+        {safety ? (
+          <div className="col-span-12 flex flex-col justify-between rounded-2xl bg-primary p-8 text-on-primary md:col-span-4">
+            <div>
+              {safety.icon ? (
+                <span className="material-symbols-outlined mb-6 text-4xl text-on-primary-fixed-variant">
+                  {safety.icon}
+                </span>
+              ) : (
+                <MissingOptional label="safety icon" />
+              )}
+              {safety.title ? (
+                <h3 className="mb-4 font-headline-md text-headline-md">{safety.title}</h3>
+              ) : (
+                <MissingOptional label="safety title" />
+              )}
+              {safety.body ? (
+                <p className="font-body-md text-on-primary-container">{safety.body}</p>
+              ) : (
+                <MissingOptional label="safety body" />
+              )}
+            </div>
+            {safety.items?.length ? (
+              <ul className="mt-8 space-y-3">
+                {safety.items.map((item) => (
+                  <li key={item} className="flex items-center gap-2 font-label-sm text-label-sm">
+                    <span className="h-1.5 w-1.5 rounded-full bg-secondary-fixed" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <MissingOptional label="safety items" />
+            )}
+          </div>
+        ) : (
+          <MissingOptional label="safety card" />
+        )}
+        {realtime ? (
+          <div className="technical-glow col-span-12 rounded-2xl border border-outline-variant bg-white p-8 md:col-span-6 lg:col-span-4">
+            {realtime.icon ? (
+              <span className="material-symbols-outlined mb-6 text-4xl text-primary">{realtime.icon}</span>
+            ) : (
+              <MissingOptional label="realtime icon" />
+            )}
+            {realtime.title ? (
+              <h3 className="mb-4 font-headline-md text-headline-md text-primary">{realtime.title}</h3>
+            ) : (
+              <MissingOptional label="realtime title" />
+            )}
+            {realtime.body ? (
+              <p className="mb-6 font-body-md text-on-surface-variant">{realtime.body}</p>
+            ) : (
+              <MissingOptional label="realtime body" />
+            )}
+            <div className="border-t border-outline-variant/30 pt-6">
+              {realtime.label ? (
+                <div className="mb-2 font-label-sm text-xs uppercase text-secondary">{realtime.label}</div>
+              ) : (
+                <MissingOptional label="latency label" />
+              )}
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-container">
+                <div className="h-full w-[92%] bg-primary" />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <MissingOptional label="realtime card" />
+        )}
+        {linux ? (
+          <div className="col-span-12 flex flex-col gap-8 rounded-2xl border border-outline-variant bg-surface-container-low p-8 md:col-span-6 lg:col-span-8 lg:flex-row">
+            <div className="flex-1">
+              {linux.icon ? (
+                <span className="material-symbols-outlined mb-6 text-4xl text-primary">{linux.icon}</span>
+              ) : (
+                <MissingOptional label="linux icon" />
+              )}
+              {linux.title ? (
+                <h3 className="mb-4 font-headline-md text-headline-md text-primary">{linux.title}</h3>
+              ) : (
+                <MissingOptional label="linux title" />
+              )}
+              {linux.body ? (
+                <p className="mb-4 font-body-md text-on-surface-variant">{linux.body}</p>
+              ) : (
+                <MissingOptional label="linux body" />
+              )}
+              {linux.href && linux.label ? (
+                <Link
+                  href={linux.href}
+                  className="mt-4 flex items-center gap-2 font-label-sm text-label-sm font-bold text-primary hover:underline"
+                >
+                  {linux.label} <span className="material-symbols-outlined text-sm">open_in_new</span>
+                </Link>
+              ) : (
+                <MissingOptional label="case studies action" />
+              )}
+            </div>
+            {linux.badges?.length ? (
+              <div className="flex w-full items-center justify-center lg:w-48">
+                <div className="grid w-full grid-cols-2 gap-4">
+                  {linux.badges.map((badge) => (
+                    <div
+                      key={badge}
+                      className="flex aspect-square items-center justify-center rounded-lg border border-outline-variant bg-white shadow-sm"
+                    >
+                      <span className="font-display-lg text-xl font-bold">{badge}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <MissingOptional label="stack tiles" />
+            )}
+          </div>
+        ) : (
+          <MissingOptional label="linux card" />
+        )}
+      </div>
+    </section>
+  );
+}
+
+export function NxpHardwareAdapter({ section }: { section: PreviewSectionPayload }) {
+  const nodes = Array.isArray(section.data.nodes) ? section.data.nodes.map(asRecord) : [];
+  const listed = nodes.filter((node) => !firstString(node.annotation));
+  const floating = nodes.filter((node) => firstString(node.annotation));
+
+  return (
+    <section className="bg-primary-container py-stack-lg text-on-primary">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="grid grid-cols-12 items-center gap-gutter">
+          <div className="col-span-12 lg:col-span-5">
+            {headingOf(section.data) ? (
+              <h2 className="mb-6 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {firstString(section.data.introduction, section.data.body) ? (
+              <p className="mb-8 font-body-lg text-on-primary-container">
+                {decodeMojibake(firstString(section.data.introduction, section.data.body))}
+              </p>
+            ) : (
+              <MissingOptional label="introduction" />
+            )}
+            {listed.length === 0 ? <MissingOptional label="nodes" /> : null}
+            <div className="space-y-6">
+              {listed.map((node, index) => (
+                <div key={`${firstString(node.id, node.label)}-${index}`} className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-white/10">
+                    {firstString(node.icon) ? (
+                      <span className="material-symbols-outlined text-on-primary-fixed-variant">
+                        {firstString(node.icon)}
+                      </span>
+                    ) : (
+                      <MissingOptional label="node icon" />
+                    )}
+                  </div>
+                  <div>
+                    {firstString(node.label) ? (
+                      <h4 className="font-headline-md text-lg text-white">
+                        {decodeMojibake(firstString(node.label))}
+                      </h4>
+                    ) : (
+                      <MissingOptional label="node label" />
+                    )}
+                    {firstString(node.description) ? (
+                      <p className="text-sm text-on-primary-container">{firstString(node.description)}</p>
+                    ) : (
+                      <MissingOptional label="node description" />
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="relative col-span-12 mt-12 h-[500px] lg:col-span-7 lg:mt-0">
+            {floating.length === 0 ? <MissingOptional label="overlay nodes" /> : null}
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <div className="relative h-full w-full">
+                {floating[0] ? (
+                  <div className="absolute left-1/4 top-1/4 rounded border border-white/20 bg-white/5 p-3 backdrop-blur-xl">
+                    <div className="font-label-sm text-[10px] uppercase tracking-tighter text-on-primary-container">
+                      {firstString(floating[0].annotation)}
+                    </div>
+                    <div className="text-xs font-bold text-white">{firstString(floating[0].label)}</div>
+                  </div>
+                ) : null}
+                {floating[1] ? (
+                  <div className="absolute bottom-1/3 right-1/4 rounded border border-white/20 bg-white/5 p-3 backdrop-blur-xl">
+                    <div className="font-label-sm text-[10px] uppercase tracking-tighter text-on-primary-container">
+                      {firstString(floating[1].annotation)}
+                    </div>
+                    <div className="text-xs font-bold text-white">{firstString(floating[1].label)}</div>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function NxpImplementationAdapter({ section }: { section: PreviewSectionPayload }) {
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      <div className="mb-16 text-center">
+        {headingOf(section.data) ? (
+          <h2 className="font-headline-lg text-headline-lg text-primary">{headingOf(section.data)}</h2>
+        ) : (
+          <MissingOptional label="heading" />
+        )}
+        {bodyOf(section.data) ? (
+          <p className="mx-auto mt-4 max-w-2xl font-body-md text-on-surface-variant">
+            {bodyOf(section.data)}
+          </p>
+        ) : (
+          <MissingOptional label="body" />
+        )}
+      </div>
+      {callouts.length === 0 ? <MissingOptional label="sectors" /> : null}
+      <div className="grid grid-cols-1 gap-gutter md:grid-cols-3">
+        {callouts.map((item, index) => {
+          const media = asRecord(item.media);
+          const imageUrl =
+            firstString(media.source, media.url, item.imageUrl) ??
+            (index === 0 ? section.media.url : undefined);
+          const imageAlt = firstString(item.mediaAlt, media.alt, item.imageAlt) ?? section.media.alt;
+          return (
+            <div key={`${firstString(item.title)}-${index}`} className="group cursor-pointer">
+              <div className="relative mb-6 aspect-[4/3] w-full overflow-hidden rounded-xl">
+                {imageUrl ? (
+                  <StitchImage
+                    src={imageUrl}
+                    alt={imageAlt ?? ""}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                ) : (
+                  <MissingMedia message={`${firstString(item.title) ?? "sector"} image not resolved`} />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-4 left-4 text-white">
+                  {firstString(item.eyebrow) ? (
+                    <div className="font-label-sm text-xs uppercase tracking-widest opacity-80">
+                      {firstString(item.eyebrow)}
+                    </div>
+                  ) : (
+                    <MissingOptional label="sector eyebrow" />
+                  )}
+                  {firstString(item.title) ? (
+                    <div className="font-headline-md text-xl">{firstString(item.title)}</div>
+                  ) : (
+                    <MissingOptional label="sector title" />
+                  )}
+                </div>
+              </div>
+              {firstString(item.body) ? (
+                <p className="font-body-md text-on-surface-variant">{firstString(item.body)}</p>
+              ) : (
+                <MissingOptional label="sector body" />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+export function NxpCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = labeledActions(section);
+
+  return (
+    <section className="mx-auto mb-20 max-w-container-max px-margin-desktop py-stack-lg">
+      <div className="relative flex flex-col items-center overflow-hidden rounded-3xl bg-surface-container-high p-12 text-center lg:p-20">
+        <div className="relative z-10 max-w-3xl">
+          {headingOf(section.data) ? (
+            <h2 className="mb-8 font-display-lg text-headline-lg leading-tight text-primary lg:text-display-lg">
+              {headingOf(section.data)}
+            </h2>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="mb-12 font-body-lg text-on-surface-variant">{bodyOf(section.data)}</p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+          <div className="flex flex-col justify-center gap-6 sm:flex-row">
+            {primary?.href ? (
+              <Link
+                href={primary.href}
+                className="rounded-lg bg-primary px-10 py-5 font-label-sm text-label-sm font-bold text-on-primary shadow-xl shadow-primary/10 transition-all hover:bg-secondary"
+              >
+                {primary.label}
+              </Link>
+            ) : primary ? (
+              <button
+                type="button"
+                className="rounded-lg bg-primary px-10 py-5 font-label-sm text-label-sm font-bold text-on-primary shadow-xl shadow-primary/10 transition-all hover:bg-secondary"
+              >
+                {primary.label}
+              </button>
+            ) : (
+              <MissingOptional label="primary action" />
+            )}
+            {secondary ? (
+              secondary.href ? (
+                <Link
+                  href={secondary.href}
+                  className="rounded-lg border border-outline-variant bg-white px-10 py-5 font-label-sm text-label-sm font-bold transition-all hover:bg-surface"
+                >
+                  {secondary.label}
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  className="rounded-lg border border-outline-variant bg-white px-10 py-5 font-label-sm text-label-sm font-bold transition-all hover:bg-surface"
+                >
+                  {secondary.label}
+                </button>
+              )
+            ) : (
+              <MissingOptional label="secondary action" />
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function PlVulnerabilitiesAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [remote, sync] = section.cards;
+
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      <div className="mb-stack-lg">
+        {eyebrowOf(section.data) ? (
+          <span className="mb-2 block font-label-sm text-label-sm uppercase tracking-widest text-primary-container/60">
+            {eyebrowOf(section.data)}
+          </span>
+        ) : (
+          <MissingOptional label="eyebrow" />
+        )}
+        {headingOf(section.data) ? (
+          <h2 className="font-headline-lg text-headline-lg text-primary">{headingOf(section.data)}</h2>
+        ) : (
+          <MissingOptional label="heading" />
+        )}
+      </div>
+      {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+      <div className="grid grid-cols-1 gap-gutter md:grid-cols-12">
+        {remote ? (
+          <div className="technical-glow group flex flex-col justify-between rounded-xl border border-outline-variant bg-surface-container-lowest p-stack-lg transition-all duration-500 md:col-span-8">
+            <div>
+              {remote.icon ? (
+                <span className="material-symbols-outlined mb-4 text-4xl text-primary">{remote.icon}</span>
+              ) : (
+                <MissingOptional label="remote icon" />
+              )}
+              {remote.title ? (
+                <h3 className="mb-stack-sm font-headline-md text-headline-md text-primary">{remote.title}</h3>
+              ) : (
+                <MissingOptional label="remote title" />
+              )}
+              {remote.body ? (
+                <p className="font-body-md text-body-md text-on-surface-variant">{remote.body}</p>
+              ) : (
+                <MissingOptional label="remote body" />
+              )}
+            </div>
+            {remote.metrics?.length ? (
+              <div className="mt-stack-lg grid grid-cols-3 gap-4 border-t border-outline-variant/30 pt-6">
+                {remote.metrics.map((metric) => (
+                  <div key={metric.label}>
+                    <div className="font-display-lg text-headline-lg leading-none text-primary">
+                      {metric.value}
+                    </div>
+                    {metric.label ? (
+                      <div className="mt-1 font-label-sm text-label-sm uppercase text-on-surface-variant">
+                        {metric.label}
+                      </div>
+                    ) : (
+                      <MissingOptional label="metric label" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <MissingOptional label="metrics" />
+            )}
+          </div>
+        ) : (
+          <MissingOptional label="remote infrastructure card" />
+        )}
+        {sync ? (
+          <div className="technical-glow group flex flex-col rounded-xl bg-primary-container p-stack-lg text-on-primary transition-all duration-500 md:col-span-4">
+            {sync.icon ? (
+              <span className="material-symbols-outlined mb-4 text-4xl text-on-primary">{sync.icon}</span>
+            ) : (
+              <MissingOptional label="sync icon" />
+            )}
+            {sync.title ? (
+              <h3 className="mb-stack-sm font-headline-md text-headline-md text-on-primary">{sync.title}</h3>
+            ) : (
+              <MissingOptional label="sync title" />
+            )}
+            {sync.body ? (
+              <p className="font-body-md text-body-md text-on-primary-container">{sync.body}</p>
+            ) : (
+              <MissingOptional label="sync body" />
+            )}
+            <div className="mt-auto pt-stack-lg">
+              <div className="relative h-32 w-full overflow-hidden rounded-lg bg-surface/10" />
+            </div>
+          </div>
+        ) : (
+          <MissingOptional label="sensor synchronization card" />
+        )}
+      </div>
+    </section>
+  );
+}
+
+export function PlSolutionsAdapter({ section }: { section: PreviewSectionPayload }) {
+  const rawCards = Array.isArray(section.data.cards) ? section.data.cards.map(asRecord) : [];
+
+  return (
+    <section className="bg-surface-container py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg flex flex-col items-end justify-between gap-stack-md md:flex-row">
+          <div className="max-w-2xl">
+            {eyebrowOf(section.data) ? (
+              <span className="mb-2 block font-label-sm text-label-sm uppercase tracking-widest text-primary-container/60">
+                {eyebrowOf(section.data)}
+              </span>
+            ) : (
+              <MissingOptional label="eyebrow" />
+            )}
+            {headingOf(section.data) ? (
+              <h2 className="font-headline-lg text-headline-lg text-primary">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+          </div>
+          {firstString(section.data.introduction, section.data.body) ? (
+            <p className="max-w-sm font-body-md text-body-md text-on-surface-variant">
+              {firstString(section.data.introduction, section.data.body)}
+            </p>
+          ) : (
+            <MissingOptional label="introduction" />
+          )}
+        </div>
+        {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-3">
+          {section.cards.map((card, index) => {
+            const raw = rawCards[index] ?? {};
+            const badge = card.badges?.[0] ?? firstString(raw.badge, raw.eyebrow, card.eyebrow);
+            const icon = card.icon ?? firstString(raw.icon);
+            const items = card.items?.length
+              ? card.items
+              : Array.isArray(raw.items)
+                ? raw.items
+                    .map((entry) =>
+                      typeof entry === "string"
+                        ? entry.trim()
+                        : firstString(asRecord(entry).title, asRecord(entry).label, asRecord(entry).text)
+                    )
+                    .filter((entry): entry is string => Boolean(entry))
+                : [];
+            return (
+              <div
+                key={`${card.title}-${index}`}
+                className="group relative overflow-hidden rounded-xl border border-outline-variant/30 bg-surface-container-lowest p-8 transition-colors hover:border-primary"
+              >
+                {icon ? (
+                  <div className="absolute right-0 top-0 p-4 opacity-10 transition-opacity group-hover:opacity-20">
+                    <span className="material-symbols-outlined text-8xl">{icon}</span>
+                  </div>
+                ) : (
+                  <MissingOptional label="module icon" />
+                )}
+                {badge ? (
+                  <span className="mb-4 block text-sm font-bold tracking-widest text-primary">{badge}</span>
+                ) : (
+                  <MissingOptional label="module badge" />
+                )}
+                {card.title ? (
+                  <h3 className="mb-4 font-headline-md text-headline-md text-primary">{card.title}</h3>
+                ) : (
+                  <MissingOptional label="module title" />
+                )}
+                {card.body ? (
+                  <p className="mb-6 font-body-md text-body-md text-on-surface-variant">{card.body}</p>
+                ) : (
+                  <MissingOptional label="module body" />
+                )}
+                {items.length ? (
+                  <ul className="space-y-3">
+                    {items.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant"
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                        {item.trim()}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <MissingOptional label="module items" />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function PlSuperiorityAdapter({ section }: { section: PreviewSectionPayload }) {
+  const bullets = labeledEntries(section.data.bullets);
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const panel = callouts[0];
+
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      <div className="grid grid-cols-1 items-center gap-stack-lg lg:grid-cols-2">
+        <div>
+          {headingOf(section.data) ? (
+            <h2 className="mb-stack-md font-headline-lg text-headline-lg text-primary">
+              {headingOf(section.data)}
+            </h2>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {bullets.length === 0 ? <MissingOptional label="bullets" /> : null}
+          <div className="space-y-6">
+            {bullets.map((bullet) => (
+              <div key={bullet.title} className="flex gap-4">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-surface-container">
+                  {bullet.icon ? (
+                    <span className="material-symbols-outlined text-primary">{bullet.icon}</span>
+                  ) : (
+                    <MissingOptional label="bullet icon" />
+                  )}
+                </div>
+                <div>
+                  {bullet.title ? (
+                    <h4 className="font-headline-md text-body-lg font-bold text-primary">{bullet.title}</h4>
+                  ) : (
+                    <MissingOptional label="bullet title" />
+                  )}
+                  {bullet.body ? (
+                    <p className="font-body-md text-body-md text-on-surface-variant">{bullet.body}</p>
+                  ) : (
+                    <MissingOptional label="bullet body" />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="group relative aspect-square overflow-hidden rounded-2xl bg-primary-container">
+          {panel ? (
+            <div className="glass-panel absolute bottom-6 left-6 right-6 rounded-xl p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  {firstString(panel.eyebrow) ? (
+                    <span className="mb-1 block text-[10px] uppercase tracking-[0.2em] text-white/60">
+                      {firstString(panel.eyebrow)}
+                    </span>
+                  ) : (
+                    <MissingOptional label="panel eyebrow" />
+                  )}
+                  {firstString(panel.title) ? (
+                    <span className="font-headline-md text-headline-md text-white">
+                      {firstString(panel.title)}
+                    </span>
+                  ) : (
+                    <MissingOptional label="panel title" />
+                  )}
+                </div>
+                {firstString(panel.icon) ? (
+                  <span
+                    className="material-symbols-outlined text-white"
+                    style={{ fontVariationSettings: "'FILL' 1" }}
+                  >
+                    {firstString(panel.icon)}
+                  </span>
+                ) : (
+                  <MissingOptional label="panel icon" />
+                )}
+              </div>
+            </div>
+          ) : (
+            <MissingOptional label="hardware panel" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function PlAssetAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary] = labeledActions(section);
+  const bullets = labeledEntries(section.data.bullets);
+
+  return (
+    <section className="bg-primary py-stack-lg text-on-primary">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="grid grid-cols-1 gap-stack-lg md:grid-cols-2">
+          <div>
+            {eyebrowOf(section.data) ? (
+              <span className="mb-4 block font-label-sm text-label-sm uppercase tracking-widest text-on-primary-container">
+                {eyebrowOf(section.data)}
+              </span>
+            ) : (
+              <MissingOptional label="eyebrow" />
+            )}
+            {headingOf(section.data) ? (
+              <h2 className="mb-stack-md font-display-lg text-headline-lg text-on-primary">
+                {headingOf(section.data)}
+              </h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {bodyOf(section.data) ? (
+              <p className="mb-stack-lg font-body-lg text-body-lg text-on-primary-container">
+                {bodyOf(section.data)}
+              </p>
+            ) : (
+              <MissingOptional label="body" />
+            )}
+            {primary?.href ? (
+              <Link
+                href={primary.href}
+                className="inline-flex items-center gap-2 border-b border-on-primary pb-1 font-label-sm text-label-sm font-bold text-on-primary transition-all hover:gap-4"
+              >
+                {primary.label}
+                <span className="material-symbols-outlined text-sm">open_in_new</span>
+              </Link>
+            ) : primary ? (
+              <span className="inline-flex items-center gap-2 border-b border-on-primary pb-1 font-label-sm text-label-sm font-bold text-on-primary">
+                {primary.label}
+                <span className="material-symbols-outlined text-sm">open_in_new</span>
+              </span>
+            ) : (
+              <MissingOptional label="case study action" />
+            )}
+          </div>
+          {bullets.length === 0 ? <MissingOptional label="case study cards" /> : null}
+          <div className="grid grid-cols-2 gap-gutter">
+            {bullets.map((bullet) => (
+              <div key={bullet.title} className="rounded-xl border border-on-primary-container/20 p-6">
+                {bullet.icon ? (
+                  <span className="material-symbols-outlined mb-4 text-on-primary">{bullet.icon}</span>
+                ) : (
+                  <MissingOptional label="card icon" />
+                )}
+                {bullet.title ? (
+                  <h4 className="mb-2 font-headline-md text-body-lg font-bold">{bullet.title}</h4>
+                ) : (
+                  <MissingOptional label="card title" />
+                )}
+                {bullet.body ? (
+                  <p className="font-body-md text-sm text-on-primary-container">{bullet.body}</p>
+                ) : (
+                  <MissingOptional label="card body" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function PlCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary] = labeledActions(section);
+
+  return (
+    <section className="relative overflow-hidden py-stack-lg">
+      <div className="relative z-10 mx-auto max-w-container-max px-margin-desktop text-center">
+        {headingOf(section.data) ? (
+          <h2 className="mb-stack-md font-display-lg text-headline-lg text-primary">
+            {headingOf(section.data)}
+          </h2>
+        ) : (
+          <MissingOptional label="title" />
+        )}
+        {bodyOf(section.data) ? (
+          <p className="mx-auto mb-stack-lg max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+            {bodyOf(section.data)}
+          </p>
+        ) : (
+          <MissingOptional label="body" />
+        )}
+        {primary?.href ? (
+          <Link
+            href={primary.href}
+            className="rounded-lg bg-primary px-10 py-5 font-label-sm text-label-sm font-extrabold uppercase tracking-widest text-on-primary shadow-xl transition-all hover:bg-[#0095a4] hover:shadow-[#0095a433]"
+          >
+            {primary.label}
+          </Link>
+        ) : primary ? (
+          <button
+            type="button"
+            className="rounded-lg bg-primary px-10 py-5 font-label-sm text-label-sm font-extrabold uppercase tracking-widest text-on-primary shadow-xl transition-all hover:bg-[#0095a4] hover:shadow-[#0095a433]"
+          >
+            {primary.label}
+          </button>
+        ) : (
+          <MissingOptional label="primary action" />
+        )}
+      </div>
+      <div className="pointer-events-none absolute inset-0 z-0 opacity-5">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: "radial-gradient(circle at 2px 2px, black 1px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+      </div>
+    </section>
+  );
+}
+
+export function QrRisksAdapter({ section }: { section: PreviewSectionPayload }) {
+  const problem = section.cards.find((card) => Boolean(card.body)) ?? section.cards[0];
+  const challenge =
+    section.cards.find((card) => card !== problem && Boolean(card.body)) ?? section.cards[1];
+  const simulation = section.cards.find((card) => !card.body && Boolean(card.title));
+
+  return (
+    <section className="grid-bg bg-surface py-stack-lg">
+      <div className="mx-auto grid max-w-container-max grid-cols-12 gap-gutter px-margin-desktop">
+        <div className="col-span-12 md:col-span-5">
+          {headingOf(section.data) ? (
+            <h2 className="mb-stack-md font-headline-lg text-headline-lg text-primary">
+              {headingOf(section.data)}
+            </h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {firstString(section.data.introduction, section.data.body) ? (
+            <p className="mb-stack-md font-body-md text-body-md text-on-surface-variant">
+              {firstString(section.data.introduction, section.data.body)}
+            </p>
+          ) : (
+            <MissingOptional label="introduction" />
+          )}
+          <div className="mt-stack-lg space-y-stack-md">
+            {problem ? (
+              <div className="tech-glow border border-outline-variant/30 bg-white p-stack-md transition-all">
+                <h3 className="mb-2 flex items-center gap-2 font-headline-md text-headline-md">
+                  {problem.icon ? (
+                    <span className="material-symbols-outlined text-error">{problem.icon}</span>
+                  ) : (
+                    <MissingOptional label="problem icon" />
+                  )}
+                  {problem.title}
+                </h3>
+                {problem.body ? (
+                  <p className="font-body-md text-on-surface-variant">{problem.body}</p>
+                ) : (
+                  <MissingOptional label="problem body" />
+                )}
+              </div>
+            ) : (
+              <MissingOptional label="problem card" />
+            )}
+            {challenge ? (
+              <div className="tech-glow border border-outline-variant/30 bg-white p-stack-md transition-all">
+                <h3 className="mb-2 flex items-center gap-2 font-headline-md text-headline-md">
+                  {challenge.icon ? (
+                    <span className="material-symbols-outlined text-secondary">{challenge.icon}</span>
+                  ) : (
+                    <MissingOptional label="challenge icon" />
+                  )}
+                  {challenge.title}
+                </h3>
+                {challenge.body ? (
+                  <p className="font-body-md text-on-surface-variant">{challenge.body}</p>
+                ) : (
+                  <MissingOptional label="challenge body" />
+                )}
+              </div>
+            ) : (
+              <MissingOptional label="challenge card" />
+            )}
+          </div>
+        </div>
+        <div className="col-span-12 flex items-center justify-center md:col-span-7">
+          <div className="glass-panel relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl md:aspect-video">
+            {simulation?.title ? (
+              <div className="absolute bottom-base right-base rounded bg-primary/90 p-stack-sm font-label-sm text-label-sm text-on-primary">
+                {simulation.title}
+              </div>
+            ) : (
+              <MissingOptional label="simulation label" />
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function QrArchitectureAdapter({ section }: { section: PreviewSectionPayload }) {
+  const nodes = Array.isArray(section.data.nodes) ? section.data.nodes.map(asRecord) : [];
+  const hardware =
+    nodes.find((node) => firstString(node.id) === "hardware") ??
+    nodes.find((node) => Boolean(asRecord(node.media).source)) ??
+    nodes[0];
+  const firmware =
+    nodes.find((node) => firstString(node.id) === "firmware") ??
+    nodes.find((node) => node !== hardware && firstString(node.icon) === "terminal") ??
+    nodes[1];
+  const cloud =
+    nodes.find((node) => firstString(node.id) === "cloud") ??
+    nodes.find((node) => node !== hardware && node !== firmware) ??
+    nodes[2];
+  const annotations = Array.isArray(section.data.annotations)
+    ? section.data.annotations.map(asRecord)
+    : [];
+  const hardwareMedia = asRecord(hardware?.media);
+  const hardwareImage = firstString(hardwareMedia.source, hardwareMedia.url, hardware?.imageUrl);
+  const hardwareAlt = firstString(hardware?.mediaAlt, hardwareMedia.alt, hardware?.imageAlt);
+  const hardwareBadges = Array.isArray(hardware?.badges)
+    ? hardware.badges.map((entry) => String(entry).trim()).filter(Boolean)
+    : [];
+
+  return (
+    <section className="bg-white py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg text-center">
+          {headingOf(section.data) ? (
+            <h2 className="font-headline-lg text-headline-lg text-primary">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {firstString(section.data.introduction, section.data.body) ? (
+            <p className="mt-2 font-body-md text-on-surface-variant">
+              {firstString(section.data.introduction, section.data.body)}
+            </p>
+          ) : (
+            <MissingOptional label="introduction" />
+          )}
+        </div>
+        <div className="grid grid-cols-12 gap-gutter">
+          {hardware ? (
+            <div className="group relative col-span-12 overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest p-stack-lg md:col-span-8">
+              <div className="relative z-10">
+                {firstString(hardware.eyebrow) ? (
+                  <span className="mb-4 inline-block bg-primary px-3 py-1 font-label-sm text-[10px] text-on-primary">
+                    {firstString(hardware.eyebrow)}
+                  </span>
+                ) : (
+                  <MissingOptional label="hardware eyebrow" />
+                )}
+                {firstString(hardware.label, hardware.title) ? (
+                  <h3 className="mb-4 font-headline-lg text-headline-lg">
+                    {firstString(hardware.label, hardware.title)}
+                  </h3>
+                ) : (
+                  <MissingOptional label="hardware title" />
+                )}
+                {firstString(hardware.description, hardware.body) ? (
+                  <p className="mb-stack-md max-w-md font-body-md text-on-surface-variant">
+                    {firstString(hardware.description, hardware.body)}
+                  </p>
+                ) : (
+                  <MissingOptional label="hardware body" />
+                )}
+                {hardwareBadges.length ? (
+                  <ul className="space-y-2 font-label-sm text-label-sm uppercase tracking-tighter text-primary">
+                    {hardwareBadges.map((badge) => (
+                      <li key={badge} className="flex items-center gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-secondary" />
+                        {badge}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <MissingOptional label="hardware badges" />
+                )}
+              </div>
+              {hardwareImage ? (
+                <div className="absolute right-0 top-0 hidden h-full w-1/2 opacity-20 transition-opacity group-hover:opacity-40 lg:block">
+                  <StitchImage
+                    src={hardwareImage}
+                    alt={hardwareAlt ?? ""}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ) : (
+                <MissingMedia message="hardware image not resolved" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="hardware node" />
+          )}
+          <div className="col-span-12 flex flex-col justify-between rounded-xl bg-primary-container p-stack-lg text-on-primary-container md:col-span-4">
+            <div>
+              <h3 className="mb-stack-md font-headline-md text-headline-md text-on-primary-fixed">
+                Tech Stack
+              </h3>
+              {annotations.length === 0 ? <MissingOptional label="annotations" /> : null}
+              <div className="space-y-4">
+                {annotations.map((item, index) => (
+                  <div
+                    key={`${firstString(item.label)}-${index}`}
+                    className="flex items-center justify-between border-b border-on-primary-container/20 pb-2"
+                  >
+                    {firstString(item.label) ? (
+                      <span className="font-body-md">{firstString(item.label)}</span>
+                    ) : (
+                      <MissingOptional label="stack label" />
+                    )}
+                    {firstString(item.value) ? (
+                      <span className="font-label-sm font-bold">{firstString(item.value)}</span>
+                    ) : (
+                      <MissingOptional label="stack value" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-stack-lg border-t border-on-primary-container/20 pt-4">
+              <div className="flex gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded bg-on-primary-container/10">
+                  <span className="material-symbols-outlined">cloud</span>
+                </div>
+                <div className="flex h-12 w-12 items-center justify-center rounded bg-on-primary-container/10">
+                  <span className="material-symbols-outlined">security</span>
+                </div>
+                <div className="flex h-12 w-12 items-center justify-center rounded bg-on-primary-container/10">
+                  <span className="material-symbols-outlined">memory</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          {firmware ? (
+            <div className="col-span-12 rounded-xl border border-outline-variant/10 bg-surface-container p-stack-lg md:col-span-6">
+              {firstString(firmware.icon) ? (
+                <span className="material-symbols-outlined mb-4 text-4xl text-primary">
+                  {firstString(firmware.icon)}
+                </span>
+              ) : (
+                <MissingOptional label="firmware icon" />
+              )}
+              {firstString(firmware.label, firmware.title) ? (
+                <h3 className="mb-2 font-headline-md text-headline-md">
+                  {firstString(firmware.label, firmware.title)}
+                </h3>
+              ) : (
+                <MissingOptional label="firmware title" />
+              )}
+              {firstString(firmware.description, firmware.body) ? (
+                <p className="font-body-md text-on-surface-variant">
+                  {firstString(firmware.description, firmware.body)}
+                </p>
+              ) : (
+                <MissingOptional label="firmware body" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="firmware node" />
+          )}
+          {cloud ? (
+            <div className="col-span-12 rounded-xl border border-outline-variant/10 bg-surface-container p-stack-lg md:col-span-6">
+              {firstString(cloud.icon) ? (
+                <span className="material-symbols-outlined mb-4 text-4xl text-primary">
+                  {firstString(cloud.icon)}
+                </span>
+              ) : (
+                <MissingOptional label="cloud icon" />
+              )}
+              {firstString(cloud.label, cloud.title) ? (
+                <h3 className="mb-2 font-headline-md text-headline-md">
+                  {firstString(cloud.label, cloud.title)}
+                </h3>
+              ) : (
+                <MissingOptional label="cloud title" />
+              )}
+              {firstString(cloud.description, cloud.body) ? (
+                <p className="font-body-md text-on-surface-variant">
+                  {firstString(cloud.description, cloud.body)}
+                </p>
+              ) : (
+                <MissingOptional label="cloud body" />
+              )}
+            </div>
+          ) : (
+            <MissingOptional label="cloud node" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function QrMetricsAdapter({ section }: { section: PreviewSectionPayload }) {
+  const items = Array.isArray(section.data.items)
+    ? section.data.items.map(asRecord)
+    : [];
+
+  return (
+    <section className="bg-primary-container py-stack-lg text-on-primary-container">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="grid grid-cols-12 items-center gap-gutter">
+          <div className="col-span-12 space-y-stack-md md:col-span-4">
+            {headingOf(section.data) ? (
+              <h2 className="font-headline-lg text-headline-lg text-on-primary-fixed">
+                {headingOf(section.data)}
+              </h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {firstString(section.data.introduction, section.data.body) ? (
+              <p className="font-body-md text-on-primary-container/80">
+                {firstString(section.data.introduction, section.data.body)}
+              </p>
+            ) : (
+              <MissingOptional label="introduction" />
+            )}
+          </div>
+          <div className="col-span-12 md:col-span-8">
+            {items.length === 0 ? <MissingOptional label="metrics" /> : null}
+            <div className="grid grid-cols-1 gap-stack-md md:grid-cols-3">
+              {items.map((item, index) => (
+                <div
+                  key={`${firstString(item.label)}-${index}`}
+                  className="rounded border border-white/10 bg-white/5 p-stack-lg text-center backdrop-blur-sm"
+                >
+                  {firstString(item.value) ? (
+                    <div className="mb-2 font-display-lg text-display-lg text-on-primary-fixed">
+                      {firstString(item.value)}
+                    </div>
+                  ) : (
+                    <MissingOptional label="metric value" />
+                  )}
+                  {firstString(item.label) ? (
+                    <div className="font-label-sm text-label-sm uppercase tracking-widest">
+                      {firstString(item.label)}
+                    </div>
+                  ) : (
+                    <MissingOptional label="metric label" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function QrOutcomesAdapter({ section }: { section: PreviewSectionPayload }) {
+  const navHref = labeledActions(section)[0]?.href ?? section.cards[0]?.href;
+
+  return (
+    <section className="bg-surface py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg flex flex-col items-end justify-between gap-gutter md:flex-row">
+          <div className="max-w-xl">
+            {headingOf(section.data) ? (
+              <h2 className="mb-4 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {firstString(section.data.introduction, section.data.body) ? (
+              <p className="font-body-md text-on-surface-variant">
+                {firstString(section.data.introduction, section.data.body)}
+              </p>
+            ) : (
+              <MissingOptional label="introduction" />
+            )}
+          </div>
+          <div className="flex gap-2">
+            <Link
+              href={navHref || "/iot"}
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-outline transition-colors hover:bg-surface-container-high"
+            >
+              <span className="material-symbols-outlined">chevron_left</span>
+            </Link>
+            <Link
+              href={navHref || "/iot"}
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-outline transition-colors hover:bg-surface-container-high"
+            >
+              <span className="material-symbols-outlined">chevron_right</span>
+            </Link>
+          </div>
+        </div>
+        {section.cards.length === 0 ? <MissingOptional label="outcome cards" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-2">
+          {section.cards.map((card) => (
+            <div key={card.title} className="border-l-4 border-secondary bg-white p-stack-lg shadow-sm">
+              {card.title ? (
+                <h4 className="mb-2 font-headline-md text-headline-md">{card.title}</h4>
+              ) : (
+                <MissingOptional label="outcome title" />
+              )}
+              {card.body ? (
+                <p className="font-body-md text-on-surface-variant">{card.body}</p>
+              ) : (
+                <MissingOptional label="outcome body" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function QrCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = labeledActions(section);
+
+  return (
+    <section className="relative overflow-hidden bg-primary py-24">
+      <div className="relative z-10 mx-auto max-w-container-max px-margin-desktop text-center">
+        {headingOf(section.data) ? (
+          <h2 className="mb-stack-md font-display-lg text-headline-lg text-on-primary md:text-display-lg">
+            {headingOf(section.data)}
+          </h2>
+        ) : (
+          <MissingOptional label="title" />
+        )}
+        {bodyOf(section.data) ? (
+          <p className="mx-auto mb-stack-lg max-w-2xl font-body-lg text-body-lg text-on-primary/70">
+            {bodyOf(section.data)}
+          </p>
+        ) : (
+          <MissingOptional label="body" />
+        )}
+        <div className="flex flex-col justify-center gap-stack-md md:flex-row">
+          {primary?.href ? (
+            <Link
+              href={primary.href}
+              className="bg-white px-10 py-5 font-label-sm text-label-sm uppercase tracking-widest text-primary shadow-xl transition-all hover:bg-secondary hover:text-white"
+            >
+              {primary.label}
+            </Link>
+          ) : primary ? (
+            <button
+              type="button"
+              className="bg-white px-10 py-5 font-label-sm text-label-sm uppercase tracking-widest text-primary shadow-xl transition-all hover:bg-secondary hover:text-white"
+            >
+              {primary.label}
+            </button>
+          ) : (
+            <MissingOptional label="primary action" />
+          )}
+          {secondary?.href ? (
+            <Link
+              href={secondary.href}
+              className="border border-white/30 px-10 py-5 font-label-sm text-label-sm uppercase tracking-widest text-on-primary transition-all hover:bg-white/10"
+            >
+              {secondary.label}
+            </Link>
+          ) : secondary ? (
+            <button
+              type="button"
+              className="border border-white/30 px-10 py-5 font-label-sm text-label-sm uppercase tracking-widest text-on-primary transition-all hover:bg-white/10"
+            >
+              {secondary.label}
+            </button>
+          ) : (
+            <MissingOptional label="secondary action" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function QrRelatedAdapter({ section }: { section: PreviewSectionPayload }) {
+  return (
+    <section className="bg-white py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        {headingOf(section.data) ? (
+          <h3 className="mb-stack-md font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">
+            {headingOf(section.data)}
+          </h3>
+        ) : (
+          <MissingOptional label="heading" />
+        )}
+        {section.cards.length === 0 ? <MissingOptional label="related projects" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-2">
+          {section.cards.map((card) => {
+            const inner = (
+              <>
+                {card.imageUrl ? (
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                    style={{ backgroundImage: `url('${card.imageUrl}')` }}
+                  />
+                ) : (
+                  <MissingMedia message={`${card.title} image not resolved`} />
+                )}
+                <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent p-stack-lg">
+                  {card.eyebrow ? (
+                    <span className="font-label-sm text-label-sm text-white/60">{card.eyebrow}</span>
+                  ) : (
+                    <MissingOptional label="project eyebrow" />
+                  )}
+                  {card.title ? (
+                    <h4 className="font-headline-md text-headline-md text-white">{card.title}</h4>
+                  ) : (
+                    <MissingOptional label="project title" />
+                  )}
+                </div>
+              </>
+            );
+            const className = "group relative aspect-[16/7] overflow-hidden rounded-xl";
+            return card.href ? (
+              <Link key={card.title} href={card.href} className={className}>
+                {inner}
+              </Link>
+            ) : (
+              <div key={card.title} className={className}>
+                {inner}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function RnHeroAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = labeledActions(section);
+  const title = headingOf(section.data);
+  const titleParts = title?.split(/(?<=\.)\s+/).filter(Boolean) ?? [];
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const highlight = callouts[0];
+  const eyebrowIcon = firstString(section.data.eyebrowIcon);
+
+  return (
+    <header className="relative overflow-hidden pb-32 pt-24">
+      <div className="relative z-10 mx-auto grid max-w-container-max grid-cols-12 gap-gutter px-margin-desktop">
+        <div className="col-span-12 flex flex-col justify-center lg:col-span-7">
+          {eyebrowOf(section.data) ? (
+            <div className="mb-stack-sm inline-flex w-fit items-center gap-2 rounded-full bg-primary-fixed px-3 py-1 text-on-primary-fixed">
+              {eyebrowIcon ? (
+                <span className="material-symbols-outlined text-[14px]">{eyebrowIcon}</span>
+              ) : (
+                <MissingOptional label="eyebrow icon" />
+              )}
+              <span className="font-label-sm text-label-sm uppercase tracking-widest">
+                {eyebrowOf(section.data)}
+              </span>
+            </div>
+          ) : (
+            <MissingOptional label="eyebrow" />
+          )}
+          {title ? (
+            <h1 className="mb-stack-md font-display-lg text-display-lg leading-tight text-primary">
+              {titleParts.length > 1 ? (
+                <>
+                  {titleParts[0]} <br />
+                  {titleParts.slice(1).join(" ")}
+                </>
+              ) : (
+                title
+              )}
+            </h1>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="mb-stack-lg max-w-xl font-body-lg text-body-lg text-on-surface-variant">
+              {bodyOf(section.data)}
+            </p>
+          ) : (
+            <MissingOptional label="summary" />
+          )}
+          <div className="flex gap-4">
+            {primary?.href ? (
+              <Link
+                href={primary.href}
+                className="group flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-label-sm text-label-sm text-on-primary transition-all hover:gap-4"
+              >
+                {primary.label}
+                <span className="material-symbols-outlined">arrow_forward</span>
+              </Link>
+            ) : primary ? (
+              <button
+                type="button"
+                className="group flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-label-sm text-label-sm text-on-primary"
+              >
+                {primary.label}
+                <span className="material-symbols-outlined">arrow_forward</span>
+              </button>
+            ) : (
+              <MissingOptional label="primary action" />
+            )}
+            {secondary?.href ? (
+              <Link
+                href={secondary.href}
+                className="rounded-full border border-outline-variant px-8 py-4 font-label-sm text-label-sm transition-all hover:bg-surface-container"
+              >
+                {secondary.label}
+              </Link>
+            ) : secondary ? (
+              <button
+                type="button"
+                className="rounded-full border border-outline-variant px-8 py-4 font-label-sm text-label-sm"
+              >
+                {secondary.label}
+              </button>
+            ) : (
+              <MissingOptional label="secondary action" />
+            )}
+          </div>
+        </div>
+        <div className="relative col-span-12 hidden lg:col-span-5 lg:block">
+          <div className="glass group relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl p-8">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-fixed/20 to-transparent" />
+            <div className="relative z-10 flex h-full w-full flex-col items-center justify-center rounded-2xl border border-outline-variant/30 bg-surface/50 p-8 text-center backdrop-blur-md">
+              {firstString(highlight?.icon) ? (
+                <span
+                  className="material-symbols-outlined mb-4 text-[64px] text-primary"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  {firstString(highlight?.icon)}
+                </span>
+              ) : (
+                <MissingOptional label="highlight icon" />
+              )}
+              {firstString(highlight?.title) ? (
+                <div className="mb-2 font-headline-md text-headline-md text-primary">
+                  {firstString(highlight?.title)}
+                </div>
+              ) : (
+                <MissingOptional label="highlight title" />
+              )}
+              {firstString(highlight?.body) ? (
+                <div className="font-label-sm text-label-sm text-on-surface-variant">
+                  {firstString(highlight?.body)}
+                </div>
+              ) : (
+                <MissingOptional label="highlight body" />
+              )}
+            </div>
+            <div className="absolute right-0 top-0 h-32 w-32 translate-x-4 -translate-y-4 border-r-2 border-t-2 border-primary/20" />
+            <div className="absolute bottom-0 left-0 h-32 w-32 -translate-x-4 translate-y-4 border-b-2 border-l-2 border-primary/20" />
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export function RnFamiliesAdapter({ section }: { section: PreviewSectionPayload }) {
+  const rawCards = Array.isArray(section.data.cards) ? section.data.cards.map(asRecord) : [];
+
+  return (
+    <section className="bg-surface-container-low py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-lg">
+          {headingOf(section.data) ? (
+            <h2 className="mb-4 text-center font-headline-lg text-headline-lg text-primary">
+              {headingOf(section.data)}
+            </h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {firstString(section.data.introduction, section.data.body) ? (
+            <p className="mx-auto max-w-2xl text-center font-body-md text-body-md text-on-surface-variant">
+              {firstString(section.data.introduction, section.data.body)}
+            </p>
+          ) : (
+            <MissingOptional label="introduction" />
+          )}
+        </div>
+        {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-3">
+          {section.cards.map((card, index) => {
+            const raw = rawCards[index] ?? {};
+            const badge = decodeMojibake(card.badges?.[0] ?? firstString(raw.badge));
+            const featured = index === 1;
+            return (
+              <div
+                key={`${card.title}-${index}`}
+                className={
+                  featured
+                    ? "technical-glow rounded-xl border border-outline bg-primary-container p-8 text-on-primary-container transition-all hover:shadow-xl"
+                    : "technical-glow rounded-xl border border-outline-variant bg-surface p-8 transition-all hover:shadow-xl"
+                }
+              >
+                <div className="mb-12 flex items-start justify-between">
+                  <div
+                    className={
+                      featured
+                        ? "flex h-12 w-12 items-center justify-center rounded-lg bg-on-primary-container/10"
+                        : "flex h-12 w-12 items-center justify-center rounded-lg bg-surface-container"
+                    }
+                  >
+                    {card.icon ? (
+                      <span
+                        className={
+                          featured
+                            ? "material-symbols-outlined text-on-primary-fixed"
+                            : "material-symbols-outlined text-primary"
+                        }
+                      >
+                        {card.icon}
+                      </span>
+                    ) : (
+                      <MissingOptional label="family icon" />
+                    )}
+                  </div>
+                  {badge ? (
+                    <span
+                      className={
+                        featured
+                          ? "rounded border border-on-primary-container/30 px-2 py-1 font-label-sm text-label-sm text-on-primary-container/80"
+                          : "rounded border border-outline-variant px-2 py-1 font-label-sm text-label-sm text-outline"
+                      }
+                    >
+                      {badge}
+                    </span>
+                  ) : (
+                    <MissingOptional label="family badge" />
+                  )}
+                </div>
+                {card.title ? (
+                  <h3
+                    className={
+                      featured
+                        ? "mb-4 font-headline-md text-headline-md text-on-primary-fixed"
+                        : "mb-4 font-headline-md text-headline-md text-primary"
+                    }
+                  >
+                    {decodeMojibake(card.title)}
+                  </h3>
+                ) : (
+                  <MissingOptional label="family title" />
+                )}
+                {card.body ? (
+                  <p
+                    className={
+                      featured
+                        ? "mb-8 font-body-md text-body-md text-on-primary-container/70"
+                        : "mb-8 font-body-md text-body-md text-on-surface-variant"
+                    }
+                  >
+                    {card.body}
+                  </p>
+                ) : (
+                  <MissingOptional label="family body" />
+                )}
+                {card.items?.length ? (
+                  <ul className="space-y-3 font-label-sm text-label-sm">
+                    {card.items.map((item) => (
+                      <li key={item} className="flex items-center gap-2">
+                        <span
+                          className={
+                            featured
+                              ? "h-1.5 w-1.5 rounded-full bg-on-primary-fixed"
+                              : "h-1.5 w-1.5 rounded-full bg-primary"
+                          }
+                        />
+                        {decodeMojibake(item)}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <MissingOptional label="family items" />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function RnExperienceAdapter({ section }: { section: PreviewSectionPayload }) {
+  const bullets = labeledEntries(section.data.bullets);
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const overlay = callouts[0];
+
+  return (
+    <section className="relative overflow-hidden bg-surface py-stack-lg">
+      <div className="mx-auto grid max-w-container-max grid-cols-12 items-center gap-gutter px-margin-desktop">
+        <div className="col-span-12 lg:col-span-6">
+          <div className="relative aspect-video overflow-hidden rounded-2xl shadow-2xl">
+            {section.media.url ? (
+              <StitchImage
+                src={section.media.url}
+                alt={section.media.alt ?? ""}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <MissingMedia message={section.media.missing ?? "engineering image not resolved"} />
+            )}
+            <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent p-8">
+              {firstString(overlay?.title) ? (
+                <div className="font-headline-md text-headline-md text-on-primary">
+                  {firstString(overlay?.title)}
+                </div>
+              ) : (
+                <MissingOptional label="overlay title" />
+              )}
+              {firstString(overlay?.body) ? (
+                <p className="font-body-md text-body-md text-on-primary/80">
+                  {firstString(overlay?.body)}
+                </p>
+              ) : (
+                <MissingOptional label="overlay body" />
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="col-span-12 space-y-stack-md lg:col-span-6 lg:pl-12">
+          {headingOf(section.data) ? (
+            <h2 className="font-headline-lg text-headline-lg text-primary">
+              {headingOf(section.data)}
+            </h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {bullets.length === 0 ? <MissingOptional label="bullets" /> : null}
+          <div className="space-y-6">
+            {bullets.map((bullet) => (
+              <div key={bullet.title} className="flex gap-4">
+                {bullet.icon ? (
+                  <span
+                    className="material-symbols-outlined shrink-0 text-primary"
+                    style={{ fontVariationSettings: "'FILL' 1" }}
+                  >
+                    {bullet.icon}
+                  </span>
+                ) : (
+                  <MissingOptional label="bullet icon" />
+                )}
+                <div>
+                  {bullet.title ? (
+                    <h4 className="mb-1 font-headline-md text-[20px] text-primary">{bullet.title}</h4>
+                  ) : (
+                    <MissingOptional label="bullet title" />
+                  )}
+                  {bullet.body ? (
+                    <p className="font-body-md text-body-md text-on-surface-variant">
+                      {decodeMojibake(bullet.body)}
+                    </p>
+                  ) : (
+                    <MissingOptional label="bullet body" />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function RnVerticalsAdapter({ section }: { section: PreviewSectionPayload }) {
+  const rawCards = Array.isArray(section.data.cards) ? section.data.cards.map(asRecord) : [];
+
+  return (
+    <section className="overflow-hidden bg-surface-container-high py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        {headingOf(section.data) ? (
+          <h2 className="mb-12 font-headline-lg text-headline-lg text-primary">
+            {headingOf(section.data)}
+          </h2>
+        ) : (
+          <MissingOptional label="heading" />
+        )}
+        {section.cards.length === 0 ? <MissingOptional label="cards" /> : null}
+        <div className="flex flex-col gap-gutter md:flex-row">
+          {section.cards.map((card, index) => {
+            const raw = rawCards[index] ?? {};
+            const badge = card.badges?.[0] ?? firstString(raw.badge, card.eyebrow);
+            return (
+              <div
+                key={`${card.title}-${index}`}
+                className="group flex-1 overflow-hidden rounded-2xl bg-surface shadow-sm transition-transform duration-500 hover:-translate-y-2 hover:shadow-xl"
+              >
+                <div className="relative h-64 overflow-hidden">
+                  {card.imageUrl ? (
+                    <StitchImage
+                      src={card.imageUrl}
+                      alt={card.imageAlt ?? ""}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  ) : (
+                    <MissingMedia message={`${card.title} image not resolved`} />
+                  )}
+                  {badge ? (
+                    <div className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 font-label-sm text-label-sm text-on-primary">
+                      {badge}
+                    </div>
+                  ) : (
+                    <MissingOptional label="vertical badge" />
+                  )}
+                </div>
+                <div className="p-8">
+                  {card.title ? (
+                    <h3 className="mb-4 font-headline-md text-headline-md text-primary">{card.title}</h3>
+                  ) : (
+                    <MissingOptional label="vertical title" />
+                  )}
+                  {card.body ? (
+                    <p className="mb-6 font-body-md text-body-md text-on-surface-variant">{card.body}</p>
+                  ) : (
+                    <MissingOptional label="vertical body" />
+                  )}
+                  {card.href && card.label ? (
+                    <Link
+                      href={card.href}
+                      className="inline-flex items-center gap-2 font-label-sm text-label-sm text-primary transition-all hover:gap-3"
+                    >
+                      {card.label}
+                      <span className="material-symbols-outlined text-sm">open_in_new</span>
+                    </Link>
+                  ) : card.label ? (
+                    <span className="inline-flex items-center gap-2 font-label-sm text-label-sm text-primary">
+                      {card.label}
+                      <span className="material-symbols-outlined text-sm">open_in_new</span>
+                    </span>
+                  ) : (
+                    <MissingOptional label="vertical action" />
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function RnCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary] = labeledActions(section);
+  const items = Array.isArray(section.data.items) ? section.data.items.map(asRecord) : [];
+  const title = headingOf(section.data);
+  const eyebrow = eyebrowOf(section.data);
+  const showEyebrow = eyebrow && eyebrow !== title;
+
+  return (
+    <section className="relative py-stack-lg">
+      <div className="relative z-10 mx-auto max-w-4xl px-margin-mobile text-center">
+        {showEyebrow ? (
+          <span className="mb-4 block font-label-sm text-label-sm uppercase tracking-widest text-primary">
+            {eyebrow}
+          </span>
+        ) : null}
+        {title ? (
+          <h2 className="mb-stack-md font-display-lg text-headline-lg text-primary lg:text-display-lg">
+            {title}
+          </h2>
+        ) : (
+          <MissingOptional label="title" />
+        )}
+        {bodyOf(section.data) ? (
+          <p className="mb-stack-lg font-body-lg text-body-lg text-on-surface-variant">
+            {bodyOf(section.data)}
+          </p>
+        ) : (
+          <MissingOptional label="body" />
+        )}
+        {items.length === 0 ? <MissingOptional label="metrics" /> : null}
+        <div className="mb-stack-lg grid grid-cols-2 gap-gutter md:grid-cols-4">
+          {items.map((item, index) => (
+            <div
+              key={`${firstString(item.label)}-${index}`}
+              className="rounded-xl border border-outline-variant bg-surface p-6"
+            >
+              {firstString(item.value) ? (
+                <div className="font-display-lg text-[32px] text-primary">
+                  {decodeMojibake(firstString(item.value))}
+                </div>
+              ) : (
+                <MissingOptional label="metric value" />
+              )}
+              {firstString(item.label) ? (
+                <div className="font-label-sm text-label-sm text-on-surface-variant">
+                  {firstString(item.label)}
+                </div>
+              ) : (
+                <MissingOptional label="metric label" />
+              )}
+            </div>
+          ))}
+        </div>
+        {primary?.href ? (
+          <Link
+            href={primary.href}
+            className="rounded-full bg-primary px-12 py-5 font-headline-md text-headline-md text-on-primary transition-transform hover:scale-105"
+          >
+            {primary.label}
+          </Link>
+        ) : primary ? (
+          <button
+            type="button"
+            className="rounded-full bg-primary px-12 py-5 font-headline-md text-headline-md text-on-primary"
+          >
+            {primary.label}
+          </button>
+        ) : (
+          <MissingOptional label="primary action" />
+        )}
+      </div>
+    </section>
+  );
+}
+
 export function RequestConsultationResponsibilityAdapter({
   section,
 }: {
@@ -4181,6 +9562,1369 @@ export function RequestConsultationResponsibilityAdapter({
           ) : (
             <MissingOptional label="body" />
           )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function solutionCatalogCards(section: PreviewSectionPayload) {
+  return Array.isArray(section.data.cards) ? section.data.cards.map(asRecord) : [];
+}
+
+function solutionCardItems(card: Record<string, unknown>) {
+  return stringItems(card.items).map((item) => decodeMojibake(item)).filter(Boolean);
+}
+
+function solutionCardMedia(card: Record<string, unknown>) {
+  const media = asRecord(card.media);
+  return firstString(media.source, card.imageUrl, card.image);
+}
+
+function solutionCardActions(card: Record<string, unknown>) {
+  const nested = Array.isArray(card.actions)
+    ? card.actions
+        .map((item) => {
+          const record = asRecord(item);
+          const label = firstString(record.label, record.text);
+          if (!label) return null;
+          return { label, href: firstString(record.href, record.url) };
+        })
+        .filter((item): item is { label: string; href?: string } => Boolean(item))
+    : [];
+  if (nested.length) return nested;
+  const link = asRecord(card.link);
+  const label = firstString(link.label, card.label);
+  const href = firstString(link.href, link.url, card.href, card.url);
+  return label ? [{ label, href }] : [];
+}
+
+export function SolutionsCatalogAdapter({ section }: { section: PreviewSectionPayload }) {
+  const cards = solutionCatalogCards(section);
+  const gateway = cards[0] ?? {};
+  const bms = cards[1] ?? {};
+  const charger = cards[2] ?? {};
+  const tracking = cards[3] ?? {};
+  const gatewayItems = solutionCardItems(gateway);
+  const gatewayFeatures = stringItems(gateway.features).length
+    ? stringItems(gateway.features)
+    : gatewayItems.slice(0, 3);
+  const gatewayApplications = stringItems(gateway.applications).length
+    ? stringItems(gateway.applications)
+    : gatewayItems.slice(3);
+  const gatewayAction = solutionCardActions(gateway)[0];
+  const gatewayBadge = firstString(gateway.badge, ...(Array.isArray(gateway.badges) ? gateway.badges : []));
+  const bmsHighlight = asRecord(bms.highlight);
+  const bmsItems = solutionCardItems(bms).filter(
+    (item) => !/state of health|accuracy/i.test(item)
+  );
+  const sohTitle = firstString(bmsHighlight.title) ?? "State of Health (SoH)";
+  const sohAccuracy =
+    decodeMojibake(firstString(bmsHighlight.body, bmsHighlight.accuracy)) ||
+    decodeMojibake(
+      solutionCardItems(bms).find((item) => /accuracy|state of health/i.test(item))
+    );
+  const sohProgress = Number(bmsHighlight.progress);
+  const chargerImage = solutionCardMedia(charger);
+  const trackingActions = solutionCardActions(tracking);
+  const trackingMap = solutionCardMedia(tracking);
+  const coordinates = decodeMojibake(firstString(tracking.coordinates, tracking.location));
+
+  return (
+    <div className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      {cards.length === 0 ? <MissingOptional label="solution cards" /> : null}
+      <div className="grid grid-cols-12 gap-gutter">
+        <div className="col-span-12 flex flex-col gap-stack-md rounded-xl p-8 glass-card group md:col-span-7">
+          <div className="flex items-start justify-between">
+            <div className="rounded-lg bg-primary p-4 text-on-primary">
+              <span className="material-symbols-outlined text-3xl">
+                {firstString(gateway.icon) ?? "router"}
+              </span>
+            </div>
+            {gatewayBadge ? (
+              <span className="rounded border border-outline-variant px-2 py-1 font-label-sm text-label-sm text-on-surface-variant">
+                {gatewayBadge}
+              </span>
+            ) : (
+              <MissingOptional label="gateway badge" />
+            )}
+          </div>
+          <div>
+            {firstString(gateway.title) ? (
+              <h2 className="mb-base font-headline-lg text-headline-lg">{firstString(gateway.title)}</h2>
+            ) : (
+              <MissingOptional label="gateway title" />
+            )}
+            {firstString(gateway.body) ? (
+              <p className="font-body-md text-body-md leading-relaxed text-on-surface-variant">
+                {firstString(gateway.body)}
+              </p>
+            ) : (
+              <MissingOptional label="gateway body" />
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-stack-md">
+            <div>
+              <span className="mb-2 block font-label-sm text-label-sm font-bold uppercase tracking-tighter text-primary">
+                Key Features
+              </span>
+              {gatewayFeatures.length === 0 ? <MissingOptional label="key features" /> : (
+                <ul className="space-y-1 font-label-sm text-label-sm text-on-surface-variant">
+                  {gatewayFeatures.map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="h-1 w-1 rounded-full bg-primary" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div>
+              <span className="mb-2 block font-label-sm text-label-sm font-bold uppercase tracking-tighter text-primary">
+                Applications
+              </span>
+              {gatewayApplications.length === 0 ? <MissingOptional label="applications" /> : (
+                <ul className="space-y-1 font-label-sm text-label-sm text-on-surface-variant">
+                  {gatewayApplications.map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="h-1 w-1 rounded-full bg-primary" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+          {gatewayAction?.href ? (
+            <Link
+              href={gatewayAction.href}
+              className="mt-auto flex items-center gap-2 font-label-sm text-label-sm font-bold text-primary transition-transform group-hover:translate-x-2"
+            >
+              {gatewayAction.label}
+              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            </Link>
+          ) : gatewayAction ? (
+            <span className="mt-auto flex items-center gap-2 font-label-sm text-label-sm font-bold text-primary">
+              {gatewayAction.label}
+              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            </span>
+          ) : (
+            <MissingOptional label="datasheet action" />
+          )}
+        </div>
+
+        <div className="col-span-12 flex flex-col gap-stack-md rounded-xl border border-outline-variant bg-white p-8 transition-colors hover:border-primary md:col-span-5">
+          <div className="w-fit rounded-lg bg-secondary-container p-4 text-on-secondary-container">
+            <span className="material-symbols-outlined text-3xl">
+              {firstString(bms.icon) ?? "battery_charging_full"}
+            </span>
+          </div>
+          <div>
+            {firstString(bms.title) ? (
+              <h2 className="mb-base font-headline-md text-headline-md">{firstString(bms.title)}</h2>
+            ) : (
+              <MissingOptional label="BMS title" />
+            )}
+            {firstString(bms.body) ? (
+              <p className="font-body-md text-body-md text-on-surface-variant">{firstString(bms.body)}</p>
+            ) : (
+              <MissingOptional label="BMS body" />
+            )}
+          </div>
+          <div className="space-y-4">
+            <div className="rounded-lg bg-surface-container-low p-4">
+              <span className="mb-1 block font-label-sm text-label-sm font-bold">{sohTitle}</span>
+              <div className="h-1 w-full overflow-hidden rounded-full bg-outline-variant">
+                <div
+                  className="h-full bg-primary"
+                  style={{
+                    width: `${Number.isFinite(sohProgress) ? Math.min(100, Math.max(0, sohProgress)) : 94}%`,
+                  }}
+                />
+              </div>
+              {sohAccuracy ? (
+                <span className="mt-1 block font-label-sm text-[10px] text-on-surface-variant">
+                  {sohAccuracy.startsWith("ACCURACY") ? sohAccuracy : `ACCURACY: ${sohAccuracy.replace(/.*accuracy:\s*/i, "")}`}
+                </span>
+              ) : (
+                <MissingOptional label="SoH accuracy" />
+              )}
+            </div>
+            {bmsItems.length === 0 ? <MissingOptional label="BMS checks" /> : (
+              <ul className="space-y-2 font-label-sm text-label-sm text-on-surface-variant">
+                {bmsItems.map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-sm text-primary">check_circle</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+
+        <div className="col-span-12 flex flex-col overflow-hidden rounded-xl glass-card group md:col-span-5">
+          <div className="relative h-48 overflow-hidden">
+            {chargerImage ? (
+              <div
+                className="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                role="img"
+                aria-label={firstString(charger.mediaAlt, charger.imageAlt) ?? ""}
+                style={{ backgroundImage: `url('${chargerImage}')` }}
+              />
+            ) : (
+              <MissingMedia message="EV charger image not resolved" />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            <div className="absolute bottom-4 left-6 text-white">
+              {firstString(charger.eyebrow) ? (
+                <span className="font-label-sm text-label-sm uppercase text-white/80">
+                  {firstString(charger.eyebrow)}
+                </span>
+              ) : (
+                <MissingOptional label="charger eyebrow" />
+              )}
+              {firstString(charger.title) ? (
+                <h3 className="font-headline-md text-headline-md">{firstString(charger.title)}</h3>
+              ) : (
+                <MissingOptional label="charger title" />
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-stack-sm p-8">
+            {firstString(charger.body) ? (
+              <p className="font-body-md text-body-md text-on-surface-variant">{firstString(charger.body)}</p>
+            ) : (
+              <MissingOptional label="charger body" />
+            )}
+            {Array.isArray(charger.badges) && charger.badges.length ? (
+              <div className="flex flex-wrap gap-2">
+                {charger.badges.map((badge) => (
+                  <span
+                    key={String(badge)}
+                    className="rounded bg-surface-container px-2 py-1 font-label-sm text-[10px] uppercase text-on-surface-variant"
+                  >
+                    {String(badge)}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <MissingOptional label="charger badges" />
+            )}
+          </div>
+        </div>
+
+        <div className="col-span-12 flex flex-col gap-8 rounded-xl p-8 glass-card md:col-span-7 md:flex-row">
+          <div className="flex flex-1 flex-col justify-center gap-4">
+            <div className="inline-flex items-center gap-2 text-primary">
+              <span className="material-symbols-outlined">{firstString(tracking.icon) ?? "location_on"}</span>
+              {firstString(tracking.eyebrow) ? (
+                <span className="font-label-sm text-label-sm font-bold uppercase tracking-widest">
+                  {firstString(tracking.eyebrow)}
+                </span>
+              ) : (
+                <MissingOptional label="tracking eyebrow" />
+              )}
+            </div>
+            {firstString(tracking.title) ? (
+              <h2 className="font-headline-lg text-headline-lg">{firstString(tracking.title)}</h2>
+            ) : (
+              <MissingOptional label="tracking title" />
+            )}
+            {firstString(tracking.body) ? (
+              <p className="font-body-md text-body-md text-on-surface-variant">{firstString(tracking.body)}</p>
+            ) : (
+              <MissingOptional label="tracking body" />
+            )}
+            <div className="flex items-center gap-4">
+              {trackingActions.length === 0 ? <MissingOptional label="tracking actions" /> : null}
+              {trackingActions.map((action, index) =>
+                action.href ? (
+                  <Link
+                    key={`${action.label}-${action.href}`}
+                    href={action.href}
+                    className={
+                      index === 0
+                        ? "rounded bg-primary px-6 py-3 font-label-sm text-label-sm text-on-primary transition-all hover:bg-primary/90"
+                        : "rounded border border-outline-variant px-6 py-3 font-label-sm text-label-sm transition-all hover:bg-surface-container"
+                    }
+                  >
+                    {action.label}
+                  </Link>
+                ) : (
+                  <span key={action.label} className="rounded border border-outline-variant px-6 py-3 font-label-sm text-label-sm">
+                    {action.label}
+                  </span>
+                )
+              )}
+            </div>
+          </div>
+          <div className="flex w-full flex-col justify-center gap-4 rounded-lg border border-outline-variant/30 bg-surface-container-high p-4 md:w-1/3">
+            <div className="flex items-center justify-between text-on-surface-variant">
+              <span className="font-label-sm text-[10px]">GNSS LOCK</span>
+              <span className="material-symbols-outlined text-sm text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>
+                signal_cellular_alt
+              </span>
+            </div>
+            <div className="space-y-1">
+              <div className="text-[10px] font-bold uppercase text-on-surface-variant">Coordinates</div>
+              {coordinates ? (
+                <div className="font-label-sm text-label-sm text-primary">{coordinates}</div>
+              ) : (
+                <MissingOptional label="coordinates" />
+              )}
+            </div>
+            <div className="relative h-24 overflow-hidden rounded border border-outline-variant bg-white">
+              {trackingMap ? (
+                <div
+                  className="h-full w-full bg-cover bg-center grayscale opacity-50"
+                  style={{ backgroundImage: `url('${trackingMap}')` }}
+                />
+              ) : (
+                <MissingMedia message="asset tracking map not resolved" />
+              )}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="h-3 w-3 animate-ping rounded-full bg-primary" />
+                <div className="absolute h-2 w-2 rounded-full bg-primary" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SolutionsInquiryAdapter({ section }: { section: PreviewSectionPayload }) {
+  const title = headingOf(section.data);
+  const accent = "Matrix-Core Systems.";
+  const accentIndex = title?.indexOf(accent) ?? -1;
+  const callouts = Array.isArray(section.data.callouts)
+    ? section.data.callouts.map(asRecord)
+    : [];
+  const inquiry = callouts.find((item) => firstString(item.title) === "Technical Inquiry") ?? callouts[2];
+  const trust = callouts.filter((item) => firstString(item.title) !== "Technical Inquiry");
+  const options = Array.isArray(inquiry?.options) ? inquiry.options.map(String) : [];
+  const [submit] = labeledActions(section);
+
+  return (
+    <section className="relative overflow-hidden bg-primary-container py-stack-lg text-on-primary-container">
+      <div className="pointer-events-none absolute inset-0 opacity-10" />
+      <div className="relative z-10 mx-auto grid max-w-container-max grid-cols-12 gap-gutter px-margin-desktop">
+        <div className="col-span-12 flex flex-col justify-center gap-stack-md lg:col-span-6">
+          {title ? (
+            <h2 className="font-display-lg text-headline-lg text-white">
+              {accentIndex >= 0 ? (
+                <>
+                  {title.slice(0, accentIndex).trimEnd()}
+                  <br />
+                  <span className="text-on-primary-container">{accent}</span>
+                </>
+              ) : (
+                title
+              )}
+            </h2>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="max-w-lg font-body-lg text-body-lg text-on-primary-container/70">
+              {bodyOf(section.data)}
+            </p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+          <div className="flex flex-wrap gap-stack-md">
+            {trust.length === 0 ? <MissingOptional label="trust callouts" /> : null}
+            {trust.map((item) => (
+              <div key={firstString(item.title)} className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-4xl opacity-50">
+                  {firstString(item.icon) ?? "verified"}
+                </span>
+                <div>
+                  <span className="block font-label-sm text-label-sm text-white">
+                    {firstString(item.title)}
+                  </span>
+                  {firstString(item.body) ? (
+                    <span className="block font-label-sm text-[10px] opacity-60">
+                      {firstString(item.body)}
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="col-span-12 lg:col-span-6">
+          <div className="flex flex-col gap-6 rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur-md">
+            <h3 className="font-headline-md text-headline-md text-white">
+              {firstString(inquiry?.title) ?? "Technical Inquiry"}
+            </h3>
+            <form className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <input
+                  className="rounded border-white/20 bg-white/10 px-4 py-3 text-white outline-none transition-all placeholder:text-white/40 focus:border-transparent focus:ring-2 focus:ring-primary"
+                  placeholder="Full Name"
+                  type="text"
+                  readOnly
+                />
+                <input
+                  className="rounded border-white/20 bg-white/10 px-4 py-3 text-white outline-none transition-all placeholder:text-white/40 focus:border-transparent focus:ring-2 focus:ring-primary"
+                  placeholder="Work Email"
+                  type="email"
+                  readOnly
+                />
+              </div>
+              <select className="w-full rounded border-white/20 bg-white/10 px-4 py-3 text-white/40 outline-none transition-all focus:ring-2 focus:ring-primary">
+                <option>Select Solution Category</option>
+                {options.map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
+              </select>
+              <textarea
+                className="w-full rounded border-white/20 bg-white/10 px-4 py-3 text-white outline-none transition-all placeholder:text-white/40 focus:ring-2 focus:ring-primary"
+                placeholder="Project requirements"
+                rows={3}
+                readOnly
+              />
+              {submit?.href ? (
+                <Link
+                  href={submit.href}
+                  className="w-full rounded bg-white py-4 text-center font-bold uppercase tracking-widest text-primary text-label-sm transition-all hover:bg-white/90"
+                >
+                  {submit.label}
+                </Link>
+              ) : submit ? (
+                <span className="block w-full rounded bg-white py-4 text-center font-bold uppercase tracking-widest text-primary text-label-sm">
+                  {submit.label}
+                </span>
+              ) : (
+                <MissingOptional label="inquiry action" />
+              )}
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function tiCards(section: PreviewSectionPayload) {
+  return Array.isArray(section.data.cards) ? section.data.cards.map(asRecord) : [];
+}
+
+function tiCardMedia(card: Record<string, unknown>) {
+  const media = asRecord(card.media);
+  return firstString(media.source, card.imageUrl, card.image);
+}
+
+function tiMetrics(card: Record<string, unknown>) {
+  return Array.isArray(card.metrics)
+    ? card.metrics
+        .map((item) => {
+          const record = asRecord(item);
+          const value = firstString(record.value, record.stat);
+          const label = firstString(record.label, record.title);
+          if (!value && !label) return null;
+          return { value: value ?? "", label: label ?? "" };
+        })
+        .filter((item): item is { value: string; label: string } => Boolean(item))
+    : [];
+}
+
+export function TiDomainsAdapter({ section }: { section: PreviewSectionPayload }) {
+  const cards = tiCards(section);
+  const power = cards[0] ?? {};
+  const analog = cards[1] ?? {};
+  const rest = cards.slice(2);
+  const analogImage = tiCardMedia(analog);
+  const domainIcons = ["memory", "router", "radar"];
+
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      <div className="mb-16 flex items-end justify-between">
+        <div>
+          {headingOf(section.data) ? (
+            <h2 className="mb-4 font-headline-lg text-headline-lg text-primary">
+              {headingOf(section.data)}
+            </h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {firstString(section.data.introduction) ? (
+            <p className="max-w-lg font-body-md text-body-md text-on-surface-variant">
+              {firstString(section.data.introduction)}
+            </p>
+          ) : (
+            <MissingOptional label="introduction" />
+          )}
+        </div>
+        <div className="mx-12 hidden h-[1px] flex-grow bg-outline-variant/30 md:block" />
+      </div>
+      {cards.length === 0 ? <MissingOptional label="domain cards" /> : null}
+      <div className="grid grid-cols-1 gap-gutter md:grid-cols-12">
+        <div className="technical-glow group relative overflow-hidden border border-outline-variant bg-white p-12 transition-all duration-500 hover:border-primary md:col-span-8">
+          <div className="absolute right-0 top-0 p-8 opacity-10 transition-opacity group-hover:opacity-100">
+            <span className="material-symbols-outlined text-6xl">{firstString(power.icon) ?? "bolt"}</span>
+          </div>
+          <span className="mb-6 block font-label-sm text-label-sm uppercase tracking-widest text-on-primary-container">
+            {firstString(power.eyebrow) ?? "Efficiency & Density"}
+          </span>
+          {firstString(power.title) ? (
+            <h3 className="mb-6 font-headline-md text-headline-md text-primary">{firstString(power.title)}</h3>
+          ) : (
+            <MissingOptional label="power title" />
+          )}
+          {firstString(power.body) ? (
+            <p className="mb-8 max-w-md font-body-md text-body-md text-on-surface-variant">
+              {decodeMojibake(firstString(power.body))}
+            </p>
+          ) : (
+            <MissingOptional label="power body" />
+          )}
+          <div className="grid grid-cols-2 gap-8 border-t border-outline-variant/20 pt-8">
+            {tiMetrics(power).length === 0 ? <MissingOptional label="power metrics" /> : null}
+            {tiMetrics(power).map((metric) => (
+              <div key={metric.label}>
+                <div className="mb-1 font-display-lg text-2xl text-primary">{metric.value}</div>
+                <div className="font-label-sm text-label-sm text-on-surface-variant">{metric.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="group relative overflow-hidden bg-primary-container p-10 text-on-primary md:col-span-4">
+          <span className="mb-6 block font-label-sm text-label-sm uppercase tracking-widest text-on-primary-container">
+            {firstString(analog.eyebrow) ?? "Data Integrity"}
+          </span>
+          {firstString(analog.title) ? (
+            <h3 className="mb-6 font-headline-md text-headline-md">{firstString(analog.title)}</h3>
+          ) : (
+            <MissingOptional label="analog title" />
+          )}
+          {firstString(analog.body) ? (
+            <p className="mb-12 font-body-md text-body-md text-on-primary-container">
+              {firstString(analog.body)}
+            </p>
+          ) : (
+            <MissingOptional label="analog body" />
+          )}
+          <div className="mt-auto">
+            {analogImage ? (
+              <StitchImage
+                src={analogImage}
+                alt={firstString(analog.mediaAlt, analog.imageAlt) ?? ""}
+                className="h-32 w-full object-cover opacity-50 transition-opacity group-hover:opacity-80"
+              />
+            ) : (
+              <MissingMedia message="precision analog image not resolved" />
+            )}
+          </div>
+        </div>
+        {rest.map((card, index) => (
+          <div
+            key={firstString(card.title) ?? index}
+            className={
+              index === 0
+                ? "glass-panel group p-10 transition-all duration-300 hover:bg-white md:col-span-4"
+                : "group border border-outline-variant p-10 transition-all duration-300 hover:border-primary md:col-span-4"
+            }
+          >
+            <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-sm bg-surface-container">
+              <span className="material-symbols-outlined text-primary">
+                {firstString(card.icon) ?? domainIcons[index] ?? "memory"}
+              </span>
+            </div>
+            {firstString(card.title) ? (
+              <h3 className="mb-4 font-headline-md text-headline-md text-primary">{firstString(card.title)}</h3>
+            ) : (
+              <MissingOptional label="domain title" />
+            )}
+            {firstString(card.body) ? (
+              <p className="font-body-md text-body-md text-on-surface-variant">
+                {decodeMojibake(firstString(card.body))}
+              </p>
+            ) : (
+              <MissingOptional label="domain body" />
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function TiIntegrityAdapter({ section }: { section: PreviewSectionPayload }) {
+  const bullets = stringItems(section.data.bullets);
+  const image = section.media.url ?? firstString(asRecord(section.data.media).source);
+
+  return (
+    <section className="relative overflow-hidden bg-primary-container py-24">
+      <div className="absolute inset-0 opacity-10" />
+      <div className="relative z-10 mx-auto grid max-w-container-max grid-cols-12 gap-gutter px-margin-desktop">
+        <div className="col-span-12 text-on-primary md:col-span-5">
+          {eyebrowOf(section.data) ? (
+            <span className="mb-4 block font-label-sm text-label-sm uppercase tracking-widest text-on-primary-container">
+              {eyebrowOf(section.data)}
+            </span>
+          ) : (
+            <MissingOptional label="eyebrow" />
+          )}
+          {headingOf(section.data) ? (
+            <h2 className="mb-8 font-display-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {bullets.length === 0 ? <MissingOptional label="architecture bullets" /> : (
+            <ul className="space-y-6">
+              {bullets.map((item) => (
+                <li key={item} className="flex items-start gap-4">
+                  <span className="material-symbols-outlined mt-1 text-on-primary-container">check_circle</span>
+                  <p className="font-body-md text-body-md text-on-primary-container">{item}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="col-span-12 mt-12 md:col-span-7 md:mt-0">
+          <div className="glass-panel flex aspect-video items-center justify-center overflow-hidden border-white/10 p-4">
+            {image ? (
+              <StitchImage
+                src={image}
+                alt={section.media.alt ?? firstString(section.data.mediaAlt) ?? ""}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <MissingMedia message="signal integrity diagram not resolved" />
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function TiFusionAdapter({ section }: { section: PreviewSectionPayload }) {
+  const paragraphs = decodeMojibake(bodyOf(section.data))
+    .split(/\n\n+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const [action] = labeledActions(section);
+  const chipImage = section.media.url ?? firstString(asRecord(section.data.media).source);
+  const callout = asRecord(Array.isArray(section.data.callouts) ? section.data.callouts[0] : undefined);
+  const factoryImage = firstString(asRecord(callout.media).source);
+
+  return (
+    <section className="mx-auto max-w-container-max px-margin-desktop py-stack-lg">
+      <div className="grid grid-cols-1 items-center gap-stack-lg md:grid-cols-2">
+        <div className="order-2 md:order-1">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex aspect-square items-center justify-center border border-outline-variant bg-surface-container p-8">
+              <span className="material-symbols-outlined text-5xl text-primary/20">developer_board</span>
+            </div>
+            <div className="flex aspect-square items-center justify-center overflow-hidden border border-outline-variant bg-white">
+              {chipImage ? (
+                <StitchImage
+                  src={chipImage}
+                  alt={section.media.alt ?? firstString(section.data.mediaAlt) ?? ""}
+                  className="h-full w-full object-cover grayscale transition-all duration-700 hover:grayscale-0"
+                />
+              ) : (
+                <MissingMedia message="sensor fusion chip image not resolved" />
+              )}
+            </div>
+            <div className="flex aspect-square items-center justify-center overflow-hidden border border-outline-variant bg-white">
+              {factoryImage ? (
+                <StitchImage
+                  src={factoryImage}
+                  alt={firstString(callout.mediaAlt) ?? ""}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <MissingMedia message="sensor fusion factory image not resolved" />
+              )}
+            </div>
+            <div className="flex aspect-square items-center justify-center border border-outline-variant bg-surface-container-high">
+              <span className="material-symbols-outlined text-5xl text-primary/40">settings_input_component</span>
+            </div>
+          </div>
+        </div>
+        <div className="order-1 pl-0 md:order-2 md:pl-16">
+          {eyebrowOf(section.data) ? (
+            <span className="mb-6 block font-label-sm text-label-sm uppercase tracking-widest text-on-primary-container">
+              {eyebrowOf(section.data)}
+            </span>
+          ) : (
+            <MissingOptional label="eyebrow" />
+          )}
+          {headingOf(section.data) ? (
+            <h2 className="mb-8 font-headline-lg text-headline-lg leading-tight text-primary">
+              {headingOf(section.data)}
+            </h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {paragraphs.length === 0 ? <MissingOptional label="body" /> : null}
+          {paragraphs.map((paragraph, index) => (
+            <p
+              key={paragraph.slice(0, 24)}
+              className={index === paragraphs.length - 1 ? "mb-10 font-body-md text-body-md text-on-surface-variant" : "mb-6 font-body-md text-body-md text-on-surface-variant"}
+            >
+              {paragraph}
+            </p>
+          ))}
+          {action?.href ? (
+            <Link
+              href={action.href}
+              className="inline-flex items-center gap-2 border-b border-primary pb-1 font-label-sm text-label-sm font-bold text-primary transition-all hover:gap-4"
+            >
+              {action.label}
+              <span className="material-symbols-outlined text-sm">north_east</span>
+            </Link>
+          ) : action ? (
+            <span className="inline-flex items-center gap-2 border-b border-primary pb-1 font-label-sm text-label-sm font-bold text-primary">
+              {action.label}
+              <span className="material-symbols-outlined text-sm">north_east</span>
+            </span>
+          ) : (
+            <MissingOptional label="design resources action" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function TiInfrastructureAdapter({ section }: { section: PreviewSectionPayload }) {
+  const cards = tiCards(section);
+  const fallbackIcons = ["medical_services", "ev_station", "factory"];
+
+  return (
+    <section className="bg-surface-container px-margin-desktop py-24">
+      <div className="mx-auto mb-16 max-w-container-max text-center">
+        {headingOf(section.data) ? (
+          <h2 className="mb-4 font-headline-lg text-headline-lg text-primary">{headingOf(section.data)}</h2>
+        ) : (
+          <MissingOptional label="heading" />
+        )}
+        {firstString(section.data.introduction) ? (
+          <p className="mx-auto max-w-2xl font-body-md text-body-md text-on-surface-variant">
+            {firstString(section.data.introduction)}
+          </p>
+        ) : (
+          <MissingOptional label="introduction" />
+        )}
+      </div>
+      {cards.length === 0 ? <MissingOptional label="infrastructure cards" /> : null}
+      <div className="mx-auto grid max-w-container-max grid-cols-1 gap-gutter md:grid-cols-3">
+        {cards.map((card, index) => {
+          const image = tiCardMedia(card);
+          return (
+            <div key={firstString(card.title) ?? index} className="group relative h-[500px] overflow-hidden">
+              {image ? (
+                <div
+                  className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
+                  role="img"
+                  aria-label={firstString(card.mediaAlt, card.imageAlt) ?? ""}
+                  style={{ backgroundImage: `url('${image}')` }}
+                />
+              ) : (
+                <MissingMedia message={`${firstString(card.title) ?? "infrastructure"} image not resolved`} />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent" />
+              <div className="absolute bottom-0 p-10 text-on-primary">
+                <span className="mb-4 text-3xl material-symbols-outlined">
+                  {firstString(card.icon) ?? fallbackIcons[index] ?? "factory"}
+                </span>
+                {firstString(card.title) ? (
+                  <h4 className="mb-4 font-headline-md text-headline-md">{firstString(card.title)}</h4>
+                ) : (
+                  <MissingOptional label="vertical title" />
+                )}
+                {firstString(card.body) ? (
+                  <p className="font-body-md text-body-md text-on-primary-container opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    {firstString(card.body)}
+                  </p>
+                ) : (
+                  <MissingOptional label="vertical body" />
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+export function TiAdvantageAdapter({ section }: { section: PreviewSectionPayload }) {
+  const items = Array.isArray(section.data.items) ? section.data.items.map(asRecord) : [];
+
+  return (
+    <section className="border-t border-outline-variant/10 bg-white px-margin-desktop py-stack-lg">
+      <div className="mx-auto max-w-container-max">
+        <div className="flex flex-col gap-stack-lg md:flex-row">
+          <div className="md:w-1/3">
+            {headingOf(section.data) ? (
+              <h2 className="mb-8 font-headline-lg text-headline-lg text-primary">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="title" />
+            )}
+            {bodyOf(section.data) ? (
+              <p className="font-body-md text-body-md text-on-surface-variant">{bodyOf(section.data)}</p>
+            ) : (
+              <MissingOptional label="body" />
+            )}
+          </div>
+          <div className="grid grid-cols-1 gap-x-gutter gap-y-12 md:w-2/3 md:grid-cols-2">
+            {items.length === 0 ? <MissingOptional label="advantage items" /> : null}
+            {items.map((item) => (
+              <div key={firstString(item.title)}>
+                {firstString(item.title) ? (
+                  <h5 className="mb-3 font-headline-md text-headline-md text-primary">{firstString(item.title)}</h5>
+                ) : (
+                  <MissingOptional label="item title" />
+                )}
+                {firstString(item.body) ? (
+                  <p className="font-body-md text-body-md text-on-surface-variant">{firstString(item.body)}</p>
+                ) : (
+                  <MissingOptional label="item body" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function TiCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [action] = labeledActions(section);
+
+  return (
+    <section className="px-margin-desktop py-24 text-center">
+      <div className="group relative mx-auto max-w-3xl overflow-hidden glass-panel p-16">
+        <div className="absolute inset-0 translate-y-full bg-primary transition-transform duration-500 ease-in-out group-hover:translate-y-0" />
+        <div className="relative z-10 transition-colors duration-500 group-hover:text-on-primary">
+          {headingOf(section.data) ? (
+            <h2 className="mb-8 font-display-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="mb-10 font-body-lg text-body-lg opacity-70">{bodyOf(section.data)}</p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+          {action?.href ? (
+            <Link
+              href={action.href}
+              className="rounded-none bg-primary px-10 py-5 font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-primary transition-colors group-hover:bg-white group-hover:text-primary"
+            >
+              {action.label}
+            </Link>
+          ) : action ? (
+            <span className="rounded-none bg-primary px-10 py-5 font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-primary">
+              {action.label}
+            </span>
+          ) : (
+            <MissingOptional label="cta action" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const WSN_OVERVIEW_ICONS: Record<string, string> = {
+  "Heterogeneous Mesh Architecture": "grid_view",
+  "5-Year Lifespan": "battery_charging_full",
+  "AES-128 Encryption": "security",
+  "Sub-GHz Range": "dynamic_feed",
+};
+
+function wsnOverviewItems(section: PreviewSectionPayload) {
+  return Array.isArray(section.data.items) ? section.data.items.map(asRecord) : [];
+}
+
+function wsnItemIcon(item: Record<string, unknown>) {
+  const title = firstString(item.title, item.label);
+  return firstString(item.icon) ?? (title ? WSN_OVERVIEW_ICONS[title] : undefined);
+}
+
+function wsnMediaList(data: Record<string, unknown>) {
+  if (Array.isArray(data.media)) {
+    return data.media
+      .map((item) => {
+        if (typeof item === "string") return { source: item, alt: "" };
+        const record = asRecord(item);
+        const source = firstString(record.source, record.url);
+        if (!source) return null;
+        return { source, alt: firstString(record.alt, record.mediaAlt) ?? "" };
+      })
+      .filter((item): item is { source: string; alt: string } => Boolean(item));
+  }
+  const record = asRecord(data.media);
+  const source = firstString(record.source, record.url, data.imageUrl);
+  return source ? [{ source, alt: firstString(data.mediaAlt, record.alt) ?? "" }] : [];
+}
+
+function wsnStrategyTitle(title?: string) {
+  if (!title) return null;
+  const marker = "Your ";
+  const index = title.indexOf(marker);
+  if (index === -1) return title;
+  return (
+    <>
+      {title.slice(0, index + marker.length)}
+      <br />
+      {title.slice(index + marker.length)}
+    </>
+  );
+}
+
+export function WsnOverviewAdapter({ section }: { section: PreviewSectionPayload }) {
+  const items = wsnOverviewItems(section);
+  const feature = items[0] ?? {};
+  const metric = items[1] ?? {};
+  const rest = items.slice(2);
+  const featureIcon = wsnItemIcon(feature) ?? "grid_view";
+  const quote = quotedBody(firstString(metric.quote));
+
+  return (
+    <section className="bg-surface-container-low py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-md border-l-4 border-primary pl-6">
+          {headingOf(section.data) ? (
+            <h2 className="mb-2 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="max-w-2xl font-body-md text-on-surface-variant">{bodyOf(section.data)}</p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+        </div>
+        <div className="grid grid-cols-12 gap-gutter">
+          <div className="col-span-12 rounded-xl border border-outline-variant/20 bg-surface-container-lowest p-10 transition-colors hover:border-primary/40 md:col-span-8">
+            <span className="material-symbols-outlined mb-6 text-4xl text-primary">{featureIcon}</span>
+            {firstString(feature.title) ? (
+              <h3 className="mb-4 font-headline-md text-headline-md">{firstString(feature.title)}</h3>
+            ) : (
+              <MissingOptional label="mesh title" />
+            )}
+            {firstString(feature.body) ? (
+              <p className="font-body-md leading-relaxed text-on-surface-variant">{firstString(feature.body)}</p>
+            ) : (
+              <MissingOptional label="mesh body" />
+            )}
+          </div>
+          <div className="col-span-12 flex flex-col justify-between rounded-xl bg-primary p-10 text-on-primary md:col-span-4">
+            <div>
+              {firstString(metric.value) ? (
+                <h3 className="mb-2 font-headline-md text-headline-md">{firstString(metric.value)}</h3>
+              ) : (
+                <MissingOptional label="uptime value" />
+              )}
+              {firstString(metric.label) ? (
+                <p className="font-label-sm text-label-sm uppercase tracking-widest opacity-80">
+                  {firstString(metric.label)}
+                </p>
+              ) : (
+                <MissingOptional label="uptime label" />
+              )}
+            </div>
+            <div className="mt-8">
+              {quote ? (
+                <p className="font-body-md italic opacity-90">{quote}</p>
+              ) : (
+                <MissingOptional label="uptime quote" />
+              )}
+            </div>
+          </div>
+          {rest.length === 0 ? <MissingOptional label="capability cards" /> : null}
+          {rest.map((item, index) => (
+            <div
+              key={`${firstString(item.title)}-${index}`}
+              className="col-span-12 rounded-xl border border-outline-variant/20 bg-surface-container-lowest p-8 md:col-span-4"
+            >
+              <span className="material-symbols-outlined mb-4 text-3xl text-primary">
+                {wsnItemIcon(item) ?? "sensors"}
+              </span>
+              {firstString(item.title) ? (
+                <h4 className="mb-2 font-headline-md text-headline-md">{firstString(item.title)}</h4>
+              ) : (
+                <MissingOptional label="capability title" />
+              )}
+              {firstString(item.body) ? (
+                <p className="font-body-md text-on-surface-variant">{firstString(item.body)}</p>
+              ) : (
+                <MissingOptional label="capability body" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function WsnTopologyAdapter({ section }: { section: PreviewSectionPayload }) {
+  const nodes = Array.isArray(section.data.nodes) ? section.data.nodes.map(asRecord) : [];
+  const sensors = nodes.filter(
+    (node) => firstString(node.group) === "Distributed Sensors" || /^node/i.test(firstString(node.id, node.label) ?? "")
+  );
+  const gateway =
+    nodes.find((node) => Array.isArray(node.protocols) || firstString(node.id) === "gateway") ?? {};
+  const enterprise = nodes.filter((node) => firstString(node.group) === "Enterprise Layer");
+  const sensorGroup = firstString(...sensors.map((node) => node.group)) ?? "Distributed Sensors";
+  const enterpriseGroup = firstString(...enterprise.map((node) => node.group)) ?? "Enterprise Layer";
+  const protocols = Array.isArray(gateway.protocols)
+    ? gateway.protocols.map((item) => String(item)).filter(Boolean)
+    : [];
+  const enterpriseIcon = (label?: string) => {
+    if (label && /analytics/i.test(label)) return "analytics";
+    if (label && /control/i.test(label)) return "dashboard";
+    return "hub";
+  };
+
+  return (
+    <section className="overflow-hidden py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mx-auto mb-stack-md max-w-3xl text-center">
+          {headingOf(section.data) ? (
+            <h2 className="mb-4 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {firstString(section.data.introduction, section.data.body) ? (
+            <p className="font-body-md text-on-surface-variant">
+              {firstString(section.data.introduction, section.data.body)}
+            </p>
+          ) : (
+            <MissingOptional label="introduction" />
+          )}
+        </div>
+        <div className="relative rounded-2xl border border-outline-variant/20 bg-surface-container p-4 md:p-12">
+          <div className="relative z-10 grid grid-cols-1 items-center gap-12 lg:grid-cols-3">
+            <div className="space-y-6">
+              <div className="mb-4 text-center font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">
+                {sensorGroup}
+              </div>
+              {sensors.length === 0 ? <MissingOptional label="sensor nodes" /> : null}
+              {sensors.map((node, index) => (
+                <div
+                  key={firstString(node.id, node.label) ?? index}
+                  className={`flex items-center gap-4 rounded-lg border border-primary/20 p-6 glass-panel${index === 1 ? " translate-x-4" : ""}`}
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded bg-primary/10">
+                    <span className="material-symbols-outlined text-primary">
+                      {firstString(node.icon) ?? "sensors"}
+                    </span>
+                  </div>
+                  <div>
+                    {firstString(node.label, node.title) ? (
+                      <p className="font-label-sm font-bold">{firstString(node.label, node.title)}</p>
+                    ) : (
+                      <MissingOptional label="node label" />
+                    )}
+                    {firstString(node.description, node.body) ? (
+                      <p className="text-[10px] text-on-surface-variant">
+                        {firstString(node.description, node.body)}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="relative flex h-48 w-48 flex-col items-center justify-center rounded-full bg-primary text-on-primary shadow-2xl">
+                <div className="absolute inset-0 animate-ping rounded-full border-4 border-primary/30" />
+                <span className="material-symbols-outlined mb-2 text-5xl">
+                  {firstString(gateway.icon) ?? "router"}
+                </span>
+                {firstString(gateway.label, gateway.title) ? (
+                  <span className="font-label-sm text-label-sm font-bold">
+                    {firstString(gateway.label, gateway.title)}
+                  </span>
+                ) : (
+                  <MissingOptional label="gateway label" />
+                )}
+                {firstString(gateway.description, gateway.body) ? (
+                  <span className="text-[10px] opacity-70">
+                    {firstString(gateway.description, gateway.body)}
+                  </span>
+                ) : null}
+              </div>
+              <div className="mt-8 flex gap-4">
+                {protocols.length === 0 ? <MissingOptional label="gateway protocols" /> : null}
+                {protocols.map((protocol) => (
+                  <div
+                    key={protocol}
+                    className="rounded border border-outline-variant bg-surface px-3 py-1 font-label-sm text-[10px]"
+                  >
+                    {protocol}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-6">
+              <div className="mb-4 text-center font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">
+                {enterpriseGroup}
+              </div>
+              {enterprise.length === 0 ? <MissingOptional label="enterprise nodes" /> : null}
+              {enterprise.map((node, index) => {
+                const label = firstString(node.label, node.title);
+                const isControl = /control/i.test(label ?? "");
+                return (
+                  <div
+                    key={firstString(node.id, label) ?? index}
+                    className="rounded-xl border border-outline-variant/30 bg-white p-8 shadow-sm"
+                  >
+                    <h4 className="mb-4 flex items-center gap-2 font-label-sm text-label-sm font-bold">
+                      <span className="material-symbols-outlined text-primary">
+                        {firstString(node.icon) ?? enterpriseIcon(label)}
+                      </span>
+                      {label ?? <MissingOptional label="enterprise label" />}
+                    </h4>
+                    {isControl ? (
+                      <div className="grid grid-cols-4 gap-2">
+                        <div className="aspect-square rounded bg-primary-container" />
+                        <div className="aspect-square rounded bg-surface-container" />
+                        <div className="aspect-square rounded bg-primary-container" />
+                        <div className="aspect-square rounded bg-surface-container" />
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <div className="h-2 w-full rounded-full bg-surface-container" />
+                        <div className="h-2 w-3/4 rounded-full bg-surface-container" />
+                        <div className="h-2 w-5/6 rounded-full bg-surface-container" />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-20" preserveAspectRatio="none">
+            <line stroke="black" strokeDasharray="8 4" strokeWidth="2" x1="30%" x2="45%" y1="50%" y2="50%" />
+            <line stroke="black" strokeDasharray="8 4" strokeWidth="2" x1="55%" x2="70%" y1="50%" y2="50%" />
+          </svg>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function WsnStandardsAdapter({ section }: { section: PreviewSectionPayload }) {
+  const items = Array.isArray(section.data.items) ? section.data.items.map(asRecord) : [];
+  const protocols = items.filter((item) => !firstString(item.description, item.body));
+  const capabilities = items.filter((item) => firstString(item.description, item.body));
+
+  return (
+    <section className="bg-primary-container py-stack-lg text-on-primary-container">
+      <div className="mx-auto grid max-w-container-max grid-cols-12 items-center gap-gutter px-margin-desktop">
+        <div className="col-span-12 mb-10 lg:col-span-5 lg:mb-0">
+          {headingOf(section.data) ? (
+            <h2 className="mb-6 font-headline-lg text-headline-lg text-white">{headingOf(section.data)}</h2>
+          ) : (
+            <MissingOptional label="heading" />
+          )}
+          {firstString(section.data.body, section.data.introduction) ? (
+            <p className="mb-8 font-body-md leading-relaxed opacity-80">
+              {decodeMojibake(firstString(section.data.body, section.data.introduction))}
+            </p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+          <div className="grid grid-cols-2 gap-4">
+            {protocols.length === 0 ? <MissingOptional label="protocol checklist" /> : null}
+            {protocols.map((item, index) => (
+              <div key={`${firstString(item.label)}-${index}`} className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-on-primary-container">check_circle</span>
+                <span className="font-label-sm">{decodeMojibake(firstString(item.label, item.title))}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="col-span-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:col-span-7">
+          {capabilities.length === 0 ? <MissingOptional label="capability cards" /> : null}
+          {capabilities.map((item, index) => (
+            <div key={`${firstString(item.label)}-${index}`} className="rounded-lg border border-white/10 bg-white/5 p-6">
+              {firstString(item.label, item.title) ? (
+                <h4 className="mb-2 font-headline-md text-headline-md text-white">
+                  {firstString(item.label, item.title)}
+                </h4>
+              ) : (
+                <MissingOptional label="capability title" />
+              )}
+              {firstString(item.description, item.body) ? (
+                <p className="font-body-md text-sm opacity-70">
+                  {decodeMojibake(firstString(item.description, item.body))}
+                </p>
+              ) : (
+                <MissingOptional label="capability body" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function WsnApplicationsAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [nav] = labeledActions(section);
+  const cards = Array.isArray(section.data.cards) ? section.data.cards.map(asRecord) : [];
+
+  return (
+    <section className="py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop">
+        <div className="mb-stack-md flex items-end justify-between">
+          <div className="max-w-xl">
+            {headingOf(section.data) ? (
+              <h2 className="mb-4 font-headline-lg text-headline-lg">{headingOf(section.data)}</h2>
+            ) : (
+              <MissingOptional label="heading" />
+            )}
+            {firstString(section.data.introduction, section.data.body) ? (
+              <p className="font-body-md text-on-surface-variant">
+                {firstString(section.data.introduction, section.data.body)}
+              </p>
+            ) : (
+              <MissingOptional label="introduction" />
+            )}
+          </div>
+          {nav?.href ? (
+            <Link
+              href={nav.href}
+              className="hidden border-b border-primary pb-1 font-label-sm text-label-sm text-primary md:block"
+            >
+              {nav.label}
+            </Link>
+          ) : nav ? (
+            <span className="hidden border-b border-primary pb-1 font-label-sm text-label-sm text-primary md:block">
+              {nav.label}
+            </span>
+          ) : (
+            <MissingOptional label="case studies link" />
+          )}
+        </div>
+        <div className="grid grid-cols-1 gap-gutter md:grid-cols-2">
+          {cards.length === 0 ? <MissingOptional label="application cards" /> : null}
+          {cards.map((card, index) => {
+            const preview = section.cards[index];
+            const image = firstString(asRecord(card.media).source, preview?.imageUrl, card.imageUrl);
+            const alt =
+              firstString(asRecord(card.media).alt, card.mediaAlt, preview?.imageAlt, card.imageAlt) ?? "";
+            return (
+              <div
+                key={`${firstString(card.title)}-${index}`}
+                className="group relative aspect-[16/10] overflow-hidden rounded-xl bg-surface-container"
+              >
+                {image ? (
+                  <StitchImage
+                    src={image}
+                    alt={alt}
+                    className="h-full w-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <MissingMedia message="application image not resolved" />
+                )}
+                <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/20 to-transparent p-10 text-white">
+                  {firstString(card.eyebrow, preview?.eyebrow) ? (
+                    <span className="mb-2 font-label-sm text-label-sm uppercase tracking-widest opacity-70">
+                      {firstString(card.eyebrow, preview?.eyebrow)}
+                    </span>
+                  ) : (
+                    <MissingOptional label="application eyebrow" />
+                  )}
+                  {firstString(card.title, preview?.title) ? (
+                    <h3 className="font-headline-md text-headline-md">
+                      {firstString(card.title, preview?.title)}
+                    </h3>
+                  ) : (
+                    <MissingOptional label="application title" />
+                  )}
+                  {firstString(card.body, preview?.body) ? (
+                    <p className="mt-4 font-body-md opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      {firstString(card.body, preview?.body)}
+                    </p>
+                  ) : (
+                    <MissingOptional label="application body" />
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function WsnCtaAdapter({ section }: { section: PreviewSectionPayload }) {
+  const [primary, secondary] = labeledActions(section);
+  const partners = wsnMediaList(section.data);
+  const title = headingOf(section.data);
+
+  return (
+    <section className="border-t border-outline-variant/20 py-stack-lg">
+      <div className="mx-auto max-w-container-max px-margin-desktop text-center">
+        <div className="relative mx-auto max-w-3xl overflow-hidden rounded-2xl border border-outline-variant bg-surface p-12 shadow-sm md:p-20">
+          <div className="absolute right-0 top-0 h-64 w-64 -translate-y-1/2 translate-x-1/2 rounded-full bg-primary/5 blur-3xl" />
+          {title ? (
+            <h2 className="mb-6 font-display-lg text-headline-lg">{wsnStrategyTitle(title)}</h2>
+          ) : (
+            <MissingOptional label="title" />
+          )}
+          {bodyOf(section.data) ? (
+            <p className="mb-10 font-body-lg text-on-surface-variant">{bodyOf(section.data)}</p>
+          ) : (
+            <MissingOptional label="body" />
+          )}
+          <div className="flex flex-col justify-center gap-4 md:flex-row">
+            {primary?.href ? (
+              <Link
+                href={primary.href}
+                className="rounded-lg bg-primary px-10 py-5 font-label-sm text-label-sm text-on-primary shadow-lg transition-opacity hover:opacity-90"
+              >
+                {primary.label}
+              </Link>
+            ) : primary ? (
+              <span className="rounded-lg bg-primary px-10 py-5 font-label-sm text-label-sm text-on-primary shadow-lg">
+                {primary.label}
+              </span>
+            ) : (
+              <MissingOptional label="primary action" />
+            )}
+            {secondary?.href ? (
+              <Link
+                href={secondary.href}
+                className="rounded-lg border border-outline-variant bg-white px-10 py-5 font-label-sm text-label-sm transition-colors hover:bg-surface-container-low"
+              >
+                {secondary.label}
+              </Link>
+            ) : secondary ? (
+              <span className="rounded-lg border border-outline-variant bg-white px-10 py-5 font-label-sm text-label-sm">
+                {secondary.label}
+              </span>
+            ) : (
+              <MissingOptional label="secondary action" />
+            )}
+          </div>
+          <div className="mt-12 flex items-center justify-center gap-8 opacity-60">
+            {partners.length === 0 ? <MissingOptional label="partner logos" /> : null}
+            {partners.map((partner, index) => (
+              <StitchImage
+                key={`${partner.source}-${index}`}
+                src={partner.source}
+                alt={partner.alt}
+                className="h-6 grayscale"
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
