@@ -80,12 +80,12 @@ export function buildPageMetadata({
     description,
     ...(keywords?.length ? { keywords } : {}),
     alternates: {
-      canonical: pagePath,
+      canonical: canonicalUrl(pagePath),
     },
     openGraph: {
       type: "website",
       locale: "en_US",
-      url: pagePath,
+      url: canonicalUrl(pagePath),
       siteName: SITE_NAME,
       title: fullTitle,
       description,
