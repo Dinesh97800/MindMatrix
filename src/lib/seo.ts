@@ -30,7 +30,7 @@ export function buildRootMetadata(): Metadata {
     metadataBase: getMetadataBase(),
     title: {
       default: home?.title ?? `${SITE_NAME} | Embedded Product Engineering`,
-      template: `%s | ${SITE_NAME}`,
+      template: `%s`,
     },
     description:
       home?.description ??
