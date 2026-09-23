@@ -60,12 +60,15 @@ export function buildPageMetadata({
   description,
   path,
   keywords,
+  canonical,
   absoluteTitle = false,
 }: {
   title: string;
   description: string;
   path: string;
   keywords?: string[];
+  /** Use only when a CMS page explicitly defines a different canonical URL. */
+  canonical?: string;
   absoluteTitle?: boolean;
 }): Metadata {
   const pagePath = canonicalPath(path);
@@ -80,7 +83,7 @@ export function buildPageMetadata({
     description,
     ...(keywords?.length ? { keywords } : {}),
     alternates: {
-      canonical: canonicalUrl(pagePath),
+      canonical: canonical?.trim() || canonicalUrl(pagePath),
     },
     openGraph: {
       type: "website",

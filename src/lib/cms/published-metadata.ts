@@ -17,6 +17,7 @@ export async function cmsOrLegacyMetadata(
     title: published.seo?.metaTitle || published.page.title,
     description: published.seo?.metaDescription || String(fallback.description ?? ""),
     path,
+    canonical: published.seo?.canonicalUrl,
     absoluteTitle: true,
   });
 }
