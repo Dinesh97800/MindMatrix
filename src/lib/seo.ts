@@ -30,7 +30,7 @@ export function buildRootMetadata(): Metadata {
     metadataBase: getMetadataBase(),
     title: {
       default: home?.title ?? `${SITE_NAME} | Embedded Product Engineering`,
-      template: `%s`,
+      template: `%s | ${SITE_NAME}`,
     },
     description:
       home?.description ??
@@ -60,16 +60,15 @@ export function buildPageMetadata({
   description,
   path,
   keywords,
-  canonical,
   absoluteTitle = false,
+  canonical,
 }: {
   title: string;
   description: string;
   path: string;
   keywords?: string[];
-  /** Use only when a CMS page explicitly defines a different canonical URL. */
-  canonical?: string;
   absoluteTitle?: boolean;
+  canonical?: string;
 }): Metadata {
   const pagePath = canonicalPath(path);
   const fullTitle = absoluteTitle
@@ -77,18 +76,19 @@ export function buildPageMetadata({
     : path === "/"
       ? `${title} | Embedded Product Engineering`
       : `${title} | ${SITE_NAME}`;
+  const pageUrl = canonical?.trim() || canonicalUrl(pagePath);
 
   return {
     title: fullTitle,
     description,
     ...(keywords?.length ? { keywords } : {}),
     alternates: {
-      canonical: canonical?.trim() || canonicalUrl(pagePath),
+      canonical: pageUrl,
     },
     openGraph: {
       type: "website",
       locale: "en_US",
-      url: canonicalUrl(pagePath),
+      url: pageUrl,
       siteName: SITE_NAME,
       title: fullTitle,
       description,

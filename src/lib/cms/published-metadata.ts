@@ -1,23 +1,21 @@
 import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";
-import { publicSlugFromPathname } from "@/lib/cms/public-slug";
-import { getPublishedPublicPage } from "@/lib/cms/published-public-page";
+import { getPublicPageSeoForPath } from "@/lib/cms/public-page-seo";
 
 export async function cmsOrLegacyMetadata(
   path: string,
   fallback: Metadata
 ): Promise<Metadata> {
-  const slug = publicSlugFromPathname(path);
-  const published = await getPublishedPublicPage(slug);
-  if (!published?.seo?.metaTitle && !published?.seo?.metaDescription) {
+  const seo = await getPublicPageSeoForPath(path);
+  if (!seo?.title && !seo?.description) {
     return fallback;
   }
 
   return buildPageMetadata({
-    title: published.seo?.metaTitle || published.page.title,
-    description: published.seo?.metaDescription || String(fallback.description ?? ""),
+    title: seo.title || String(fallback.title ?? ""),
+    description: seo.description || String(fallback.description ?? ""),
     path,
-    canonical: published.seo?.canonicalUrl,
     absoluteTitle: true,
+    canonical: seo.canonical,
   });
 }

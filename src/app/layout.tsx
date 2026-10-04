@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ScrollEffects } from "@/components/layout/ScrollEffects";
+import { RouteMetadataSync } from "@/components/seo/RouteMetadataSync";
 import { buildRootMetadata, SITE_URL } from "@/lib/seo";
 import Script from "next/script";
 
@@ -59,6 +60,7 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-on-surface font-body-md font-montserrat selection:bg-brand-teal/20 selection:text-brand-navy overflow-x-hidden">
         {children}
+        <RouteMetadataSync />
         <ScrollEffects />
 
         {/* Google Analytics */}
