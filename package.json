@@ -12,18 +12,41 @@
     "clean": "node scripts/clean-cache.mjs",
     "stitch:download": "node scripts/download-stitch-pages.mjs",
     "stitch:generate": "node scripts/generate-pages.mjs",
+    "migrate:tsx": "node scripts/migrate-html-to-tsx.mjs",
     "urls:local": "node scripts/generate-local-urls.mjs",
-    "audit:nav": "node scripts/audit-navigation.mjs"
+    "audit:nav": "node scripts/audit-navigation.mjs",
+    "db:seed": "node scripts/seed-admin.mjs",
+    "db:check": "node scripts/check-db.mjs",
+    "db:migrate": "node scripts/run-migrations.mjs",
+    "db:migrate:undo": "node scripts/rollback-migration.mjs",
+    "db:seed:cms": "node scripts/seed-cms-categories.mjs",
+    "db:seed:cms:content": "tsx scripts/seed-cms-content.ts",
+    "cms:canonical:dry-run": "tsx scripts/cms-canonical-dry-run.ts",
+    "cms:canonical:migrate": "tsx scripts/cms-canonical-v4-migrate.ts"
   },
   "dependencies": {
+    "@tiptap/extension-link": "^3.31.3",
+    "@tiptap/extension-placeholder": "^3.31.3",
+    "@tiptap/extension-underline": "^3.31.3",
+    "@tiptap/react": "^3.31.3",
+    "@tiptap/starter-kit": "^3.31.3",
+    "bcryptjs": "^3.0.3",
     "cheerio": "^1.0.0",
-    "html-react-parser": "^5.2.2",
+    "dotenv": "^17.4.2",
+    "framer-motion": "^12.43.0",
+    "mysql2": "^3.23.2",
     "next": "^15.1.0",
+    "next-auth": "^4.24.15",
+    "nodemailer": "^7.0.13",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "sequelize": "^6.37.8",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.0",
+    "@types/nodemailer": "^8.0.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "autoprefixer": "^10.4.20",
@@ -31,6 +54,7 @@
     "eslint-config-next": "^15.1.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16",
+    "tsx": "^4.23.13",
     "typescript": "^5.7.2"
   }
 }

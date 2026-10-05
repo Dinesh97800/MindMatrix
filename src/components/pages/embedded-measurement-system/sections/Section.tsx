@@ -1,0 +1,7 @@
+export function Section() {
+  return (
+    <>
+      <section className={"py-stack-lg bg-white border-y border-outline-variant/10"}><div className={"max-w-container-max mx-auto px-margin-desktop"}><div className={"grid grid-cols-2 md:grid-cols-4 gap-gutter text-center"}><div className={"p-8"}><div className={"text-display-lg font-display-lg text-primary mb-2"}>{"99.9"}<span className={"text-headline-md"}>{"%"}</span></div><p className={"font-label-sm text-label-sm text-on-surface-variant uppercase"}>{"Uptime Reliability"}</p></div><div className={"p-8 border-l border-outline-variant/20"}><div className={"text-display-lg font-display-lg text-primary mb-2"}>{"12"}<span className={"text-headline-md"}>{"ch"}</span></div><p className={"font-label-sm text-label-sm text-on-surface-variant uppercase"}>{"Simultaneous Inputs"}</p></div><div className={"p-8 border-l border-outline-variant/20"}><div className={"text-display-lg font-display-lg text-primary mb-2"}>{"50"}<span className={"text-headline-md"}>{"ns"}</span></div><p className={"font-label-sm text-label-sm text-on-surface-variant uppercase"}>{"Trigger Jitter"}</p></div><div className={"p-8 border-l border-outline-variant/20"}><div className={"text-display-lg font-display-lg text-primary mb-2"}>{"100"}<span className={"text-headline-md"}>{"%"}</span></div><p className={"font-label-sm text-label-sm text-on-surface-variant uppercase"}>{"MIL-STD Compliant"}</p></div></div></div></section>
+    </>
+  );
+}

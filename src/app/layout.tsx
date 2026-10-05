@@ -1,37 +1,42 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ScrollEffects } from "@/components/layout/ScrollEffects";
-import { buildPageMetadata, SITE_URL } from "@/lib/seo";
+import { RouteMetadataSync } from "@/components/seo/RouteMetadataSync";
+import { buildRootMetadata, SITE_URL } from "@/lib/seo";
+import Script from "next/script";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const montserrat = localFont({
+  src: [
+    {
+      path: "../../public/fonts/montserrat/montserrat-400.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/montserrat/montserrat-600.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/montserrat/montserrat-700.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-montserrat",
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-export const metadata: Metadata = buildPageMetadata({
-  title: "Mind Matrix",
-  description:
-    "Engineering intelligent embedded products — industrial-grade hardware design, firmware development, and connectivity solutions since 2006.",
-  path: "/",
-});
+export const metadata: Metadata = buildRootMetadata();
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Mind Matrix",
+  name: "Mind Matrix Intelligent Solutions",
   url: SITE_URL,
   description:
-    "Industrial-grade embedded engineering partner specializing in hardware design, firmware development, and IoT connectivity.",
-  foundingDate: "2006",
+    "Engineering consultancy specializing in embedded electronics, industrial firmware, communication systems, and custom product development.",
 };
 
 export default function RootLayout({
@@ -40,16 +45,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`scroll-smooth ${inter.variable} ${spaceGrotesk.variable}`}
-      style={{ ["--font-geist" as string]: "Geist, Inter, sans-serif" }}
-    >
+    <html lang="en" className={`scroll-smooth ${montserrat.variable}`}>
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=swap"
           rel="stylesheet"
@@ -61,9 +58,26 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-primary overflow-x-hidden">
+      <body className="bg-background text-on-surface font-body-md font-montserrat selection:bg-brand-teal/20 selection:text-brand-navy overflow-x-hidden">
         {children}
+        <RouteMetadataSync />
         <ScrollEffects />
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-LD0HCDV9ES"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-LD0HCDV9ES');
+          `}
+        </Script>
       </body>
     </html>
   );

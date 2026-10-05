@@ -1,0 +1,9 @@
+import Link from "next/link";
+
+export function Section() {
+  return (
+    <>
+      <section className={"py-12 border-t border-outline-variant/30"}><h2 className={"font-headline-md text-headline-md mb-8"}>{"Related Technologies"}</h2><div className={"grid grid-cols-2 md:grid-cols-4 gap-6"}><Link href={"/application-notes-and-design-guides"} className={"flex flex-col gap-2 p-4 rounded-lg hover:bg-surface-variant/30 transition-all group"}><span className={"text-primary font-semibold font-body-md group-hover:translate-x-1 transition-transform"}>{"Telemetry API"}</span><span className={"text-label-sm text-on-surface-variant"}>{"Real-time data streams"}</span></Link><Link href={"/application-notes-and-design-guides"} className={"flex flex-col gap-2 p-4 rounded-lg hover:bg-surface-variant/30 transition-all group"}><span className={"text-primary font-semibold font-body-md group-hover:translate-x-1 transition-transform"}>{"Logic Engine v4"}</span><span className={"text-label-sm text-on-surface-variant"}>{"Embedded automation"}</span></Link><Link href={"/application-notes-and-design-guides"} className={"flex flex-col gap-2 p-4 rounded-lg hover:bg-surface-variant/30 transition-all group"}><span className={"text-primary font-semibold font-body-md group-hover:translate-x-1 transition-transform"}>{"Secure Tunnel"}</span><span className={"text-label-sm text-on-surface-variant"}>{"Encrypted node access"}</span></Link><Link href={"/application-notes-and-design-guides"} className={"flex flex-col gap-2 p-4 rounded-lg hover:bg-surface-variant/30 transition-all group"}><span className={"text-primary font-semibold font-body-md group-hover:translate-x-1 transition-transform"}>{"Resource Manager"}</span><span className={"text-label-sm text-on-surface-variant"}>{"Compute orchestration"}</span></Link></div></section>
+    </>
+  );
+}

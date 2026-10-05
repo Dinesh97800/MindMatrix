@@ -1,8 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+
+function activateVisibleElements() {
+  document.querySelectorAll(".reveal:not(.active), .reveal-on-scroll:not(.active)").forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      el.classList.add("active");
+    }
+  });
+}
 
 export function ScrollEffects() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -12,33 +24,17 @@ export function ScrollEffects() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: "0px 0px -5% 0px" }
     );
 
     document.querySelectorAll(".reveal, .reveal-on-scroll").forEach((el) => {
       observer.observe(el);
     });
 
-    const onScroll = () => {
-      const header = document.querySelector(
-        "header.sticky, nav.sticky, header[class*='sticky'], nav[class*='sticky']"
-      );
-      if (!header) return;
-      if (window.pageYOffset > 50) {
-        header.classList.remove("h-20");
-        header.classList.add("h-16", "shadow-md");
-      } else {
-        header.classList.add("h-20");
-        header.classList.remove("h-16", "shadow-md");
-      }
-    };
+    requestAnimationFrame(activateVisibleElements);
 
-    window.addEventListener("scroll", onScroll);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
+    return () => observer.disconnect();
+  }, [pathname]);
 
   return null;
 }

@@ -1,0 +1,7 @@
+export function Block4Section() {
+  return (
+    <>
+      <section className={"py-stack-lg px-margin-desktop max-w-container-max mx-auto text-center"}><h2 className={"font-headline-lg text-headline-lg mb-stack-lg"}>{"Deep Domain Expertise"}</h2><div className={"grid grid-cols-2 lg:grid-cols-4 gap-gutter"}><div className={"p-stack-md border-b border-outline-variant/20"}><h4 className={"font-bold font-label-sm text-label-sm text-primary mb-2"}>{"COMMUNICATIONS"}</h4><p className={"text-on-surface-variant text-sm"}>{"Industrial protocol conversion & optimization."}</p></div><div className={"p-stack-md border-b border-outline-variant/20"}><h4 className={"font-bold font-label-sm text-label-sm text-primary mb-2"}>{"FIRMWARE"}</h4><p className={"text-on-surface-variant text-sm"}>{"Secure-boot and encrypted update architectures."}</p></div><div className={"p-stack-md border-b border-outline-variant/20"}><h4 className={"font-bold font-label-sm text-label-sm text-primary mb-2"}>{"HARDWARE"}</h4><p className={"text-on-surface-variant text-sm"}>{"Ruggedized PCB design for high EMI environments."}</p></div><div className={"p-stack-md border-b border-outline-variant/20"}><h4 className={"font-bold font-label-sm text-label-sm text-primary mb-2"}>{"COMPLIANCE"}</h4><p className={"text-on-surface-variant text-sm"}>{"NERC CIP, IEC 62443, and ISO 27001 readiness."}</p></div></div></section>
+    </>
+  );
+}

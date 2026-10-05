@@ -74,6 +74,11 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
+        env:
+          GITHUB_PAGES: "true"
+          # Baked into metadata at build time (canonical, og:url, JSON-LD).
+          NEXT_PUBLIC_SITE_URL: "https://mmisindia.com"
+          NEXT_PUBLIC_PRELAUNCH: "false"
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

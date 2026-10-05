@@ -1,0 +1,10 @@
+import Link from "next/link";
+import { StitchImage } from "@/components/ui/StitchImage";
+
+export function Block3Section() {
+  return (
+    <>
+      <section className={"bg-surface-container py-stack-lg mt-stack-lg"}><div className={"max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-stack-lg items-center"}><div><h2 className={"font-headline-lg text-headline-lg mb-6"}>{"Need a custom technical deep-dive for your team?"}</h2><p className={"font-body-lg text-body-lg text-on-surface-variant mb-8"}>{"Our engineering leads provide bespoke workshops and technical consultancy for Fortune 500 manufacturing partners."}</p><div className={"flex flex-wrap gap-4"}><Link href={"/industrial-automation"} className={"bg-primary text-on-primary px-8 py-4 rounded-lg font-label-sm text-label-sm hover:shadow-lg transition-all active:scale-[0.98]"}>{"Inquire About Workshops"}</Link><Link href={"/services"} className={"border border-outline px-8 py-4 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-high transition-all"}>{"View All Services"}</Link></div></div><div className={"relative aspect-video rounded-xl overflow-hidden border border-outline-variant/30"}><StitchImage src={"https://lh3.googleusercontent.com/aida-public/AB6AXuDUiI-cDf4Ppp2gZXHP1RMAhVRmvpWjQlJUyyMNzUUvv913u8c8vZHWjj_zwbpihHxA-Lm0eB5A5AkqLE5bWy4w1NZulcsVHtYod8SIZgC0DGoKWonBhEcQ3WD2O_iH28DC91cmldocxUMKA687x62ySJP6SXtaItV1g2DyCU6PgRetx1Y0n0LXyvaJPqtBA0unIm8mSAa1xgZ5IU2kthvQPrn5pMxwYxeKdEtXNamU8Iju9TPEuFVOQB9KmFvkndCj66poHVR92Zw"} alt={"A candid, high-end professional photograph of a technical lead presenting a complex schematic on a large glass screen to a group of engineers. The environment is a brightly lit, modern industrial workspace. The focus is sharp, the composition is professional, and the colors are balanced whites and greys with subtle blue tech accents."} className={"w-full h-full object-cover"} /><div className={"absolute inset-0 bg-primary/10"}></div></div></div></section>
+    </>
+  );
+}

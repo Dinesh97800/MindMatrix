@@ -1,44 +1,46 @@
 import type { Metadata } from "next";
+import { PAGE_SEO } from "@/config/page-seo";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mindmatrix.com";
-const SITE_NAME = "Mind Matrix";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mmisindia.com";
+const SITE_NAME = "Mind Matrix Intelligent Solutions";
 
 /** Set NEXT_PUBLIC_PRELAUNCH=false when the site goes live for indexing. */
 export const IS_PRELAUNCH =
   process.env.NEXT_PUBLIC_PRELAUNCH !== "false";
 
-export function buildPageMetadata({
-  title,
-  description,
-  path,
-}: {
-  title: string;
-  description: string;
-  path: string;
-}): Metadata {
-  const url = `${SITE_URL}${path === "/" ? "" : path}`;
-  const fullTitle =
-    path === "/"
-      ? `${title} | Engineering Intelligent Embedded Products`
-      : `${title} | ${SITE_NAME}`;
+export function getMetadataBase(): URL {
+  return new URL(SITE_URL);
+}
 
+export function canonicalPath(path: string): string {
+  if (!path || path === "/") return "/";
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+export function canonicalUrl(path: string): string {
+  const normalizedPath = canonicalPath(path);
+  return `${SITE_URL}${normalizedPath === "/" ? "" : normalizedPath}`;
+}
+
+/** Site-wide defaults for the root layout (no page-specific canonical). */
+export function buildRootMetadata(): Metadata {
+  const home = PAGE_SEO["/"];
   return {
-    title: fullTitle,
-    description,
-    alternates: { canonical: url },
-    openGraph: {
-      type: "website",
-      locale: "en_US",
-      url,
-      siteName: SITE_NAME,
-      title: fullTitle,
-      description,
+    metadataBase: getMetadataBase(),
+    title: {
+      default: home?.title ?? `${SITE_NAME} | Embedded Product Engineering`,
+      template: `%s | ${SITE_NAME}`,
     },
-    twitter: {
-      card: "summary_large_image",
-      title: fullTitle,
-      description,
+    description:
+      home?.description ??
+      "India-based engineering consultancy for custom embedded hardware, firmware, and communication-system development — from requirements and architecture through prototype validation and production support.",
+    icons: {
+      icon: [{ url: "/favicon.png", type: "image/png" }],
+      apple: [{ url: "/favicon.png", type: "image/png" }],
+    },
+    verification: {
+      google: "z3-CeNVAqD9VZq7ZHgI2GJ4kQtuxdIxIlbcP1fn-6i0",
     },
     robots: IS_PRELAUNCH
       ? {
@@ -51,6 +53,76 @@ export function buildPageMetadata({
           follow: true,
         },
   };
+}
+
+export function buildPageMetadata({
+  title,
+  description,
+  path,
+  keywords,
+  absoluteTitle = false,
+  canonical,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  keywords?: string[];
+  absoluteTitle?: boolean;
+  canonical?: string;
+}): Metadata {
+  const pagePath = canonicalPath(path);
+  const fullTitle = absoluteTitle
+    ? title
+    : path === "/"
+      ? `${title} | Embedded Product Engineering`
+      : `${title} | ${SITE_NAME}`;
+  const pageUrl = canonical?.trim() || canonicalUrl(pagePath);
+
+  return {
+    title: fullTitle,
+    description,
+    ...(keywords?.length ? { keywords } : {}),
+    alternates: {
+      canonical: pageUrl,
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: pageUrl,
+      siteName: SITE_NAME,
+      title: fullTitle,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description,
+    },
+  };
+}
+
+/** Metadata for a public page from {@link PAGE_SEO}, with legacy fallback. */
+export function pageMetadata(path: string, keywords?: string[]): Metadata {
+  const pagePath = canonicalPath(path);
+  const entry = PAGE_SEO[pagePath];
+
+  if (entry) {
+    return buildPageMetadata({
+      title: entry.title,
+      description: entry.description,
+      path: pagePath,
+      keywords,
+      absoluteTitle: true,
+    });
+  }
+
+  return buildPageMetadata({
+    title: "Mind Matrix Intelligent Solutions",
+    description:
+      "India-based engineering consultancy for embedded hardware, firmware, Industrial IoT and communication solutions.",
+    path: pagePath,
+    keywords,
+  });
 }
 
 export { SITE_URL, SITE_NAME };

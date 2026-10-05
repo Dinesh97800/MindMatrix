@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
-import fs from "fs";
-import path from "path";
-import { StitchHtmlContent } from "@/components/layout/StitchHtmlContent";
 import { buildPageMetadata } from "@/lib/seo";
+import { Stm32PageContent } from "@/components/pages/stm32/Stm32PageContent";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "STM32",
-  description: "Mind Matrix STM32 — industrial-grade embedded engineering, hardware design, and firmware development for mission-critical systems.",
-  path: "/stm32",
+  title: "32-bit Controller & Processor",
+  description:
+    "Mind Matrix 32-bit controller and processor development — firmware, peripheral drivers, RTOS integration, communication stacks, and prototype bring-up.",
+  path: "/32-bit-controller",
 });
 
-function getPageHtml() {
-  return fs.readFileSync(
-    path.join(process.cwd(), "src/content/pages/stm32.html"),
-    "utf8"
-  );
-}
-
 export default function Stm32Page() {
-  const html = getPageHtml();
-  return <StitchHtmlContent html={html} />;
+  return <Stm32PageContent />;
 }

@@ -1,23 +1,9 @@
 import type { Metadata } from "next";
-import fs from "fs";
-import path from "path";
-import { StitchHtmlContent } from "@/components/layout/StitchHtmlContent";
-import { buildPageMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
+import { ProductDevelopmentPageContent } from "@/components/pages/product-development/ProductDevelopmentPageContent";
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "Product Development",
-  description: "Mind Matrix Product Development — industrial-grade embedded engineering, hardware design, and firmware development for mission-critical systems.",
-  path: "/product-development",
-});
-
-function getPageHtml() {
-  return fs.readFileSync(
-    path.join(process.cwd(), "src/content/pages/product-development.html"),
-    "utf8"
-  );
-}
+export const metadata: Metadata = pageMetadata("/product-development");
 
 export default function ProductDevelopmentPage() {
-  const html = getPageHtml();
-  return <StitchHtmlContent html={html} />;
+  return <ProductDevelopmentPageContent />;
 }

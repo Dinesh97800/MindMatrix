@@ -1,0 +1,9 @@
+import Link from "next/link";
+
+export function Block3Section() {
+  return (
+    <>
+      <section className={"px-margin-desktop max-w-container-max mx-auto py-stack-lg"}><div className={"bg-primary-container rounded-xl p-stack-lg relative overflow-hidden flex flex-col md:flex-row justify-between items-center gap-stack-md"}><div className={"relative z-10 space-y-4 text-center md:text-left"}><h2 className={"font-headline-lg text-headline-lg text-white"}>{"Scale Your Precision."}</h2><p className={"text-on-primary-container font-body-lg max-w-lg"}>{"\n                    Ready to implement an industrial-grade engineering lifecycle? Partner with our lead architects today.\n                "}</p></div><div className={"relative z-10"}><Link href={"/hardware-development"} className={"bg-white text-primary px-10 py-5 rounded-lg font-headline-md text-[18px] font-bold hover:bg-secondary-fixed transition-all flex items-center gap-3 active:scale-95 shadow-xl"}>{"\n                    Consult with our Process Architects\n                    "}<span className={"material-symbols-outlined"}>{"arrow_forward"}</span></Link></div><div className={"absolute right-0 top-0 w-1/3 h-full opacity-20 pointer-events-none"}><div className={"w-full h-full bg-[url('https://lh3.googleusercontent.com/aida-public/AB6AXuC8Lc9ek2leanWwsnuRipJWXMkKpeEomytTsKi2PmjiHjwcqZxRZZBc3hpFzZbkxg6nZoxtarHI-Oxh7sxD4jjdbyG65FO4sLfKo5HukLyU_56vyQWcBTVVXbPrz8Lp1mU0ukUC2OhIrZRlcvlQvDR-dIe5jp15vZYR2CgeujidebRP4FboY0JwmNOmJEIaHEiKDDRiTl9KMcJmKAyszHz8G3KSh6mNGGKneBYG1v4E2PAFcb90mDHjEgSoa49RN1-pI81RN7LjaMc')] bg-cover mix-blend-screen"} data-alt={"Abstract technical background with glowing circuitry patterns and geometric grid lines in deep navy and neon cyan, representing advanced process engineering and systemic connectivity."}></div></div></div></section>
+    </>
+  );
+}

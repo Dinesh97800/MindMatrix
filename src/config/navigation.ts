@@ -82,8 +82,7 @@ export const headerNavItems: NavItem[] = [
       {
         label: "IoT & Edge",
         links: [
-          link("Industrial IoT Solutions", "/industrial-iot-solutions"),
-          link("Industrial IoT Gateway", "/industrial-iot-gateway"),
+          link("Industrial IoT", "/iot"),
           link("Industrial Controller", "/industrial-controller"),
           link("SNMP Alarm Gateway", "/snmp-alarm-gateway"),
         ],
@@ -94,9 +93,9 @@ export const headerNavItems: NavItem[] = [
           link("Energy Monitoring", "/energy-monitoring"),
           link("Energy Management", "/energy-management"),
           link("Remote Monitoring", "/remote-monitoring"),
-          link("Environmental Monitoring", "/environmental-monitoring"),
-          link("Pipeline Monitoring", "/pipeline-monitoring"),
-          link("Earth Resistance Monitoring", "/earth-resistance-monitoring"),
+          // link("Environmental Monitoring", "/environmental-monitoring"),
+          // link("Pipeline Monitoring", "/pipeline-monitoring"),
+          // link("Earth Resistance Monitoring", "/earth-resistance-monitoring"),
         ],
       },
       {
@@ -120,7 +119,7 @@ export const headerNavItems: NavItem[] = [
       {
         label: "Embedded Platforms",
         links: [
-          link("STM32", "/stm32"),
+          link("32-bit Controller & Processor", "/32-bit-controller"),
           link("ESP32", "/esp32"),
           link("NXP", "/nxp"),
           link("Nordic", "/nordic"),
@@ -132,7 +131,7 @@ export const headerNavItems: NavItem[] = [
       {
         label: "Operating Systems",
         links: [
-          link("FreeRTOS", "/freertos"),
+          link("RTOS", "/rtos"),
           link("Embedded Linux", "/embedded-linux"),
         ],
       },
@@ -217,9 +216,9 @@ export const footerColumns: FooterColumn[] = [
     title: "Technologies",
     links: [
       link("Tech Stack", "/technologies"),
-      link("STM32", "/stm32"),
+      link("32-bit Controller & Processor", "/32-bit-controller"),
       link("ESP32", "/esp32"),
-      link("FreeRTOS", "/freertos"),
+      link("RTOS", "/rtos"),
       link("MQTT", "/mqtt"),
       link("Industrial Protocols", "/industrial-protocols"),
     ],
@@ -228,7 +227,7 @@ export const footerColumns: FooterColumn[] = [
     title: "Solutions",
     links: [
       link("All Solutions", "/solutions"),
-      link("Industrial IoT", "/industrial-iot-solutions"),
+      link("Industrial IoT", "/iot"),
       link("Smart Grid", "/smart-grid"),
       link("Energy Monitoring", "/energy-monitoring"),
       link("Building Automation", "/building-automation"),
@@ -347,32 +346,151 @@ export interface BreadcrumbItem {
   href: string;
 }
 
-export function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
-  if (pathname === "/") return [{ label: "Home", href: "/" }];
+/** Routes not linked in main nav but with a known hierarchy. */
+const BREADCRUMB_OVERRIDES: Record<string, BreadcrumbItem[]> = {
+  "/environmental-monitoring": [
+    { label: "Home", href: "/" },
+    { label: "Solutions", href: "/solutions" },
+    { label: "Monitoring", href: "/solutions" },
+    { label: "Environmental Monitoring", href: "/environmental-monitoring" },
+  ],
+  "/pipeline-monitoring": [
+    { label: "Home", href: "/" },
+    { label: "Solutions", href: "/solutions" },
+    { label: "Monitoring", href: "/solutions" },
+    { label: "Pipeline Monitoring", href: "/pipeline-monitoring" },
+  ],
+  "/earth-resistance-monitoring": [
+    { label: "Home", href: "/" },
+    { label: "Solutions", href: "/solutions" },
+    { label: "Monitoring", href: "/solutions" },
+    { label: "Earth Resistance Monitoring", href: "/earth-resistance-monitoring" },
+  ],
+  "/industrial-iot-gateway": [
+    { label: "Home", href: "/" },
+    { label: "Solutions", href: "/solutions" },
+    { label: "IoT & Edge", href: "/solutions" },
+    { label: "Industrial IoT Gateway", href: "/industrial-iot-gateway" },
+  ],
+  "/industrial-iot-solutions": [
+    { label: "Home", href: "/" },
+    { label: "Solutions", href: "/solutions" },
+    { label: "IoT & Edge", href: "/solutions" },
+    { label: "Industrial IoT Solutions", href: "/industrial-iot-solutions" },
+  ],
+  "/stm32": [
+    { label: "Home", href: "/" },
+    { label: "Technologies", href: "/technologies" },
+    { label: "Embedded Platforms", href: "/technologies" },
+    { label: "STM32", href: "/stm32" },
+  ],
+  "/freertos": [
+    { label: "Home", href: "/" },
+    { label: "Technologies", href: "/technologies" },
+    { label: "Operating Systems", href: "/technologies" },
+    { label: "FreeRTOS", href: "/freertos" },
+  ],
+};
 
-  const crumbs: BreadcrumbItem[] = [{ label: "Home", href: "/" }];
+const FOOTER_COLUMN_PARENT: Record<string, { label: string; href: string }> = {
+  Services: { label: "Services", href: "/services" },
+  Industries: { label: "Industries", href: "/industries" },
+  Technologies: { label: "Technologies", href: "/technologies" },
+  Solutions: { label: "Solutions", href: "/solutions" },
+  Resources: { label: "Resources", href: "/resources-and-blog" },
+  "Case Studies": { label: "Case Studies", href: "/case-studies" },
+  Company: { label: "About", href: "/about-us" },
+  Contact: { label: "Contact", href: "/contact-us" },
+};
+
+function humanizeSlug(pathname: string): string {
+  const slug = pathname.replace(/^\//, "").replace(/-/g, " ");
+  return slug.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function findBreadcrumbsInMainNav(pathname: string): BreadcrumbItem[] | null {
+  let best: BreadcrumbItem[] | null = null;
 
   for (const item of mainNavItems) {
     if (item.href === "/") continue;
 
-    const allLinks: NavLink[] = [
-      { label: item.label, href: item.href },
-      ...(item.links ?? []),
-      ...(item.groups?.flatMap((g) => g.links) ?? []),
-    ];
+    if (pathname === item.href) {
+      const trail = [
+        { label: "Home", href: "/" },
+        { label: item.label, href: item.href },
+      ];
+      if (!best || trail.length > best.length) best = trail;
+      continue;
+    }
 
-    const match = allLinks.find((l) => isLinkActive(pathname, l.href));
-    if (match) {
-      if (item.href !== match.href) {
-        crumbs.push({ label: item.label, href: item.href });
+    for (const group of item.groups ?? []) {
+      for (const navLink of group.links) {
+        if (!isLinkActive(pathname, navLink.href)) continue;
+
+        const trail = [
+          { label: "Home", href: "/" },
+          { label: item.label, href: item.href },
+          { label: group.label, href: group.href ?? item.href },
+          { label: navLink.label, href: navLink.href },
+        ];
+        if (!best || trail.length > best.length) best = trail;
       }
-      crumbs.push({ label: match.label, href: match.href });
-      return crumbs;
+    }
+
+    for (const navLink of item.links ?? []) {
+      if (!isLinkActive(pathname, navLink.href)) continue;
+
+      const trail: BreadcrumbItem[] = [{ label: "Home", href: "/" }];
+      if (item.href !== navLink.href) {
+        trail.push({ label: item.label, href: item.href });
+      }
+      trail.push({ label: navLink.label, href: navLink.href });
+
+      if (!best || trail.length > best.length) best = trail;
     }
   }
 
-  crumbs.push({ label: "Page", href: pathname });
-  return crumbs;
+  return best;
+}
+
+function findBreadcrumbsInFooter(pathname: string): BreadcrumbItem[] | null {
+  for (const column of footerColumns) {
+    const match = column.links.find((navLink) => isLinkActive(pathname, navLink.href));
+    if (!match) continue;
+
+    const crumbs: BreadcrumbItem[] = [{ label: "Home", href: "/" }];
+    const parent = FOOTER_COLUMN_PARENT[column.title];
+
+    if (parent && parent.href !== match.href) {
+      crumbs.push(parent);
+    }
+
+    if (!crumbs.some((crumb) => crumb.href === match.href)) {
+      crumbs.push({ label: match.label, href: match.href });
+    }
+
+    return crumbs;
+  }
+
+  return null;
+}
+
+export function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
+  if (pathname === "/") return [{ label: "Home", href: "/" }];
+
+  const override = BREADCRUMB_OVERRIDES[pathname];
+  if (override) return override;
+
+  const fromNav = findBreadcrumbsInMainNav(pathname);
+  if (fromNav) return fromNav;
+
+  const fromFooter = findBreadcrumbsInFooter(pathname);
+  if (fromFooter) return fromFooter;
+
+  return [
+    { label: "Home", href: "/" },
+    { label: humanizeSlug(pathname), href: pathname },
+  ];
 }
 
 export type MobileNavNode = {
