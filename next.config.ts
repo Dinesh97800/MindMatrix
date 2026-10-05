@@ -6,7 +6,7 @@ const isStaticExport =
 
 const nextConfig: NextConfig = {
   ...(isStaticExport ? { output: "export" as const } : {}),
-  serverExternalPackages: ["sequelize", "mysql2", "bcryptjs", "nodemailer"],
+  serverExternalPackages: ["sequelize", "mysql2", "bcryptjs", "nodemailer", "sharp"],
   async redirects() {
     return [
       { source: "/hyperloop-beta", destination: "/case-studies", permanent: true },

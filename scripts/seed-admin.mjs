@@ -26,6 +26,11 @@ async function main() {
   const AdminUser = sequelize.define(
     "AdminUser",
     {
+      id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       name: DataTypes.STRING(120),
       email: DataTypes.STRING(255),
       passwordHash: DataTypes.STRING(255),

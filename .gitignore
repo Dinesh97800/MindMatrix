@@ -53,5 +53,8 @@ Desktop.ini
 # Transient HTML slice used only during stitch:generate (TSX is source of truth)
 /src/content/pages/*.html
 
+# local CMS / database backups
+/backups/
+
 # secrets
 *.pem

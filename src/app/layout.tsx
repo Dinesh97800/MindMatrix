@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ScrollEffects } from "@/components/layout/ScrollEffects";
+import { RouteMetadataSync } from "@/components/seo/RouteMetadataSync";
 import { buildRootMetadata, SITE_URL } from "@/lib/seo";
+import Script from "next/script";
 
 const montserrat = localFont({
   src: [
@@ -58,7 +60,24 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-on-surface font-body-md font-montserrat selection:bg-brand-teal/20 selection:text-brand-navy overflow-x-hidden">
         {children}
+        <RouteMetadataSync />
         <ScrollEffects />
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-LD0HCDV9ES"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-LD0HCDV9ES');
+          `}
+        </Script>
       </body>
     </html>
   );

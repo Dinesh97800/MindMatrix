@@ -39,6 +39,9 @@ export function buildRootMetadata(): Metadata {
       icon: [{ url: "/favicon.png", type: "image/png" }],
       apple: [{ url: "/favicon.png", type: "image/png" }],
     },
+    verification: {
+      google: "z3-CeNVAqD9VZq7ZHgI2GJ4kQtuxdIxIlbcP1fn-6i0",
+    },
     robots: IS_PRELAUNCH
       ? {
           index: false,
@@ -58,12 +61,14 @@ export function buildPageMetadata({
   path,
   keywords,
   absoluteTitle = false,
+  canonical,
 }: {
   title: string;
   description: string;
   path: string;
   keywords?: string[];
   absoluteTitle?: boolean;
+  canonical?: string;
 }): Metadata {
   const pagePath = canonicalPath(path);
   const fullTitle = absoluteTitle
@@ -71,18 +76,19 @@ export function buildPageMetadata({
     : path === "/"
       ? `${title} | Embedded Product Engineering`
       : `${title} | ${SITE_NAME}`;
+  const pageUrl = canonical?.trim() || canonicalUrl(pagePath);
 
   return {
     title: fullTitle,
     description,
     ...(keywords?.length ? { keywords } : {}),
     alternates: {
-      canonical: pagePath,
+      canonical: pageUrl,
     },
     openGraph: {
       type: "website",
       locale: "en_US",
-      url: pagePath,
+      url: pageUrl,
       siteName: SITE_NAME,
       title: fullTitle,
       description,

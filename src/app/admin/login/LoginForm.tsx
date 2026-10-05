@@ -30,7 +30,7 @@ function LoginForm() {
       return;
     }
 
-    router.push(searchParams.get("callbackUrl") ?? "/admin/submissions");
+    router.push(searchParams.get("callbackUrl") ?? "/admin");
     router.refresh();
   }
 

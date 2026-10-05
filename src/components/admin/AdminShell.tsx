@@ -2,66 +2,82 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { AdminSidebar } from "./AdminSidebar";
 
-const navItems = [
-  { href: "/admin/submissions", label: "Submissions" },
-  { href: "/admin/newsletter", label: "Newsletter" },
-  { href: "/admin/users", label: "Admin Users", superAdminOnly: true },
-  { href: "/admin/profile", label: "Profile" },
-];
+const SIDEBAR_COLLAPSED_KEY = "mmis-admin-sidebar-collapsed";
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const isSuperAdmin = session?.user?.role === "super_admin";
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem(SIDEBAR_COLLAPSED_KEY);
+    if (stored === "1") setCollapsed(true);
+  }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  function toggleCollapse() {
+    setCollapsed((current) => {
+      const next = !current;
+      window.localStorage.setItem(SIDEBAR_COLLAPSED_KEY, next ? "1" : "0");
+      return next;
+    });
+  }
+
+  const roleLabel =
+    session?.user?.role === "super_admin" ? "Super Admin" : "Content Manager";
 
   return (
     <div className="min-h-screen bg-surface">
-      <header className="border-b border-outline-variant/20 bg-white">
-        <div className="mx-auto flex max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop h-16">
-          <div className="flex items-center gap-8">
-            <Link href="/admin/submissions" className="font-headline-md text-primary">
-              Mind Matrix Admin
-            </Link>
-            <nav className="hidden md:flex items-center gap-1">
-              {navItems
-                .filter((item) => !item.superAdminOnly || isSuperAdmin)
-                .map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      pathname.startsWith(item.href)
-                        ? "bg-primary/10 text-primary"
-                        : "text-on-surface-variant hover:text-primary"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-            </nav>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/admin/profile"
-              className="hidden sm:block text-sm text-on-surface-variant hover:text-primary transition-colors"
-            >
-              {session?.user?.email}
-            </Link>
-            <button
-              type="button"
-              onClick={() => signOut({ callbackUrl: "/admin/login" })}
-              className="text-sm font-medium text-primary hover:underline"
-            >
-              Sign out
-            </button>
-          </div>
+      <div className="flex min-h-screen">
+        <AdminSidebar
+          mobileOpen={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          collapsed={collapsed}
+          onToggleCollapse={toggleCollapse}
+        />
+        <div className="flex min-w-0 flex-1 flex-col">
+          <header className="flex h-16 items-center justify-between border-b border-outline-variant/20 bg-white px-4 md:px-6">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                className="rounded-lg p-2 lg:hidden hover:bg-primary/5"
+                aria-label="Open menu"
+                onClick={() => setMobileOpen(true)}
+              >
+                <span className="material-symbols-outlined">menu</span>
+              </button>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-on-surface-variant">
+                  Website Management
+                </p>
+                <p className="font-headline-sm text-primary">Mind Matrix Admin</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link
+                href="/"
+                target="_blank"
+                className="hidden sm:inline-flex text-sm text-on-surface-variant hover:text-primary"
+              >
+                View site
+              </Link>
+              <div className="hidden md:block text-right">
+                <p className="text-sm">{session?.user?.email}</p>
+                <p className="text-xs text-on-surface-variant">{roleLabel}</p>
+              </div>
+            </div>
+          </header>
+          <main className="flex-1 px-4 py-6 md:px-8">{children}</main>
         </div>
-      </header>
-      <main className="mx-auto max-w-container-max px-margin-mobile md:px-margin-desktop py-stack-md">
-        {children}
-      </main>
+      </div>
     </div>
   );
 }
